@@ -1,0 +1,112 @@
+﻿<Window x:Class="RegistrationTeacherSafetyWheel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:RegistrationTeacherSafetyWheel.ViewModels"
+        xmlns:local="clr-namespace:RegistrationTeacherSafetyWheel"
+        xmlns:models="clr-namespace:RegistrationTeacherSafetyWheel.Models"
+        mc:Ignorable="d"
+        Title="Регистрация преподавателя Безопасное колесо" Height="450" Width="900">
+    
+    <Window.DataContext>
+        <vm:RegisterTeacherViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style TargetType="PasswordBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="20" Grid.RowSpan="2">
+
+            <Label Content="Имя Фамилия" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                 Margin="0,0,0,10"/>
+
+            <Label Content="Логин" />
+            <TextBox 
+                 Text="{Binding Login}"
+                 Margin="0,0,0,10"/>
+
+            <Label Content="Пароль" />
+            <PasswordBox x:Name="PasswordBox" 
+                     PasswordChanged="PasswordBox_PasswordChanged"
+                     Margin="0,0,0,10"/>
+
+            <Label Content="Повторение пароля" />
+            <PasswordBox x:Name="ConfirmPasswordBox" 
+                     PasswordChanged="ConfirmPasswordBox_PasswordChanged"
+                     Margin="0,0,0,10"/>
+
+            <Button 
+                Content="Зарегистрировать нового преподавателя"
+                Height="40"
+                Command="{Binding RegisterCommand}"/>
+
+        </StackPanel>
+
+        <ListView  Margin="10 0" Grid.Column="1" ItemsSource="{Binding Items}" SelectedItem="{Binding selectedItem}" HorizontalContentAlignment="Stretch"  MouseDoubleClick="FormsList_SelectDoubleClick">
+            <ListView.Resources>
+                <DataTemplate DataType="{x:Type models:Teacher}">
+                    <Border x:Name="ProductBorder" 
+                            BorderBrush="Gray" 
+                            BorderThickness="0,0,0,1"
+                            Padding="5,10"
+                            Background="White">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="ID: "/>
+                            <TextBlock Grid.Column="1" Text="ФИО: "/>
+                            <TextBlock Grid.Column="2" Text="Логин: "/>
+                            
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Id}"/>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Login}"/>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.Resources>
+        </ListView>
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Button Content="Удалить"
+                    Height="40"
+                    Command="{Binding RemoveCommand}"
+                    Margin="10 10 10 5"/>
+
+            <Button Content="Редактировать"
+                    Height="40"
+                    Command="{Binding UpdateCommand}"
+                    Margin="10 5"/>
+        </StackPanel>
+    </Grid>
+</Window>

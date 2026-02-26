@@ -1,0 +1,36 @@
+﻿<Page x:Class="Safety_Wheel.Pages.Student.StudSelectedTestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Safety_Wheel.Pages.Student"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="1900"
+      Title="StudSelectedTestsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Style="{StaticResource BackgroundDarkViolet}"/>
+
+        <StackPanel Grid.Column="0" Style="{StaticResource MainStackPanel}">
+            <TextBlock Style="{StaticResource MainTitle}" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding TypeDiscipline}" Foreground="{StaticResource White}"/>
+            <Button Style="{StaticResource MainButton}" Grid.Row="3" Grid.ColumnSpan="2" Content="Тестирование без спешки" Click="ButtonRelax_Click"/>
+            <Button Style="{StaticResource MainButton}" Grid.Row="3" Grid.ColumnSpan="2" Content="Тестирвование на время" Click="ButtonTime_Click"/>
+            <Button Style="{StaticResource MainButton}" Grid.Row="3" Grid.ColumnSpan="2" Content="Режим экзамена" Click="ButtonExam_Click"/>
+        </StackPanel>
+
+        <Border Grid.Column="1" 
+                Margin="25,0,25,0" Background="Transparent">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="GeneratedOptionsPanel">
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+    </Grid>
+</Page>

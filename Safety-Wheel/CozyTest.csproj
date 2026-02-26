@@ -1,0 +1,1431 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Safety_Wheel</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="connection.settings" />
+    <None Remove="Images\add_picture_icon.png" />
+    <None Remove="Images\add_picture_icon_2.png" />
+    <None Remove="Images\back_logo.png" />
+    <None Remove="Images\comments_icon.png" />
+    <None Remove="Images\delete_icon.png" />
+    <None Remove="Images\exam_icon.png" />
+    <None Remove="Images\excel_icon.png" />
+    <None Remove="Images\exit_logo.png" />
+    <None Remove="Images\first_arrow_icon.png" />
+    <None Remove="Images\icon.ico" />
+    <None Remove="Images\magnifier_icon.png" />
+    <None Remove="Images\plus_icon.png" />
+    <None Remove="Images\relax_icon.png" />
+    <None Remove="Images\result_icon.png" />
+    <None Remove="Images\settings_icon.png" />
+    <None Remove="Images\sort_icon.png" />
+    <None Remove="Images\statistic_icon.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-1.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-17.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-2.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-3.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-4.png" />
+    <None Remove="Images\tests_img\pdd-1\1-1-5.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-10-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-11-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-12-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-13-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-14-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-15-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-16-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-18-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-18-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-18-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-18-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-19-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-19-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-19-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-19-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-20-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-20-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-20-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-20-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-6-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-7-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-Г.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-Д.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-8-Е.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-9-А.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-9-Б.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-9-В.png" />
+    <None Remove="Images\tests_img\pdd-1\2-1-9-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-1.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-17.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-2.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-3.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-4.png" />
+    <None Remove="Images\tests_img\pdd-2\1-2-5.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-10-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-11-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-12-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-13-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-14-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-15-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-16-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-18-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-18-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-18-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-18-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-19-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-19-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-19-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-19-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-20-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-20-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-20-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-20-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-6-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-7-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-Г.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-Д.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-8-Е.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-9-А.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-9-Б.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-9-В.png" />
+    <None Remove="Images\tests_img\pdd-2\2-2-9-Г.png" />
+    <None Remove="Images\tests_img\pdd-3\1-3-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\1-3-17.jpg" />
+    <None Remove="Images\tests_img\pdd-3\1-3-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\1-3-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\1-3-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\1-3-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-10-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-11-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-12-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-13-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-14-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-15-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-16-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-18-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-18-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-18-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-18-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-19-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-19-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-19-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-19-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-20-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-20-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-20-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-20-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-А.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-Б.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-В.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-Г.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-Д.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-6-Е.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-7-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-3.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-4.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-5.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-8-6.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-9-1.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-9-2.jpg" />
+    <None Remove="Images\tests_img\pdd-3\2-3-9-3.png" />
+    <None Remove="Images\tests_img\pdd-3\2-3-9-4.jpg" />
+    <None Remove="Images\tests_img\pdd-5\1-5-1.png" />
+    <None Remove="Images\tests_img\pdd-5\1-5-17.png" />
+    <None Remove="Images\tests_img\pdd-5\1-5-2.png" />
+    <None Remove="Images\tests_img\pdd-5\1-5-3.png" />
+    <None Remove="Images\tests_img\pdd-5\1-5-4.png" />
+    <None Remove="Images\tests_img\pdd-5\1-5-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-10-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-11-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-12-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-13-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-14-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-15-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-16-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-18-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-18-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-18-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-18-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-19-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-19-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-19-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-19-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-20-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-20-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-20-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-20-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-6-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-7-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-4.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-5.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-8-6.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-9-1.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-9-2.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-9-3.png" />
+    <None Remove="Images\tests_img\pdd-5\2-5-9-4.png" />
+    <None Remove="Images\test_icon.png" />
+    <None Remove="Images\time_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.11" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Notifications.Wpf" Version="0.1.1" />
+    <PackageReference Include="ScottPlot.WPF" Version="5.1.57" />
+    <PackageReference Include="WPFCustomMessageBox" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="connection.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>connection.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\add_picture_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\add_picture_icon_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\back_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\comments_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\delete_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\exam_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\excel_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\exit_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\first_arrow_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\magnifier_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\plus_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\relax_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\result_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\second_arrow_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\settings_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\sort_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\statistic_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\1-1-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-10-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-11-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-12-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-13-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-14-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-15-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-16-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-18-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-18-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-18-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-18-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-19-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-19-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-19-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-19-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-20-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-20-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-20-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-20-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-6-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-7-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-8-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-9-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-9-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-9-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-1\2-1-9-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\1-2-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-10-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-11-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-12-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-13-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-14-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-15-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-16-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-18-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-18-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-18-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-18-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-19-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-19-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-19-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-19-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-20-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-20-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-20-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-20-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-6-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-7-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-Д.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-8-Е.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-9-А.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-9-Б.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-9-В.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-2\2-2-9-Г.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-17.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\1-3-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-10-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-11-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-12-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-13-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-14-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-15-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-16-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-18-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-18-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-18-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-18-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-19-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-19-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-19-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-19-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-20-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-20-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-20-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-20-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-А.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-Б.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-В.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-Г.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-Д.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-6-Е.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-7-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-8-6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-9-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-9-2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-9-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-3\2-3-9-4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\1-5-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-10-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-11-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-12-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-13-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-14-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-15-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-16-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-18-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-18-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-18-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-18-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-19-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-19-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-19-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-19-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-20-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-20-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-20-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-20-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-6-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-7-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-8-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-9-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-9-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-9-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tests_img\pdd-5\2-5-9-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\test_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\time_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
