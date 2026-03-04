@@ -1,27 +1,27 @@
-﻿using RegistrationTeacherSafetyWheel.Models;
-using RegistrationTeacherSafetyWheel.ViewModels;
-using RegistrationTeacherSafetyWheel.Service;
+﻿using RegistrationCuratorCozyTest.Models;
+using RegistrationCuratorCozyTest.ViewModels;
+using RegistrationCuratorCozyTest.Service;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace RegistrationTeacherSafetyWheel
+namespace RegistrationCuratorCozyTest
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Teacher? selectedItem { get; set; } = null;
+        public Curator? selectedItem { get; set; } = null;
         public MainWindow()
         {
             InitializeComponent();
             DataContext = TVM;
-            LoadTeacherToList();
+            LoadCuratorToList();
 
         }
-        RegisterTeacherViewModel TVM { get; set; } = new();
+        RegisterCuratorViewModel TVM { get; set; } = new();
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             TVM.Password = ((PasswordBox)sender).Password;
@@ -35,10 +35,10 @@ namespace RegistrationTeacherSafetyWheel
         private void FormsList_SelectDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TVM.Select();
-            if (TVM.originalTeacher != null)
+            if (TVM.originalCurator != null)
             {
-                PasswordBox.Password = TVM.originalTeacher.Password;
-                ConfirmPasswordBox.Password = TVM.originalTeacher.Password;
+                PasswordBox.Password = TVM.originalCurator.Password;
+                ConfirmPasswordBox.Password = TVM.originalCurator.Password;
             }
             else
             {
@@ -46,7 +46,7 @@ namespace RegistrationTeacherSafetyWheel
                 ConfirmPasswordBox.Password = string.Empty;
             }
         }
-        public void LoadTeacherToList()
+        public void LoadCuratorToList()
         {
             TVM.Load();
         }

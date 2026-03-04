@@ -11,7 +11,7 @@ namespace Safety_Wheel.Services
 {
     public class TestService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
         public ObservableCollection<Test> Tests { get; set; } = new();
 
         public TestService(bool? empty = null)
@@ -24,10 +24,10 @@ namespace Safety_Wheel.Services
             var _test = new Test
             {
                 Name = test.Name,
-                SubjectId = test.SubjectId,
-                TeacherId = CurrentUser.Id,
+                TopicId = test.TopicId,
+                CuratorCreateId = CurrentUser.Id,
                 PenaltyMax = i,
-                MaxScore = i,
+                MaxNumPassing = i,
                 DateOfCreating = DateTime.Now,
             };
             _db.Add(_test);
@@ -40,14 +40,15 @@ namespace Safety_Wheel.Services
         public void GetAll(int? subjectId = null, int? teacherId = null)
         {
             IQueryable<Test> query = _db.Tests
-                .Include(t => t.Subject)
-                .Include(t => t.Teacher)
-                .Include(t => t.Questions);
+                .Include(t => t.Topic)
+                .Include(t => t.CuratorCreate)
+                .Include(t => t.Questions)
+                .Include(t => t.DTestType);
 
             if (subjectId != null)
-                query = query.Where(t => t.SubjectId == subjectId);
+                query = query.Where(t => t.TopicId == subjectId);
             if (teacherId != null)
-                query = query.Where(t => t.TeacherId == teacherId);
+                query = query.Where(t => t.CuratorCreateId == teacherId);
 
             var tests = query.ToList();
             Tests.Clear();
@@ -70,11 +71,11 @@ namespace Safety_Wheel.Services
                     .Select(a => a.Id)
                     .ToList();
 
-                var studentAnswersByAttempts = _db.StudentAnswers
+                var participantAnswersByAttempts = _db.ParticipantAnswers
                     .Where(sa => attemptId.Contains(sa.AttemptId))
                     .ToList();
 
-                _db.StudentAnswers.RemoveRange(studentAnswersByAttempts);
+                _db.ParticipantAnswers.RemoveRange(participantAnswersByAttempts);
 
                 var questions = _db.Questions
                     .Where(q => q.TestId == test.Id)
@@ -84,11 +85,11 @@ namespace Safety_Wheel.Services
                     .Select(q => q.Id)
                     .ToList();
 
-                var studentAnswersByQuestions = _db.StudentAnswers
+                var participantAnswersByQuestions = _db.ParticipantAnswers
                     .Where(sa => questionIds.Contains(sa.QuestionId))
                     .ToList();
 
-                _db.StudentAnswers.RemoveRange(studentAnswersByQuestions);
+                _db.ParticipantAnswers.RemoveRange(participantAnswersByQuestions);
 
                 var options = _db.Options
                     .Where(o => questionIds.Contains(o.QuestionId))
@@ -109,23 +110,23 @@ namespace Safety_Wheel.Services
             if (existing != null)
             {
                 existing.Name = test.Name;
-                existing.SubjectId = test.SubjectId;
-                existing.TeacherId = test.TeacherId;
+                existing.TopicId = test.TopicId;
+                existing.CuratorCreateId = test.CuratorCreateId;
                 existing.PenaltyMax = test.PenaltyMax;
                 Commit();
             }
         }
 
-        public void GetTestsBySubjectId(int subjectId, int? teacherId = null)
+        public void GetTestsByTopicId(int subjectId, int? teacherId = null)
         {
             List<Test> tests;
             if (teacherId != null)
             {
-                tests = Tests.Where(t => t.TeacherId == teacherId && t.SubjectId == subjectId).ToList();
+                tests = Tests.Where(t => t.CuratorCreateId == teacherId && t.TopicId == subjectId).ToList();
             }
             else 
             tests = Tests
-                .Where(t => t.SubjectId == subjectId)
+                .Where(t => t.TopicId == subjectId)
                 .ToList();
 
             Tests.Clear();
@@ -150,14 +151,14 @@ namespace Safety_Wheel.Services
                       .FirstOrDefault();
         }
 
-        public void GetTestsBySubjectName(string subjectName)
+        public void GetTestsByTopicName(string subjectName)
         {
-            var subject = _db.Subjects
+            var subject = _db.Topics
                 .FirstOrDefault(s => s.Name.ToString() == subjectName);
 
             if (subject != null)
             {
-                GetTestsBySubjectId(subject.Id);
+                GetTestsByTopicId(subject.Id);
             }
             else
             {

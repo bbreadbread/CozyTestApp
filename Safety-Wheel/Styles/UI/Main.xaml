@@ -38,6 +38,9 @@
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="8"/>
     </Style>
 
     <Style TargetType="CheckBox" x:Key="CheckBStyle">
@@ -173,14 +176,57 @@
         <Setter Property="Margin" Value="20"/>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="MainWelcomeLabel"  BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="Foreground" Value="{StaticResource Black}"/>
+    <Style TargetType="TextBlock" x:Key="MainWelcomeTB"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="35"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="MaxWidth" Value="1200"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="UpMenuButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+<Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{StaticResource LightViolet}">
+                        <ContentPresenter x:Name="content"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Selected">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightRed}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Red}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Unselected">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightGreen}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Green}"/>
+                        </DataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Label" x:Key="WelcomeLabel">
@@ -232,6 +278,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Hint2" BasedOn="{StaticResource GENERALTXT}">
@@ -244,7 +291,7 @@
         <Setter Property="Height" Value="100"/>
         <Setter Property="BorderBrush" Value="{StaticResource White}"/>
         <Setter Property="Background" Value="{StaticResource LightGray}"/>
-        <Setter Property="Foreground" Value="{StaticResource MainViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
         <Setter Property="FontSize" Value="48"/>
         <Setter Property="FontWeight" Value="Bold"/>
 
@@ -939,13 +986,13 @@
         </Setter>
     </Style>
 
-    <Style TargetType="TextBox">
+    <!--<Style TargetType="TextBox">
         <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
         <Setter Property="BorderThickness" Value="4"/>
         <Setter Property="Foreground" Value="{StaticResource Black}"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="FontSize" Value="32"/>
-    </Style>
+    </Style>-->
     <!--//////////////////////////////////////////////////////////////-->
 
     <Style x:Key="MainMenuStyle" TargetType="{x:Type mah:HamburgerMenu}">
@@ -966,7 +1013,7 @@
      <Setter Property="OpenPaneLength" Value="230"/>
      <Setter Property="ShowSelectionIndicator" Value="True"/>
  </Style>
-
+    <!--//////////////////////////////////////////////////////////////-->
     <Style TargetType="ScottPlot:WpfPlot">
         <Setter Property="Width" Value="500"/>
         <Setter Property="Height" Value="500"/>
@@ -980,4 +1027,228 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="CheckBox" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="mah:CheckBoxHelper.CheckSize" Value="30"/>
+
+        <!-- Цвета -->
+        <Setter Property="mah:CheckBoxHelper.ForegroundChecked" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="mah:CheckBoxHelper.BackgroundChecked" Value="{StaticResource LightViolet}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushChecked" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushUnchecked" Value="{StaticResource MainViolet}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Квадрат чекбокса с толщиной рамки -->
+                        <Border x:Name="CheckBorder"
+                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                            Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="3"
+                            CornerRadius="3">
+
+                            <Border.BorderBrush>
+                                <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(mah:CheckBoxHelper.BorderBrushUnchecked)"/>
+                            </Border.BorderBrush>
+
+                            <!-- Галочка -->
+                            <mah:FontIcon x:Name="CheckMark"
+                                      Glyph="&#xE001;"
+                                      FontFamily="Segoe UI Symbol"
+                                      FontSize="{TemplateBinding FontSize}"
+                                      Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.ForegroundChecked)}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Opacity="0"/>
+                        </Border>
+
+                        <!-- Текст -->
+                        <ContentPresenter Grid.Column="1" 
+                                      Margin="20 0 0 0"
+                                      VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Opacity" Value="1"/>
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" 
+                                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BorderBrushChecked)}"/>
+                            <Setter TargetName="CheckBorder" Property="Background" 
+                                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BackgroundChecked)}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--////////////////////////////  SHELL  ////////////////////////////////-->
+
+    <Style TargetType="TextBlock" x:Key="ShellTitle"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="800"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="ShellMainText"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="800"/>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="ShellButton">
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Background" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="ShellTextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="PasswordBox" x:Key="ShellPasswordBox" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="UpMenuTest">
+        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="6"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="2"/>
+
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="TextBlock.FontSize" Value="24"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ShellDarkVioletButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="2"
+                        BorderBrush="{StaticResource DarkViolet}"
+                        BorderThickness="3"
+                        Background="{StaticResource DarkViolet}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{StaticResource White}"
+                                          TextElement.FontSize="24"
+                                          TextElement.FontWeight="SemiBold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="ShellPaleVioletButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="2"
+                        BorderBrush="{StaticResource PaleViolet}"
+                        BorderThickness="3"
+                        Background="{StaticResource PaleViolet}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{StaticResource White}"
+                                          TextElement.FontSize="24"
+                                          TextElement.FontWeight="SemiBold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox"  BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="UpMenuTestComboBox">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="24"/>
+
+        <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
+    </Style>
+
+    <Style TargetType="mah:DateTimePicker" x:Key="UpMenuTestDateTimePicker">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="24"/>
+
+        <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="SelectFileButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                     CornerRadius="0"
+                     BorderBrush="Transparent"
+                     BorderThickness="0"
+                     Background="Transparent">
+                        <ContentPresenter x:Name="contentPresenter"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   TextElement.Foreground="{StaticResource Black}"
+                                   TextElement.FontSize="24"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--/////////////////////////////////////////////////////////////////////-->
 </ResourceDictionary>

@@ -9,87 +9,87 @@ using System.Threading.Tasks;
 
 namespace Safety_Wheel.Services
 {
-    public class StudentService
+    public class ParticipantService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<Student> Students { get; set; } = new();
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
+        public ObservableCollection<Participant> Participants { get; set; } = new();
 
-        public StudentService()
+        public ParticipantService()
         {
-            GetAllStudents();
+            GetAllParticipants();
         }
 
-        public void Add(Student student)
+        public void Add(Participant participant)
         {
-            var _student = new Student
+            var _participant = new Participant
             {
-                Name = student.Name,
-                Login = student.Login,
-                Password = student.Password,
-                TeachersId = student.TeachersId
+                Name = participant.Name,
+                Login = participant.Login,
+                Password = participant.Password,
+                CuratorCreateId = participant.CuratorCreateId
             };
-            _db.Add(_student);
-            Students.Add(_student);
+            _db.Add(_participant);
+            Participants.Add(_participant);
             Commit();
         }
 
         public int Commit() => _db.SaveChanges();
 
-        public void GetAllStudents(int? teacherId = null)
+        public void GetAllParticipants(int? teacherId = null)
         {
-            IQueryable<Student> query = _db.Students
-                .Include(s => s.Teachers)
+            IQueryable<Participant> query = _db.Participants
+                .Include(s => s.Curators)
                 .Include(s => s.Attempts);
 
             if (teacherId != null)
-                query = query.Where(s => s.TeachersId == teacherId);
+                query = query.Where(s => s.CuratorCreateId == teacherId);
 
-            var students = query.ToList();
-            Students.Clear();
+            var participants = query.ToList();
+            Participants.Clear();
 
-            foreach (var student in students)
+            foreach (var participant in participants)
             {
-                Students.Add(student);
+                Participants.Add(participant);
             }
         }
 
-        public void ReloadStudents(int teacherId)
+        public void ReloadParticipants(int teacherId)
         {
-            var stud  = _db.Students
-                         .Where(s => s.TeachersId == teacherId)
+            var stud  = _db.Participants
+                         .Where(s => s.CuratorCreateId == teacherId)
                          .ToList();
-            Students.Clear();
-            foreach (var student in stud)
+            Participants.Clear();
+            foreach (var participant in stud)
             {
-                Students.Add(student);
+                Participants.Add(participant);
             }
         }
 
-        public Student? GetCurrentStudent(int? studentId = null)
+        public Participant? GetCurrentParticipant(int? participantId = null)
         {
-            if (!studentId.HasValue) return null;
+            if (!participantId.HasValue) return null;
 
-            return Students
-                      .FirstOrDefault(s => s.Id == studentId.Value);
+            return Participants
+                      .FirstOrDefault(s => s.Id == participantId.Value);
         }
 
-        public void Remove(Student student)
+        public void Remove(Participant participant)
         {
-                _db.Remove(student);
+                _db.Remove(participant);
                 if (Commit() > 0)
-                    if (Students.Contains(student))
-                        Students.Remove(student);
+                    if (Participants.Contains(participant))
+                        Participants.Remove(participant);
         }
 
-        public void Update(Student student)
+        public void Update(Participant participant)
         {
-            var existing = _db.Students.Find(student.Id);
+            var existing = _db.Participants.Find(participant.Id);
             if (existing != null)
             {
-                existing.Name = student.Name;
-                existing.Login = student.Login;
-                existing.Password = student.Password;
-                existing.TeachersId = student.TeachersId;
+                existing.Name = participant.Name;
+                existing.Login = participant.Login;
+                existing.Password = participant.Password;
+                existing.CuratorCreateId = participant.CuratorCreateId;
                 Commit();
             }
         }

@@ -1,80 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
-namespace RegistrationTeacherSafetyWheel.Models;
+namespace RegistrationCuratorCozyTest.Models;
 
-public class Question : ObservableObject
+public partial class Question
 {
-    private int _id;
-    private int? _testId;
-    private int? _number;
-    private string? _testQuest;
-    private string? _picturePath;
-    private string? _comments;
-    private int? _questionType;
-    private ObservableCollection<Option> _options = new();
-    private ObservableCollection<StudentAnswer> _studentAnswers = new();
-    private Test? _test;
+    public int Id { get; set; }
 
-    public int Id
-    {
-        get => _id;
-        set => SetProperty(ref _id, value);
-    }
+    public int? TestId { get; set; }
 
-    public int? TestId
-    {
-        get => _testId;
-        set => SetProperty(ref _testId, value);
-    }
+    public int? Number { get; set; }
 
-    public int? Number
-    {
-        get => _number;
-        set => SetProperty(ref _number, value);
-    }
+    public string? TestQuest { get; set; }
 
-    public string? TestQuest
-    {
-        get => _testQuest;
-        set => SetProperty(ref _testQuest, value);
-    }
+    public string? PicturePath { get; set; }
 
-    public string? PicturePath
-    {
-        get => _picturePath;
-        set => SetProperty(ref _picturePath, value);
-    }
+    public int? QuestionTypeId { get; set; }
 
-    public string? Comments
-    {
-        get => _comments;
-        set => SetProperty(ref _comments, value);
-    }
+    public string? Comments { get; set; }
 
-    public int? QuestionType
-    {
-        get => _questionType;
-        set => SetProperty(ref _questionType, value);
-    }
+    public virtual ICollection<Option> Options { get; set; } = new List<Option>();
 
-    public virtual ObservableCollection<Option> Options
-    {
-        get => _options;
-        set => SetProperty(ref _options, value);
-    }
-    public virtual QuestionType? QuestionTypeNavigation { get; set; }
+    public virtual ICollection<ParticipantAnswer> ParticipantAnswers { get; set; } = new List<ParticipantAnswer>();
 
-    public virtual ObservableCollection<StudentAnswer> StudentAnswers
-    {
-        get => _studentAnswers;
-        set => SetProperty(ref _studentAnswers, value);
-    }
+    public virtual DQuestionType? QuestionType { get; set; }
 
-    public virtual Test? Test
-    {
-        get => _test;
-        set => SetProperty(ref _test, value);
-    }
+    public virtual Test? Test { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Safety_Wheel.ViewModels.ParticipantVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,19 @@ namespace Safety_Wheel.ViewModels
         private object _tag;
         private bool _isVisible = true;
 
-        public MenuItemViewModel(MainViewModel mainViewModel)
+        public MenuItemViewModel(MainViewModelCurator MainViewModelCurator)
         {
-            MainViewModel = mainViewModel;
+            this.MainViewModelCurator = MainViewModelCurator;
         }
 
-        public MainViewModel MainViewModel { get; }
+        public MainViewModelCurator MainViewModelCurator { get; }
+        
+        public MenuItemViewModel(MainViewModelPart MainViewModelPart)
+        {
+            this.MainViewModelPart = MainViewModelPart;
+        }
+
+        public MainViewModelPart MainViewModelPart { get; }
 
         public object Icon
         {

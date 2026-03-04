@@ -6,30 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
-using RegistrationTeacherSafetyWheel.Models;
+using RegistrationCuratorCozyTest.Models;
 
-namespace RegistrationTeacherSafetyWheel.Service
+namespace RegistrationCuratorCozyTest.Service
 {
-    public class TeacherService
+    public class CuratorService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<Teacher> Teachers { get; set; } = new();
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
+        public ObservableCollection<Curator> Curators { get; set; } = new();
 
-        public TeacherService()
+        public CuratorService()
         {
             GetAll();
         }
 
-        public void Add(Teacher teacher)
+        public void Add(Curator teacher)
         {
-            var _teacher = new Teacher
+            var _teacher = new Curator
             {
                 Login = teacher.Login,
                 Password = teacher.Password,
                 Name = teacher.Name
             };
             _db.Add(_teacher);
-            Teachers.Add(_teacher);
+            Curators.Add(_teacher);
             Commit();
         }
 
@@ -37,26 +37,26 @@ namespace RegistrationTeacherSafetyWheel.Service
 
         public void GetAll()
         {
-            var teachers = _db.Teachers
+            var teachers = _db.Curators
                 .ToList();
-            Teachers.Clear();
+            Curators.Clear();
 
             foreach (var teacher in teachers)
             {
-                Teachers.Add(teacher);
+                Curators.Add(teacher);
             }
         }
 
-        public void Remove(Teacher teacher)
+        public void Remove(Curator teacher)
         {
-            var dbTeacher = _db.Teachers
+            var dbCurator = _db.Curators
                 .FirstOrDefault(t => t.Id == teacher.Id);
 
-            if (dbTeacher == null)
+            if (dbCurator == null)
                 return;
 
             var tests = _db.Tests
-                .Where(t => t.TeacherId == dbTeacher.Id)
+                .Where(t => t.CuratorCreateId == dbCurator.Id)
                 .ToList();
 
             foreach (var test in tests)
@@ -67,11 +67,11 @@ namespace RegistrationTeacherSafetyWheel.Service
 
                 var attemptIds = attempts.Select(a => a.Id).ToList();
 
-                var answersByAttempts = _db.StudentAnswers
+                var answersByAttempts = _db.ParticipantAnswers
                     .Where(sa => attemptIds.Contains(sa.AttemptId))
                     .ToList();
 
-                _db.StudentAnswers.RemoveRange(answersByAttempts);
+                _db.ParticipantAnswers.RemoveRange(answersByAttempts);
 
                 var questions = _db.Questions
                     .Where(q => q.TestId == test.Id)
@@ -79,11 +79,11 @@ namespace RegistrationTeacherSafetyWheel.Service
 
                 var questionIds = questions.Select(q => q.Id).ToList();
 
-                var answersByQuestions = _db.StudentAnswers
+                var answersByQuestions = _db.ParticipantAnswers
                     .Where(sa => questionIds.Contains(sa.QuestionId))
                     .ToList();
 
-                _db.StudentAnswers.RemoveRange(answersByQuestions);
+                _db.ParticipantAnswers.RemoveRange(answersByQuestions);
 
                 var options = _db.Options
                     .Where(o => questionIds.Contains((int)o.QuestionId))
@@ -95,23 +95,23 @@ namespace RegistrationTeacherSafetyWheel.Service
                 _db.Tests.Remove(test);
             }
 
-            var students = _db.Students
-                .Where(s => s.TeachersId == dbTeacher.Id)
+            var participants = _db.Participants
+                .Where(s => s.CuratorCreateId == dbCurator.Id)
                 .ToList();
 
-            _db.Students.RemoveRange(students);
+            _db.Participants.RemoveRange(participants);
 
-            _db.Teachers.Remove(dbTeacher);
+            _db.Curators.Remove(dbCurator);
 
             _db.SaveChanges();
 
-            Teachers.Remove(teacher); 
+            Curators.Remove(teacher); 
         }
 
 
-        public void Update(Teacher teacher)
+        public void Update(Curator teacher)
         {
-            var existing = _db.Teachers.Find(teacher.Id);
+            var existing = _db.Curators.Find(teacher.Id);
             if (existing != null)
             {
                 existing.Login = teacher.Login;
@@ -123,8 +123,8 @@ namespace RegistrationTeacherSafetyWheel.Service
 
         public bool UserExistsByLogin(string login)
         {
-            return _db.Teachers.Any(t => t.Login == login)
-                || _db.Students.Any(s => s.Login == login);
+            return _db.Curators.Any(t => t.Login == login)
+                || _db.Participants.Any(s => s.Login == login);
         }
     }
 }

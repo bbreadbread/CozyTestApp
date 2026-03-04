@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Safety_Wheel.Services
 {
-    public class TeacherService
+    public class CuratorService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<Teacher> Teachers { get; set; } = new();
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
+        public ObservableCollection<Curator> Curators { get; set; } = new();
 
-        public TeacherService()
+        public CuratorService()
         {
             GetAll();
         }
 
-        public void Add(Teacher teacher)
+        public void Add(Curator teacher)
         {
-            var _teacher = new Teacher
+            var _teacher = new Curator
             {
                 Login = teacher.Login,
                 Password = teacher.Password,
@@ -35,35 +35,35 @@ namespace Safety_Wheel.Services
 
         public void GetAll()
         {
-            var teachers = _db.Teachers
-                .Include(t => t.Students)
+            var teachers = _db.Curators
+                .Include(t => t.Participants)
                 .Include(t => t.Tests)
                 .ToList();
-            Teachers.Clear();
+            Curators.Clear();
 
             foreach (var teacher in teachers)
             {
-                Teachers.Add(teacher);
+                Curators.Add(teacher);
             }
         }
 
-        public Teacher GetTeacherById(int id)
+        public Curator GetCuratorById(int id)
         {
-            var tea = Teachers.Where(q=> q.Id == id).FirstOrDefault();
+            var tea = Curators.Where(q=> q.Id == id).FirstOrDefault();
             return tea;
         }
 
-        public void Remove(Teacher teacher)
+        public void Remove(Curator teacher)
         {
             _db.Remove(teacher);
             if (Commit() > 0)
-                if (Teachers.Contains(teacher))
-                    Teachers.Remove(teacher);
+                if (Curators.Contains(teacher))
+                    Curators.Remove(teacher);
         }
 
-        public void Update(Teacher teacher)
+        public void Update(Curator teacher)
         {
-            var existing = _db.Teachers.Find(teacher.Id);
+            var existing = _db.Curators.Find(teacher.Id);
             if (existing != null)
             {
                 existing.Login = teacher.Login;
@@ -75,8 +75,8 @@ namespace Safety_Wheel.Services
 
         public bool UserExistsByLogin(string login)
         {
-            return _db.Teachers.Any(t => t.Login == login)
-                || _db.Students.Any(s => s.Login == login);
+            return _db.Curators.Any(t => t.Login == login)
+                || _db.Participants.Any(s => s.Login == login);
         }
     }
 }

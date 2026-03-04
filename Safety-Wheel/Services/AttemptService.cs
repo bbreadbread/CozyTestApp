@@ -12,7 +12,7 @@ namespace Safety_Wheel.Services
 {
     public class AttemptService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
         public ObservableCollection<Attempt> Attempts { get; set; } = new();
 
         public AttemptService()
@@ -24,7 +24,7 @@ namespace Safety_Wheel.Services
         {
             var _attempt = new Attempt
             {
-                StudentsId = attempt.StudentsId,
+                ParticipantId = attempt.ParticipantId,
                 TestId = attempt.TestId,
                 StartedAt = attempt.StartedAt,
                 FinishedAt = attempt.FinishedAt,
@@ -37,14 +37,14 @@ namespace Safety_Wheel.Services
 
         public int Commit() => _db.SaveChanges();
 
-        public void GetAll(decimal? studentId = null, decimal? testId = null, DateTime? date = null)
+        public void GetAll(decimal? participantId = null, decimal? testId = null, DateTime? date = null)
         {
             IQueryable<Attempt> query = _db.Attempts
-                .Include(a => a.Students)
-                .Include(a => a.StudentAnswers);
+                .Include(a => a.Participant)
+                .Include(a => a.ParticipantAnswers);
 
-            if (studentId != null)
-                query = query.Where(a => a.StudentsId == studentId);
+            if (participantId != null)
+                query = query.Where(a => a.ParticipantId == participantId);
 
             if (testId != null)
                 query = query.Where(a => a.TestId == testId);
@@ -60,22 +60,21 @@ namespace Safety_Wheel.Services
                 Attempts.Add(attempt);
             }
         }
-        public List<DateTime> GetUniqueAttemptDates(int studentId)
+        public List<DateTime> GetUniqueAttemptDates(int participantId)
         {
             return _db.Attempts
-                .Where(a => a.StudentsId == studentId && a.StartedAt.HasValue)
+                .Where(a => a.ParticipantId == participantId && a.StartedAt.HasValue)
                 .Select(a => a.StartedAt.Value.Date)
                 .Distinct()
                 .OrderByDescending(d => d)
                 .ToList();
         }
 
-        public Attempt GetLastByType(int studentId, int testId, int typeId)
+        public Attempt GetLastByType(int participantId, int testId, int typeId)
         {
             return Attempts
-                      .Where(a => a.StudentsId == studentId &&
-                                  a.TestId == testId &&
-                                  a.TestType == typeId)
+                      .Where(a => a.ParticipantId == participantId &&
+                                  a.TestId == testId)
                       .OrderByDescending(a => a.StartedAt)  
                       .FirstOrDefault();                    
         }
@@ -94,7 +93,7 @@ namespace Safety_Wheel.Services
             var existing = _db.Attempts.Find(attempt.Id);
             if (existing != null)
             {
-                existing.StudentsId = attempt.StudentsId;
+                existing.ParticipantId = attempt.ParticipantId;
                 existing.TestId = attempt.TestId;
                 existing.StartedAt = attempt.StartedAt;
                 existing.FinishedAt = attempt.FinishedAt;

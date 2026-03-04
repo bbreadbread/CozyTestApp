@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models0\**" />
+    <EmbeddedResource Remove="Models0\**" />
+    <None Remove="Models0\**" />
+    <Page Remove="Models0\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="connection.settings" />
   </ItemGroup>
 

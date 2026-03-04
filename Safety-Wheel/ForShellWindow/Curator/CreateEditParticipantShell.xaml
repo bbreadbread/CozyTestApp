@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Safety_Wheel.ForShellWindow.CreateEditParticipant"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Safety_Wheel.ForShellWindow"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      mc:Ignorable="d" 
+     Height="750" Width="750" Margin="60 55">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Работа с тестируемым" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
+            </Style>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия"/>
+        <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин"/>
+        <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль"/>
+
+        <Grid Grid.Row="6" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0">
+                <RadioButton Content="Закрепить за мной" FontSize="24"/>
+                <RadioButton Content="Не закреплять ни за кем" FontSize="24"/>
+            </StackPanel>
+            <Button Grid.Column="1" Style="{StaticResource ShellButton}" Content="Привязка к группам" FontSize="30"/>
+        </Grid>
+
+        <Button Grid.Row="8" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30"/>
+
+    </Grid>
+    </StackPanel>
+    
+</UserControl>

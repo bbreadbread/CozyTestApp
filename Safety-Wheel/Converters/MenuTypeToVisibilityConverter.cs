@@ -10,7 +10,7 @@ namespace Safety_Wheel.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is MainViewModel.MainMenuType selectedMenuType && parameter is string requiredMenuType)
+            if (value is MainViewModelCurator.MainMenuType selectedMenuType && parameter is string requiredMenuType)
             {
                 if (selectedMenuType.ToString() == requiredMenuType)
                 {
@@ -32,15 +32,15 @@ namespace Safety_Wheel.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length >= 2 &&
-                values[0] is MainViewModel.MainMenuType selectedMenuType &&
+                values[0] is MainViewModelCurator.MainMenuType selectedMenuType &&
                 values[1] is int itemsCount)
             {
                 if (parameter is string menuName)
                 {
-                    if (menuName == "Students")
+                    if (menuName == "Participants")
                     {
-                        if ((selectedMenuType == MainViewModel.MainMenuType.TestResults ||
-                             selectedMenuType == MainViewModel.MainMenuType.Statistics) &&
+                        if ((selectedMenuType == MainViewModelCurator.MainMenuType.TestResults ||
+                             selectedMenuType == MainViewModelCurator.MainMenuType.Statistics) &&
                             itemsCount > 0)
                         {
                             return Visibility.Visible;
@@ -48,7 +48,7 @@ namespace Safety_Wheel.Converters
                     }
                     else if (menuName == "Dates" || menuName == "Attempts")
                     {
-                        if (selectedMenuType == MainViewModel.MainMenuType.TestResults &&
+                        if (selectedMenuType == MainViewModelCurator.MainMenuType.TestResults &&
                             itemsCount > 0)
                         {
                             return Visibility.Visible;

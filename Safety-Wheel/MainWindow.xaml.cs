@@ -7,8 +7,8 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Converters;
 using Microsoft.IdentityModel.Tokens;
 using Safety_Wheel.Models;
-using Safety_Wheel.Pages.Student;
-using Safety_Wheel.Pages.Teacher;
+using Safety_Wheel.Pages.Participant;
+using Safety_Wheel.Pages.Curator;
 using Safety_Wheel.Services;
 using Safety_Wheel.ViewModels;
 
@@ -16,21 +16,20 @@ namespace Safety_Wheel
 {
     public partial class MainWindow : MetroWindow
     {
-        private readonly TeacherService teacherService = new();
-        private readonly StudentService studentService = new();
+        private readonly CuratorService teacherService = new();
+        private readonly ParticipantService participantService = new();
         private readonly AttemptService attemptService = new();
 
-        private Student _selectedStudent;
+        private Participant _selectedParticipant;
 
-
-        public MainViewModel VM { get; }
+        public MainViewModelCurator VM { get; }
 
         public MainWindow()
         {
             InitializeComponent();
-            TeacherLoginRule.TeacherService = teacherService;
-            TeacherLoginRule.OriginalLogin = CurrentUser.Login;
-            VM = new MainViewModel();
+            CuratorLoginRule.CuratorService = teacherService;
+            CuratorLoginRule.OriginalLogin = CurrentUser.Login;
+            VM = new MainViewModelCurator();
             DataContext = VM;
             InitMonths();
         }
@@ -49,7 +48,7 @@ namespace Safety_Wheel
 
             switch (currentPage)
             {
-                case StudTest:
+                case PartTest:
                     {
                         var confirm = new ClosedWindow(
                             "Вы намерены вернуться к выбору теста.",
@@ -61,15 +60,14 @@ namespace Safety_Wheel
 
                         if (confirm.ShowDialog() == true)
                         {
-                            StudTest._isTestActivated = false;
-                            MainFrame.Navigate(new StudSelectedTestsPage(StudHomePage.NameDiscipline, StudHomePage.thisStudent));
+                            PartTest._isTestActivated = false;
+                            MainFrame.Navigate(new PartHomePage());
                         }
 
                         break;
                     }
 
-                case StudHomePage:
-                case TeacherMainPage:
+                case CuratorMainPage:
                     {
                         var confirm = new ClosedWindow(
                             "Вы намерены выйти из аккаунта",
@@ -81,7 +79,7 @@ namespace Safety_Wheel
 
                         if (confirm.ShowDialog() == true)
                         {
-                            StudTest._isTestActivated = false;
+                            PartTest._isTestActivated = false;
                             Clear();
                             MainFrame.Navigate(new MainPage());
                         }
@@ -89,10 +87,10 @@ namespace Safety_Wheel
                         break;
                     }
 
-                case StudSelectedTestsPage:
+                case PartHomePage:
                     {
-                        StudTest._isTestActivated = false;
-                        MainFrame.Navigate(new StudHomePage(CurrentUser.Id));
+                        PartTest._isTestActivated = false;
+                        MainFrame.Navigate(new PartHomePage());
                         break;
                     }
 
@@ -113,7 +111,7 @@ namespace Safety_Wheel
 
             if (confirm.ShowDialog() == true)
             {
-                StudTest._isTestActivated = false;
+                PartTest._isTestActivated = false;
                 Clear();
                 MainFrame.Navigate(new MainPage());
             }
@@ -125,119 +123,119 @@ namespace Safety_Wheel
             UpdateUserName("");
         }
 
-        public void OpenTeacherManagerFlyout()
+        public void OpenCuratorManagerFlyout()
         {
-            ReloadStudents();
-            TeacherManagerFlyout.IsOpen = true;
+            ReloadParticipants();
+            CuratorManagerFlyout.IsOpen = true;
         }
 
-        private void TeacherManagerFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
+        private void CuratorManagerFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
         {
-            if (!TeacherManagerFlyout.IsOpen) return;
+            if (!CuratorManagerFlyout.IsOpen) return;
 
-            VM.StudentName = VM.StudentLogin = VM.StudentPassword = "";
-            VM.TeacherName = VM.TeacherLogin = VM.TeacherPassword = "";
+            VM.ParticipantName = VM.ParticipantLogin = VM.ParticipantPassword = "";
+            VM.CuratorName = VM.CuratorLogin = VM.CuratorPassword = "";
 
-            StudentLoginRule.OriginalLogin = null;
-            TeacherLoginRule.OriginalLogin = CurrentUser.Login;
+            ParticipantLoginRule.OriginalLogin = null;
+            CuratorLoginRule.OriginalLogin = CurrentUser.Login;
 
-            ReloadStudents();
-            LoadTeacherData();
+            ReloadParticipants();
+            LoadCuratorData();
         }
 
-        private void ReloadStudents()
+        private void ReloadParticipants()
         {
-            using var db = new SafetyWheelContext();
-            StudentsGrid.ItemsSource = db.Students
-                                        .Where(s => s.TeachersId == CurrentUser.Id)
+            using var db = new CozyTestContext();
+            ParticipantsGrid.ItemsSource = db.Participants
+                                        .Where(s => s.CuratorCreateId == CurrentUser.Id)
                                         .ToList();
 
-            VM?.ReloadStudents();
+            VM?.ReloadParticipants();
         }
 
 
-        private void AddStudent_Click(object sender, RoutedEventArgs e)
+        private void AddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidatePanel(StudentInputsPanel))
+            if (!ValidatePanel(ParticipantInputsPanel))
                 return;
 
             if (String.IsNullOrEmpty(PasswordTextBox.Text) || String.IsNullOrEmpty(LoginTextBox.Text) || String.IsNullOrEmpty(NameTextBox.Text))
                 return;
 
-            var student = new Student
+            var participant = new Participant
             {
-                Name = VM.StudentName,
-                Login = VM.StudentLogin,
-                Password = VM.StudentPassword,
-                TeachersId = CurrentUser.Id
+                Name = VM.ParticipantName,
+                Login = VM.ParticipantLogin,
+                Password = VM.ParticipantPassword,
+                CuratorCreateId = CurrentUser.Id
             };
 
-            studentService.Add(student);
+            participantService.Add(participant);
             ClearInputs();
-            ReloadStudents();
+            ReloadParticipants();
         }
-        private void SaveStudent_Click(object sender, RoutedEventArgs e)
+        private void SaveParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedStudent == null) return;
+            if (_selectedParticipant == null) return;
 
-            foreach (var tb in StudentInputsPanel.Children.OfType<TextBox>())
+            foreach (var tb in ParticipantInputsPanel.Children.OfType<TextBox>())
                 tb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
-            if (!ValidatePanel(StudentInputsPanel))
+            if (!ValidatePanel(ParticipantInputsPanel))
                 return;
 
-            var student = studentService.GetCurrentStudent(_selectedStudent.Id);
-            if (student == null) return;
+            var participant = participantService.GetCurrentParticipant(_selectedParticipant.Id);
+            if (participant == null) return;
 
-            student.Name = VM.StudentName;
-            student.Login = VM.StudentLogin;
-            student.Password = VM.StudentPassword;
+            participant.Name = VM.ParticipantName;
+            participant.Login = VM.ParticipantLogin;
+            participant.Password = VM.ParticipantPassword;
 
-            studentService.Update(student);
-            ReloadStudents();
+            participantService.Update(participant);
+            ReloadParticipants();
         }
-        private void DeleteStudent_Click(object sender, RoutedEventArgs e)
+        private void DeleteParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedStudent == null) return;
+            if (_selectedParticipant == null) return;
 
             if (MessageBox.Show("Удалить ученика?", "Подтверждение",
                 MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
-            Student student = studentService.GetCurrentStudent(_selectedStudent.Id);
-            studentService.Remove(student);
+            Participant participant = participantService.GetCurrentParticipant(_selectedParticipant.Id);
+            participantService.Remove(participant);
 
             ClearInputs();
-            _selectedStudent = null;
-            ReloadStudents();
+            _selectedParticipant = null;
+            ReloadParticipants();
         }
 
-        private void StudentsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ParticipantsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StudentsGrid.SelectedItem is Student student)
+            if (ParticipantsGrid.SelectedItem is Participant participant)
             {
-                _selectedStudent = student;
-                NameTextBox.Text = student.Name;
-                LoginTextBox.Text = student.Login;
-                PasswordTextBox.Text = student.Password;
+                _selectedParticipant = participant;
+                NameTextBox.Text = participant.Name;
+                LoginTextBox.Text = participant.Login;
+                PasswordTextBox.Text = participant.Password;
 
-                StudentLoginRule.OriginalLogin = student.Login;
+                ParticipantLoginRule.OriginalLogin = participant.Login;
             }
             else
             {
-                StudentLoginRule.OriginalLogin = null;
+                ParticipantLoginRule.OriginalLogin = null;
                 ClearInputs();
             }
         }
 
         private void ClearInputs()
         {
-            VM.StudentName = "";
-            VM.StudentLogin = "";
-            VM.StudentPassword = "";
-            StudentLoginRule.OriginalLogin = null;
+            VM.ParticipantName = "";
+            VM.ParticipantLogin = "";
+            VM.ParticipantPassword = "";
+            ParticipantLoginRule.OriginalLogin = null;
 
-            StudentsGrid.SelectedItem = null;
-            _selectedStudent = null;
+            ParticipantsGrid.SelectedItem = null;
+            _selectedParticipant = null;
         }
 
         private void Calendar_DisplayModeChanged(object sender, CalendarModeChangedEventArgs e)
@@ -246,32 +244,32 @@ namespace Safety_Wheel
                 calendar.DisplayMode = CalendarMode.Year;
         }
 
-        private void LoadTeacherData()
+        private void LoadCuratorData()
         {
-            var teacher = teacherService.GetTeacherById(CurrentUser.Id);
+            var teacher = teacherService.GetCuratorById(CurrentUser.Id);
 
-            VM.TeacherName = teacher.Name;
-            VM.TeacherLogin = teacher.Login;
-            VM.TeacherPassword = teacher.Password;
+            VM.CuratorName = teacher.Name;
+            VM.CuratorLogin = teacher.Login;
+            VM.CuratorPassword = teacher.Password;
         }
 
-        private void UpdateTeacher_Click(object sender, RoutedEventArgs e)
+        private void UpdateCurator_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var tb in TeacherInputsPanel.Children.OfType<TextBox>())
+            foreach (var tb in CuratorInputsPanel.Children.OfType<TextBox>())
                 tb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
 
-            if (!ValidatePanel(TeacherInputsPanel))
+            if (!ValidatePanel(CuratorInputsPanel))
                 return;
 
-            var teacher = teacherService.GetTeacherById(CurrentUser.Id);
-            teacher.Name = VM.TeacherName;
-            teacher.Login = VM.TeacherLogin;
-            teacher.Password = VM.TeacherPassword;
+            var teacher = teacherService.GetCuratorById(CurrentUser.Id);
+            teacher.Name = VM.CuratorName;
+            teacher.Login = VM.CuratorLogin;
+            teacher.Password = VM.CuratorPassword;
 
             teacherService.Update(teacher);
 
             CurrentUser.Login = teacher.Login;
-            TeacherLoginRule.OriginalLogin = teacher.Login;
+            CuratorLoginRule.OriginalLogin = teacher.Login;
             VM.UserFullName = teacher.Name;
 
             MessageBox.Show("Данные преподавателя успешно обновлены",
@@ -317,7 +315,7 @@ namespace Safety_Wheel
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             var txt = "";
-            if (StudTest._isTestActivated == true)
+            if (PartTest._isTestActivated == true)
                 txt = "Попытка аннулируется.";
             else txt = "Перед закрытием убедитесь, что сохранили прогресс";
 
@@ -330,7 +328,7 @@ namespace Safety_Wheel
             {
                 e.Cancel = true;
             }
-            if (StudTest._isTestActivated == true) attemptService.Remove(StudTest._attempt);
+            if (PartTest._isTestActivated == true) attemptService.Remove(PartTest._attempt);
         }
         private bool ValidatePanel(StackPanel panel)
         {

@@ -21,7 +21,7 @@ namespace Safety_Wheel.ViewModels
         {
             _executeObj = execute;
         }
-
+         
         public bool CanExecute(object parameter) =>
             _canExecute?.Invoke(parameter) ?? true;
 

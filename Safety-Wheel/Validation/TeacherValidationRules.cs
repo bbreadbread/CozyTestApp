@@ -6,9 +6,9 @@ using Safety_Wheel.Services;
 
 namespace Safety_Wheel.ValidationRules
 {
-    public class TeacherLoginValidationRule : ValidationRule
+    public class CuratorLoginValidationRule : ValidationRule
     {
-        public TeacherService TeacherService { get; set; }
+        public CuratorService CuratorService { get; set; }
         public string OriginalLogin { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
@@ -21,15 +21,15 @@ namespace Safety_Wheel.ValidationRules
             if (!string.IsNullOrEmpty(OriginalLogin) && string.Equals(login, OriginalLogin, StringComparison.OrdinalIgnoreCase))
                 return ValidationResult.ValidResult;
 
-            if(TeacherService.GetTeacherById(CurrentUser.Id).Login != login)
-            if (TeacherService.UserExistsByLogin(login))
+            if(CuratorService.GetCuratorById(CurrentUser.Id).Login != login)
+            if (CuratorService.UserExistsByLogin(login))
                 return new ValidationResult(false, "Пользователь с таким логином уже существует.");
 
             return ValidationResult.ValidResult;
         }
     }
 
-    public class TeacherRequiredValidationRule : ValidationRule
+    public class CuratorRequiredValidationRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

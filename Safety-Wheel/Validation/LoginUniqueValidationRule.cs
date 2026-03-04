@@ -8,7 +8,7 @@ namespace Safety_Wheel.ValidationRules
 {
     public class LoginUniqueValidationRule : ValidationRule
     {
-        public TeacherService TeacherService { get; set; } = new() ;
+        public CuratorService CuratorService { get; set; } = new() ;
         public string OriginalLogin { get; set; }
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
@@ -20,7 +20,7 @@ namespace Safety_Wheel.ValidationRules
 
             if (string.Equals(login, OriginalLogin, StringComparison.OrdinalIgnoreCase))
                 return ValidationResult.ValidResult;
-            if (TeacherService.UserExistsByLogin(login)) return new ValidationResult(false, "Пользователь с таким логином уже существует.");
+            if (CuratorService.UserExistsByLogin(login)) return new ValidationResult(false, "Пользователь с таким логином уже существует.");
 
             return ValidationResult.ValidResult;
         }

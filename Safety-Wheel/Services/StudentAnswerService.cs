@@ -14,30 +14,30 @@ using System.Windows;
 
 namespace Safety_Wheel.Services
 {
-    public class StudentAnswerService
+    public class ParticipantAnswerService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<StudentAnswer> StudentAnswers { get; set; } = new();
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
+        public ObservableCollection<ParticipantAnswer> ParticipantAnswers { get; set; } = new();
 
-        public StudentAnswerService()
+        public ParticipantAnswerService()
         {
             GetAll();
         }
 
-        public void Add(StudentAnswer studentAnswer)
+        public void Add(ParticipantAnswer participantAnswer)
         {
-            var _studentAnswer = new StudentAnswer
+            var _participantAnswer = new ParticipantAnswer
             {
-                AttemptId = studentAnswer.AttemptId,
-                QuestionId = studentAnswer.QuestionId,
-                OptionId = studentAnswer.OptionId,
-                IsCorrect = studentAnswer.IsCorrect,
-                AnsweredAt = studentAnswer.AnsweredAt,
-                Attempt = studentAnswer.Attempt,
-                Option = studentAnswer.Option,
-                Question = studentAnswer.Question
+                AttemptId = participantAnswer.AttemptId,
+                QuestionId = participantAnswer.QuestionId,
+                OptionId = participantAnswer.OptionId,
+                IsCorrect = participantAnswer.IsCorrect,
+                AnsweredAt = participantAnswer.AnsweredAt,
+                Attempt = participantAnswer.Attempt,
+                Option = participantAnswer.Option,
+                Question = participantAnswer.Question
             };
-            _db.Add(_studentAnswer);
+            _db.Add(_participantAnswer);
             Commit();
         }
 
@@ -45,7 +45,7 @@ namespace Safety_Wheel.Services
 
         public void GetAll(decimal? attemptId = null, decimal? questionId = null)
         {
-            IQueryable<StudentAnswer> query = _db.StudentAnswers
+            IQueryable<ParticipantAnswer> query = _db.ParticipantAnswers
                 .Include(sa => sa.Attempt)
                 .Include(sa => sa.Option)
                 .Include(sa => sa.Question);
@@ -56,31 +56,31 @@ namespace Safety_Wheel.Services
                 query = query.Where(sa => sa.QuestionId == questionId);
 
             var answers = query.ToList();
-            StudentAnswers.Clear();
+            ParticipantAnswers.Clear();
 
             foreach (var answer in answers)
             {
-                StudentAnswers.Add(answer);
+                ParticipantAnswers.Add(answer);
             }
         }
 
-        public void Remove(StudentAnswer studentAnswer)
+        public void Remove(ParticipantAnswer participantAnswer)
         {
-            _db.Remove(studentAnswer);
+            _db.Remove(participantAnswer);
             if (Commit() > 0)
-                if (StudentAnswers.Contains(studentAnswer))
-                    StudentAnswers.Remove(studentAnswer);
+                if (ParticipantAnswers.Contains(participantAnswer))
+                    ParticipantAnswers.Remove(participantAnswer);
         }
 
-        public void Update(StudentAnswer studentAnswer)
+        public void Update(ParticipantAnswer participantAnswer)
         {
-            var existing = _db.StudentAnswers
-                .FirstOrDefault(sa => sa.AttemptId == studentAnswer.AttemptId && sa.QuestionId == studentAnswer.QuestionId);
+            var existing = _db.ParticipantAnswers
+                .FirstOrDefault(sa => sa.AttemptId == participantAnswer.AttemptId && sa.QuestionId == participantAnswer.QuestionId);
             if (existing != null)
             {
-                existing.OptionId = studentAnswer.OptionId;
-                existing.IsCorrect = studentAnswer.IsCorrect;
-                existing.AnsweredAt = studentAnswer.AnsweredAt;
+                existing.OptionId = participantAnswer.OptionId;
+                existing.IsCorrect = participantAnswer.IsCorrect;
+                existing.AnsweredAt = participantAnswer.AnsweredAt;
                 Commit();
             }
         }
@@ -91,13 +91,13 @@ namespace Safety_Wheel.Services
                 .Where(q => q.TestId == test.Id)
                 .ToList();
 
-            var studentAnswers = _db.StudentAnswers
+            var participantAnswers = _db.ParticipantAnswers
                 .Where(w => w.AttemptId == attempt.Id)
                 .ToList();
 
             foreach (var question in testQuestions)
             {
-                var answersForQuestion = studentAnswers
+                var answersForQuestion = participantAnswers
                     .Where(a => a.QuestionId == question.Id)
                     .ToList();
 
@@ -111,13 +111,13 @@ namespace Safety_Wheel.Services
         
         public bool? GetQuestionCorrectness(Attempt attempt, int questionId)
         {
-            var studentOptions = _db.StudentAnswers
+            var participantOptions = _db.ParticipantAnswers
                                     .Where(sa => sa.AttemptId == attempt.Id &&
                                                  sa.QuestionId == questionId)
                                     .Select(sa => sa.OptionId)
                                     .ToList();
 
-            if (!studentOptions.Any())
+            if (!participantOptions.Any())
                 return null;
 
             var correctOptions = _db.Options
@@ -126,13 +126,13 @@ namespace Safety_Wheel.Services
                                     .Select(o => o.Id)
                                     .ToHashSet();
 
-            return correctOptions.SetEquals(studentOptions.ToHashSet());
+            return correctOptions.SetEquals(participantOptions.ToHashSet());
         }
 
 
-        public StudentAnswer GetByQuestionAndAttempt(int questionId, int attemptId)
+        public ParticipantAnswer GetByQuestionAndAttempt(int questionId, int attemptId)
         {
-            return _db.StudentAnswers
+            return _db.ParticipantAnswers
                 .Include(sa => sa.Attempt)
                 .Include(sa => sa.Question)
                 .Include(sa => sa.Option)
@@ -144,7 +144,7 @@ namespace Safety_Wheel.Services
         {
             var result = new Dictionary<int, bool?>();
 
-            var allStudentAnswers = _db.StudentAnswers
+            var allParticipantAnswers = _db.ParticipantAnswers
                 .Include(sa => sa.Option)
                 .Where(sa => sa.AttemptId == attempt.Id && questionIds.Contains(sa.QuestionId))
                 .ToList()
@@ -159,8 +159,8 @@ namespace Safety_Wheel.Services
 
             foreach (var questionId in questionIds)
             {
-                if (!allStudentAnswers.TryGetValue(questionId, out var studentOptions) ||
-                    !studentOptions.Any())
+                if (!allParticipantAnswers.TryGetValue(questionId, out var participantOptions) ||
+                    !participantOptions.Any())
                 {
                     result[questionId] = null;
                     continue;
@@ -168,7 +168,7 @@ namespace Safety_Wheel.Services
 
                 if (allCorrectOptions.TryGetValue(questionId, out var correctOptions))
                 {
-                    result[questionId] = correctOptions.SetEquals(studentOptions.ToHashSet());
+                    result[questionId] = correctOptions.SetEquals(participantOptions.ToHashSet());
                 }
                 else
                 {
@@ -189,9 +189,9 @@ namespace Safety_Wheel.Services
                   .ToList();
         }
 
-        public List<StudentAnswer> GetAnswersByQuestion(int questionId)
+        public List<ParticipantAnswer> GetAnswersByQuestion(int questionId)
         {
-                return StudentAnswers
+                return ParticipantAnswers
                     .Where(sa => sa.QuestionId == questionId)
                     .ToList();
             

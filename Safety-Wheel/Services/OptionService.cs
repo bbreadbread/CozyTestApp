@@ -11,7 +11,7 @@ namespace Safety_Wheel.Services
 {
     public class OptionService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
         public ObservableCollection<Option> Options { get; set; } = new();
 
         public OptionService()
@@ -41,7 +41,7 @@ namespace Safety_Wheel.Services
             {
                 var options = _db.Options
                     .Include(o => o.Question)
-                    .Include(o => o.StudentAnswers)
+                    .Include(o => o.ParticipantAnswers)
                     .Where(o => o.QuestionId == questionId)
                     .ToList();
                 Options.Clear();
@@ -55,7 +55,7 @@ namespace Safety_Wheel.Services
             {
                 var options = _db.Options
                     .Include(o => o.Question)
-                    .Include(o => o.StudentAnswers)
+                    .Include(o => o.ParticipantAnswers)
                     .ToList();
                 Options.Clear();
 
@@ -71,11 +71,11 @@ namespace Safety_Wheel.Services
             if (option == null)
                 return;
 
-            var answers = _db.StudentAnswers
+            var answers = _db.ParticipantAnswers
                 .Where(sa => sa.OptionId == option.Id)
                 .ToList();
 
-            _db.StudentAnswers.RemoveRange(answers);
+            _db.ParticipantAnswers.RemoveRange(answers);
 
             _db.Options.Remove(option);
 

@@ -10,12 +10,12 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Safety_Wheel.Services
 {
-    public class TestTypeService
+    public class DTestTypeService
     {
-        private readonly SafetyWheelContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<TestType> TestTypes { get; set; } = new();
+        private readonly CozyTestContext _db = BaseDbService.Instance.Context;
+        public ObservableCollection<DTestType> DTestTypes { get; set; } = new();
 
-        public TestTypeService(int? type = null)
+        public DTestTypeService(int? type = null)
         {
             GetAll();
         }
@@ -24,16 +24,16 @@ namespace Safety_Wheel.Services
 
         public void GetAll()
         {
-            var query = _db.TestTypes.ToList();
+            var query = _db.DTestTypes.ToList();
 
             foreach (var testType in query)
             {
-                TestTypes.Add(testType);
+                DTestTypes.Add(testType);
             }
         }
-        public TestType GetTypeById(int? type)
+        public DTestType GetTypeById(int? type)
         {
-            var testType = TestTypes
+            var testType = DTestTypes
                 .FirstOrDefault(t => t.Id == type);
 
             return testType;

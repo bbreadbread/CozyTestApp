@@ -10,13 +10,13 @@ namespace Safety_Wheel.Services
     public class BaseDbService
     {
         private static BaseDbService? instance;
-        private SafetyWheelContext _context;
-        public SafetyWheelContext Context => _context;
+        private CozyTestContext _context;
+        public CozyTestContext Context => _context;
         private BaseDbService()
         {
-            _context = new SafetyWheelContext();
+            _context = new CozyTestContext();
         }
-        public void SetContext(SafetyWheelContext context)
+        public void SetContext(CozyTestContext context)
         {
             _context = context;
         }

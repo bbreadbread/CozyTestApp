@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="Safety_Wheel.Pages.Curator.CuratorCreateTestsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:vm="clr-namespace:Safety_Wheel.ViewModels.CreateTestsVM"
+             xmlns:conv="clr-namespace:Safety_Wheel.Converters"
+             Style="{StaticResource CreateEditTest}"
+             Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility"/>
+        <conv:IndexPlusOneConverter x:Key="IndexPlusOneConverter"/>
+        <conv:NullImageConverter x:Key="NullImageConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:CuratorCreateTestViewModel/>
+    </UserControl.DataContext>
+
+    <Viewbox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Frame Source="SelectionTape.xaml" Grid.Row="0"/>
+            <Frame Source="UpMenuTest.xaml" Grid.Row="1"/>
+            
+            <ScrollViewer Grid.Row="2"  Height="950" Width="920" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="20">
+                    <TextBlock Text="Дисциплина"
+           FontWeight="Bold"
+           Margin="0,0,0,5"/>
+                    <ComboBox x:Name="TopicCB"
+                          ItemsSource="{Binding Topics}"
+                          SelectedItem="{Binding SelectedTopic}"
+                          DisplayMemberPath="Name"  Margin="8"
+                          Style="{DynamicResource CBStyle}"/>
+
+                    <TextBox Text="{Binding Test.Name, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{DynamicResource TBoxStyle}"
+                         mah:TextBoxHelper.Watermark="Название теста"/>
+
+                    <ItemsControl ItemsSource="{Binding Questions}"
+                          AlternationCount="500">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Border Grid.Row="1"
+                                    BorderBrush="{StaticResource LightGray}"
+                                    BorderThickness="2" Width="500" Height="3" Margin="10"/>
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter},
+                                       Path=(ItemsControl.AlternationIndex),
+                                       Converter={StaticResource IndexPlusOneConverter}}"
+                                       FontSize="40"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkViolet}"/>
+                                    <Border Margin="0 5"
+                                        Padding="5"
+                                BorderBrush="Gray"
+                                BorderThickness="2"
+                                CornerRadius="3"
+                                Opacity="{Binding IsGhost, Converter={StaticResource BoolToOpacity}}">
+                                        <StackPanel>
+                                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 10">
+                                                <CheckBox Content="Варианты ответов в виде изображений"
+                                          IsChecked="{Binding IsMultiImage}"
+                                          Width="Auto"/>
+                                            </Grid>
+
+                                            <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{DynamicResource TBoxStyle}"
+                                                 mah:TextBoxHelper.Watermark="Текст вопроса"/>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="75"/>
+                                                </Grid.RowDefinitions>
+
+                                                <ItemsControl ItemsSource="{Binding Options}" Grid.Column="0">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal" Margin="3"
+                                                                Opacity="{Binding IsGhost, Converter={StaticResource BoolToOpacity}}">
+
+                                                                <CheckBox IsChecked="{Binding IsCorrect}" Margin="0,0,5,0"/>
+
+                                                                <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Width="400" MaxWidth="400"
+                                                                 Visibility="{Binding IsImageOption,
+                                                                         Converter={StaticResource InverseBoolToVisibility}}"
+                                                                 Style="{DynamicResource TBoxStyle}"
+                                                                     mah:TextBoxHelper.Watermark="Текст ответа"/>
+
+                                                                <StackPanel Orientation="Horizontal"
+                                                                        Visibility="{Binding IsImageOption, Converter={StaticResource BoolToVisibility}}">
+                                                                    <Button Command="{Binding DeleteCommand}"
+                                                                        Visibility="{Binding IsImageOption, Converter={StaticResource BoolToVisibility}}"
+                                                                        Background="Transparent"
+                                                                        BorderThickness="0"
+                                                                        HorizontalAlignment="Right"
+                                                                        VerticalAlignment="Top"
+                                                                        ToolTip="Удалить вариант">
+
+                                                                        <Image Source="pack://application:,,,/Images/delete_icon.png"
+                                                                           Width="20"
+                                                                           Height="20"/>
+                                                                    </Button>
+
+                                                                    <Button Content="📷" Tag="{Binding}"
+                                                                        Click="AddOptionImage_Click"/>
+
+                                                                    <TextBlock Text="Отобразить" Margin="8,0,0,0"
+                                                                           Foreground="Blue" Cursor="Hand"
+                                                                           VerticalAlignment="Center">
+                                                                        <TextBlock.InputBindings>
+                                                                            <MouseBinding MouseAction="LeftClick"
+                                                                                      Command="{Binding ShowPreviewCommand}"/>
+                                                                        </TextBlock.InputBindings>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+
+                                                <Border Grid.Column="1" Background="{StaticResource LightViolet}"
+                                                    BorderBrush="Gray" BorderThickness="2" CornerRadius="3" Margin="15">
+                                                    <Button Tag="{Binding}"
+                                                        IsEnabled="{Binding IsSingleImage}"
+                                                        Click="AddQuestionImage_Click"
+                                                        Background="{StaticResource LightViolet}"
+                                                        Height="350" Width="350">
+                                                        <Image Height="300" Width="300">
+                                                            <Image.Source>
+                                                                <PriorityBinding>
+                                                                    <Binding Path="PreviewImagePath" Converter="{StaticResource NullImageConverter}" />
+                                                                    <Binding Path="PicturePath" Converter="{StaticResource NullImageConverter}" />
+                                                                    <Binding Source="pack://application:,,,/Images/add_picture_icon_2.png"/>
+                                                                </PriorityBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Button>
+                                                </Border>
+
+                                                <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+
+                                                    <ToggleButton  DockPanel.Dock="Left" x:Name="ExpandToggle"
+                                                       Style="{StaticResource ExpandToggleStyle}"
+                                                      Width="25" Height="25"
+                                                      Background="{StaticResource MainViolet}" BorderThickness="0"
+                                                      VerticalAlignment="Top"/>
+
+                                                    <Popup DockPanel.Dock="Left"  IsOpen="{Binding IsChecked, ElementName=ExpandToggle}"
+                                               PlacementTarget="{Binding ElementName=ExpandToggle}"
+                                               Placement="Bottom"
+                                               StaysOpen="True"
+                                               AllowsTransparency="True">
+                                                        <Border Background="{StaticResource White}"
+                                                    BorderBrush="Gray" BorderThickness="1"
+                                                    CornerRadius="4" Padding="8"
+                                                    Width="600" Height="400">
+                                                            <TextBox Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontSize="16" TextWrapping="Wrap" AcceptsReturn="True"
+                                                         VerticalScrollBarVisibility="Auto"
+                                                         BorderThickness="0" Background="Transparent"
+                                                                 mah:TextBoxHelper.Watermark="Комментарий"/>
+                                                        </Border>
+                                                    </Popup>
+
+                                                    <TextBox DockPanel.Dock="Left" Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged}"
+                                                 FontSize="16"
+                                                 VerticalScrollBarVisibility="Auto" MaxHeight="120"
+                                                 Style="{StaticResource TBoxStyle}"
+                                                 mah:TextBoxHelper.Watermark="Комментарий"/>
+                                                </DockPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Button Content="СОХРАНИТЬ ТЕСТ"
+                    Margin="0,20"
+                    Click="Save_Click" Style="{StaticResource DownButton}"/>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Viewbox>
+
+</UserControl>

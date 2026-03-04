@@ -1,6 +1,6 @@
 ﻿using Azure;
-using RegistrationTeacherSafetyWheel.Models;
-using RegistrationTeacherSafetyWheel.Service;
+using RegistrationCuratorCozyTest.Models;
+using RegistrationCuratorCozyTest.Service;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,18 +10,18 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace RegistrationTeacherSafetyWheel.ViewModels
+namespace RegistrationCuratorCozyTest.ViewModels
 {
-    public class RegisterTeacherViewModel : INotifyPropertyChanged
+    public class RegisterCuratorViewModel : INotifyPropertyChanged
     {
-        private TeacherService _teacherService = new();
-        public Teacher? selectedItem { get; set; } = null;
+        private CuratorService _teacherService = new();
+        public Curator? selectedItem { get; set; } = null;
         public ObservableCollection<object> Items { get; set; } = new();
 
-        public Teacher _selectedTeacher;
-        public Teacher originalTeacher { get; set; } = new();
+        public Curator _selectedCurator;
+        public Curator originalCurator { get; set; } = new();
 
-        public Teacher _teacher = new ();
+        public Curator _teacher = new ();
         private string _name;
         public string Name
         {
@@ -71,7 +71,7 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
         public RelayCommand RemoveCommand { get; }
         public RelayCommand UpdateCommand { get; }
 
-        public RegisterTeacherViewModel()
+        public RegisterCuratorViewModel()
         {
             RegisterCommand = new RelayCommand(Register);
             SelectCommand = new RelayCommand(Select);
@@ -90,7 +90,7 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
             }
 
             if (_teacherService.UserExistsByLogin(Login) &&
-                (originalTeacher == null || originalTeacher.Login != Login))
+                (originalCurator == null || originalCurator.Login != Login))
             {
                 MessageBox.Show("Пользователь с таким логином уже существует");
                 return false;
@@ -107,7 +107,7 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
         private void Register()
         {
             if (Check() == false) return;
-            _teacher = new Teacher
+            _teacher = new Curator
             {
                 Name = Name,
                 Login = Login,
@@ -121,30 +121,30 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
 
         public void Select()
         {
-            originalTeacher = selectedItem;
-            if (originalTeacher != null)
+            originalCurator = selectedItem;
+            if (originalCurator != null)
             {
-                _selectedTeacher = new Teacher
+                _selectedCurator = new Curator
                 {
-                    Id = originalTeacher.Id,
-                    Name = originalTeacher.Name,
-                    Login = originalTeacher.Login,
-                    Password = originalTeacher.Password
+                    Id = originalCurator.Id,
+                    Name = originalCurator.Name,
+                    Login = originalCurator.Login,
+                    Password = originalCurator.Password
                 };
 
-                Name = _selectedTeacher.Name;
-                Login = _selectedTeacher.Login;
-                Password = _selectedTeacher.Password;
+                Name = _selectedCurator.Name;
+                Login = _selectedCurator.Login;
+                Password = _selectedCurator.Password;
             }
         }
         public void Remove()
         {
-            if (originalTeacher != null)
+            if (originalCurator != null)
             {
-                if (MessageBox.Show($"Удалить {originalTeacher.Name}?\n ВНИМАНИЕ! УДАЛЯЯ ПРЕПОДАВАТЕЛЯ, ВЫ ПОДТВЕРЖДАЕТЕ УДАЛЕНИЕ ВСЕХ ПРИВЯЗАННЫХ К НЕМУ ДАННЫХ!\n УДАЛЯТСЯ: ДАННЫЕ О УЧЕНИКАХ, ВСЕ ДАННЫЕ О ТЕСТАХ.", "Подтверждение",
+                if (MessageBox.Show($"Удалить {originalCurator.Name}?\n ВНИМАНИЕ! УДАЛЯЯ ПРЕПОДАВАТЕЛЯ, ВЫ ПОДТВЕРЖДАЕТЕ УДАЛЕНИЕ ВСЕХ ПРИВЯЗАННЫХ К НЕМУ ДАННЫХ!\n УДАЛЯТСЯ: ДАННЫЕ О УЧЕНИКАХ, ВСЕ ДАННЫЕ О ТЕСТАХ.", "Подтверждение",
                     MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    _teacherService.Remove(originalTeacher);
+                    _teacherService.Remove(originalCurator);
                     ClearFields();
                 }
             }
@@ -154,17 +154,17 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
         {
             if (Check() == false) return;
 
-            if (originalTeacher != null)
+            if (originalCurator != null)
             {
-                _selectedTeacher = new Teacher
+                _selectedCurator = new Curator
                 {
-                    Id = originalTeacher.Id,
+                    Id = originalCurator.Id,
                     Name = Name,
                     Login = Login,
                     Password = Password
                 };
 
-                _teacherService.Update( _selectedTeacher );
+                _teacherService.Update( _selectedCurator );
             }
             MessageBox.Show("Данные обновлены");
             Load();
@@ -173,7 +173,7 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
         public void Load()
         {
             Items.Clear();
-            foreach (var p in _teacherService.Teachers)
+            foreach (var p in _teacherService.Curators)
                 Items.Add(p);
         }
 
@@ -183,7 +183,7 @@ namespace RegistrationTeacherSafetyWheel.ViewModels
             Login = string.Empty;
             Password = "";
             ConfirmPassword = "";
-            originalTeacher = null;
+            originalCurator = null;
             selectedItem = null;
         }
 

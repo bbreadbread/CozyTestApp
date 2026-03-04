@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Safety_Wheel.Pages.Curator.UpMenuTest"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:local="clr-namespace:Safety_Wheel.Pages.Curator"
+      mc:Ignorable="d"
+      d:DesignHeight="110" d:DesignWidth="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource UpMenuTest}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBox Grid.Column="0" Margin="1 1 5 2" Background="{StaticResource LightViolet}" BorderThickness="0"/>
+                <Border Background="{StaticResource DarkViolet}" Grid.Row="1" Margin="10 0"/>
+                <TextBlock Grid.Column="1" Text="мин." Grid.RowSpan="3"/>
+            </Grid>
+        </Border>
+
+        <Border Style="{StaticResource UpMenuTest}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+            <StackPanel>
+                <TextBox Margin="0" Background="{StaticResource LightViolet}" BorderThickness="0"/>
+            </StackPanel>
+        </Border>
+
+        <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" mah:TextBoxHelper.Watermark="Тема">
+        </ComboBox>
+
+        <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" mah:TextBoxHelper.Watermark="Тип">
+        </ComboBox>
+
+
+        <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" mah:TextBoxHelper.Watermark="Макс. кол. прох-ий на 1 чел.">
+        </ComboBox>
+
+        <Button Style="{StaticResource ShellDarkVioletButton}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1">
+            <Button.Content>
+                <TextBlock TextWrapping="Wrap" 
+                           Text="Соавторство" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           TextElement.Foreground="{StaticResource White}"
+                           TextElement.FontSize="18"/>
+            </Button.Content>
+        </Button>
+
+        <Button Style="{StaticResource ShellDarkVioletButton}" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1">
+            <Button.Content>
+                <TextBlock TextWrapping="Wrap" 
+                           Text="Система оценивания" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           MinWidth="170"
+                           TextElement.Foreground="{StaticResource White}"
+                           TextElement.FontSize="18"/>
+            </Button.Content>
+        </Button>
+
+    </Grid>
+</UserControl>

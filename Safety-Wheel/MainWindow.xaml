@@ -91,20 +91,20 @@
                NavigationUIVisibility="Hidden"
                HorizontalAlignment="Stretch"
                VerticalAlignment="Stretch"
-               Source="Pages/Student/AuthorizationPage.xaml"/>
+               Source="Pages/AuthorizationPage.xaml"/>
     </Grid>
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
 
-            <Controls:Flyout x:Name="TeacherManagerFlyout"
+            <Controls:Flyout x:Name="CuratorManagerFlyout"
                      Header="Управление учениками"
                      Position="Right"
                      Width="450"
                      IsOpen="False"
                      IsPinned="True"
                      Background="{StaticResource MainViolet}"
-                     IsOpenChanged="TeacherManagerFlyout_IsOpenChanged">
+                     IsOpenChanged="CuratorManagerFlyout_IsOpenChanged">
                 <ScrollViewer>
                     <Grid Margin="15">
                         <Grid.RowDefinitions>
@@ -115,27 +115,27 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center" Grid.Row="1">
-                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Добавить" Click="AddStudent_Click"/>
-                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Сохранить" Click="SaveStudent_Click" Margin="10,0"/>
-                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Удалить" Click="DeleteStudent_Click"/>
+                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Добавить" Click="AddParticipant_Click"/>
+                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Сохранить" Click="SaveParticipant_Click" Margin="10,0"/>
+                            <Button Style="{StaticResource MiniMiniHomeButton}" Content="Удалить" Click="DeleteParticipant_Click"/>
                         </StackPanel>
 
                         <Expander Header="Изменить профиль преподавателя" FontSize="16" Margin="0,10" Grid.Row="0" IsExpanded="False" Background="{StaticResource DarkViolet}">
                             <Border Padding="10" Background="#33000000">
 
-                                <StackPanel x:Name="TeacherInputsPanel">
+                                <StackPanel x:Name="CuratorInputsPanel">
                                     <!--<TextBlock Text="Профиль преподавателя"
                       FontWeight="Bold"
                       FontSize="16"
                       Margin="0,0,0,8"/>-->
 
                                     <TextBlock Text="Имя"/>
-                                    <TextBox x:Name="TeacherNameTextBox"
+                                    <TextBox x:Name="CuratorNameTextBox"
                             Background="White"
                             Foreground="Black"
                             Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                         <TextBox.Text>
-                                            <Binding Path="TeacherName"
+                                            <Binding Path="CuratorName"
 UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
                                                     <valid:NameValidationRule/>
@@ -145,30 +145,30 @@ UpdateSourceTrigger="PropertyChanged">
                                     </TextBox>
 
                                     <TextBlock Text="Логин" Margin="0,5,0,0"/>
-                                    <TextBox x:Name="TeacherLoginTextBox"
+                                    <TextBox x:Name="CuratorLoginTextBox"
                             Background="White"
                             Foreground="Black"
                             Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                         <TextBox.Text>
-                                            <Binding Path="TeacherLogin"
+                                            <Binding Path="CuratorLogin"
 UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
-                                                    <valid:TeacherLoginValidationRule x:Name="TeacherLoginRule"/>
+                                                    <valid:CuratorLoginValidationRule x:Name="CuratorLoginRule"/>
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>
                                     </TextBox>
 
                                     <TextBlock Text="Пароль" Margin="0,5,0,0"/>
-                                    <TextBox x:Name="TeacherPasswordTextBox"
+                                    <TextBox x:Name="CuratorPasswordTextBox"
                             Background="White"
                             Foreground="Black"
                             Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                         <TextBox.Text>
-                                            <Binding Path="TeacherPassword"
+                                            <Binding Path="CuratorPassword"
 UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
-                                                    <valid:TeacherRequiredValidationRule/>
+                                                    <valid:CuratorRequiredValidationRule/>
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>
@@ -177,7 +177,7 @@ UpdateSourceTrigger="PropertyChanged">
                    Style="{StaticResource MiniMiniHomeButton}"
                    Margin="0,10,0,0"
                    HorizontalAlignment="Right"
-                   Click="UpdateTeacher_Click"/>
+                   Click="UpdateCurator_Click"/>
                                 </StackPanel>
                             </Border>
                         </Expander>
@@ -185,14 +185,14 @@ UpdateSourceTrigger="PropertyChanged">
 
 
 
-                        <StackPanel Grid.Row="2" Margin="0,0,0,10"  x:Name="StudentInputsPanel">
+                        <StackPanel Grid.Row="2" Margin="0,0,0,10"  x:Name="ParticipantInputsPanel">
                             <Label  Foreground ="White" FontWeight="SemiBold">Имя</Label>
                             <TextBox x:Name="NameTextBox"
                                     Background="White"
                                     Foreground="Black"
                                     Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                 <TextBox.Text>
-                                    <Binding Path="StudentName" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="ParticipantName" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <valid:NameValidationRule/>
                                         </Binding.ValidationRules>
@@ -206,10 +206,10 @@ UpdateSourceTrigger="PropertyChanged">
                                   Foreground="Black"
                                   Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                 <TextBox.Text>
-                                    <Binding Path="StudentLogin"
+                                    <Binding Path="ParticipantLogin"
                                          UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <valid:LoginUniqueValidationRule x:Name="StudentLoginRule"/>
+                                            <valid:LoginUniqueValidationRule x:Name="ParticipantLoginRule"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -221,7 +221,7 @@ UpdateSourceTrigger="PropertyChanged">
                                   Foreground="Black"
                                   Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                 <TextBox.Text>
-                                    <Binding Path="StudentPassword"
+                                    <Binding Path="ParticipantPassword"
           UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <valid:RequiredFieldValidationRule/>
@@ -232,13 +232,13 @@ UpdateSourceTrigger="PropertyChanged">
                         </StackPanel>
 
 
-                        <DataGrid x:Name="StudentsGrid"
+                        <DataGrid x:Name="ParticipantsGrid"
                                Grid.Row="3"
                                IsReadOnly="True"
                                SelectionMode="Single"
                                SelectionUnit="FullRow"
                                AutoGenerateColumns="False"
-                               SelectionChanged="StudentsGrid_SelectionChanged">
+                               SelectionChanged="ParticipantsGrid_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Имя Фамилия" Binding="{Binding Name}" />
                                 <DataGridTextColumn Header="Логин" Binding="{Binding Login}" />

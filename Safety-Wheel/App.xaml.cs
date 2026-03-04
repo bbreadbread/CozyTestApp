@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Safety_Wheel.Pages.Student;
+using Safety_Wheel.Pages.Participant;
 using System.Configuration;
 using System.Data;
 using System.Windows;
