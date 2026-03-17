@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Safety_Wheel.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Safety_Wheel.Services
 {
@@ -39,26 +33,26 @@ namespace Safety_Wheel.Services
 
         public void GetAll(decimal? participantId = null, decimal? testId = null, DateTime? date = null)
         {
-            IQueryable<Attempt> query = _db.Attempts
-                .Include(a => a.Participant)
-                .Include(a => a.ParticipantAnswers);
+            //IQueryable<Attempt> query = _db.Attempts
+            //    .Include(a => a.Participant)
+            //    .Include(a => a.ParticipantAnswers);
 
-            if (participantId != null)
-                query = query.Where(a => a.ParticipantId == participantId);
+            //if (participantId != null)
+            //    query = query.Where(a => a.ParticipantId == participantId);
 
-            if (testId != null)
-                query = query.Where(a => a.TestId == testId);
+            //if (testId != null)
+            //    query = query.Where(a => a.TestId == testId);
 
-            if (date.HasValue)
-                query = query.Where(a => a.StartedAt.Value.Date == date.Value.Date);
+            //if (date.HasValue)
+            //    query = query.Where(a => a.StartedAt.Value.Date == date.Value.Date);
 
-            var attempts = query.ToList();
-            Attempts.Clear();
+            //var attempts = query.ToList();
+            //Attempts.Clear();
 
-            foreach (var attempt in attempts)
-            {
-                Attempts.Add(attempt);
-            }
+            //foreach (var attempt in attempts)
+            //{
+            //    Attempts.Add(attempt);
+            //}
         }
         public List<DateTime> GetUniqueAttemptDates(int participantId)
         {

@@ -20,9 +20,10 @@ namespace Safety_Wheel
     /// </summary>
     public partial class ShellWindow : MetroWindow  
     {
-        public ShellWindow()
+        public ShellWindow(UserControl shows)
         {
             InitializeComponent();
+            ShellGlobalFrame.Navigate(shows);
         }
     }
 }

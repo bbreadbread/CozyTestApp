@@ -17,7 +17,7 @@
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource MainTitle}" Text="Ознакомьтесь с информацией ниже" Grid.Row="0" Foreground="{StaticResource MainViolet}"/>
+        <TextBlock Style="{StaticResource MainTitle}" Text="Ознакомьтесь с информацией ниже" Grid.Row="0" Foreground="{StaticResource MainSwamp}"/>
 
         <StackPanel Grid.Row="1" Style="{DynamicResource ButtonOptionsStackPanel}">
             <TextBlock Style="{StaticResource MainText}">

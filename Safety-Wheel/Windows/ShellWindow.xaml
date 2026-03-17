@@ -6,16 +6,15 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:Safety_Wheel"
         mc:Ignorable="d"
-        Title="Отправка заявки на регистрацию" Height="630" Width="775"
-        WindowTitleBrush="{StaticResource DarkViolet}"
-        GlowBrush="{StaticResource DarkViolet}"
-        BorderBrush="{StaticResource DarkViolet}"
+                 Height="630" Width="775"
+        WindowTitleBrush="{StaticResource DarkSwamp}"
+        GlowBrush="{StaticResource DarkSwamp}"
+        BorderBrush="{StaticResource DarkSwamp}"
                  WindowStartupLocation="CenterScreen"
                  ResizeMode="NoResize">
     <Grid>
         <Viewbox Width="675" Height="530">
-            <Frame Source="../ForShellWindow/RegistrationShell.xaml"
-               NavigationUIVisibility="Hidden"/>
+            <Frame x:Name="ShellGlobalFrame" NavigationUIVisibility="Hidden"/>
         </Viewbox>
     </Grid>
 </mah:MetroWindow>

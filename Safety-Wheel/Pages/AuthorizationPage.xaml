@@ -1,4 +1,4 @@
-﻿<Page x:Class="Safety_Wheel.Pages.Participant.MainPage"
+﻿<Page x:Class="Safety_Wheel.Pages.Participant.AuthorizationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"        
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1000"
-      Title="MainPage">
+      Title="MainNavigation">
 
     <Viewbox MaxWidth="700"
              MaxHeight="400"
@@ -20,6 +20,7 @@
         <Grid HorizontalAlignment="Center"
               VerticalAlignment="Center">
 
+            
             <Grid Style="{StaticResource MainGrid}">
 
                 <Grid.RowDefinitions>
@@ -35,7 +36,7 @@
                     <ColumnDefinition Width="700"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Style="{StaticResource MainTitle}" Grid.Row="0" Grid.ColumnSpan="2" Text="Авторизация" Foreground="{StaticResource DarkViolet}"/>
+                <TextBlock Style="{StaticResource MainTitle}" Grid.Row="0" Grid.ColumnSpan="2" Text="Авторизация" Foreground="{StaticResource DarkSwamp}"/>
 
                 <TextBlock Style="{StaticResource AuthTitle}" Grid.Row="1" Grid.Column="0" Text="Логин"/>
                 <Border Grid.Row="1" Grid.Column="1" CornerRadius="10" BorderThickness="5" Background="White" BorderBrush="{StaticResource Gray}"  Margin="0 5">

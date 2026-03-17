@@ -29,11 +29,15 @@ public partial class Test
 
     public int? MaxNumPassing { get; set; }
 
+    public int? CriteriaId { get; set; }
+
     public virtual ICollection<Attempt> Attempts { get; set; } = new List<Attempt>();
+    public virtual Criterion? Criteria { get; set; }
 
     public virtual Curator? CuratorCreate { get; set; }
 
-    public virtual ICollection<ParticipantsAssignedTest> ParticipantsAssignedTests { get; set; } = new List<ParticipantsAssignedTest>();
+    public virtual ICollection<BParticipantAssignedTest> BParticipantAssignedTest { get; set; } = new List<BParticipantAssignedTest>();
+    public virtual ICollection<BParticipantFavoriteTest> BParticipantFavoriteTest { get; set; } = new List<BParticipantFavoriteTest>();
 
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 

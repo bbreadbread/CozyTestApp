@@ -16,18 +16,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Safety_Wheel.Models;
 using WPFCustomMessageBox;
+using Safety_Wheel.ForShellWindow;
 
 namespace Safety_Wheel.Pages.Participant
 {
     /// <summary>
-    /// Логика взаимодействия для MainPage.xaml
+    /// Логика взаимодействия для MainNavigation.xaml
     /// </summary>
-    public partial class MainPage : Page
+    public partial class AuthorizationPage : Page
     {
         private ParticipantService _participantService = new();
         private CuratorService _teacherService = new();
 
-        public MainPage()
+        public AuthorizationPage()
         {
             InitializeComponent();
         }
@@ -43,27 +44,29 @@ namespace Safety_Wheel.Pages.Participant
                             s.Login == login && s.Password == password);
             if (participant != null)
             {
+                CurrentUser.TypeUser = 3;
                 CurrentUser.Id = participant.Id;
                 CurrentUser.Name = participant.Name ?? string.Empty;
-                CurrentUser.UserType = "Participant";
 
                 if (Application.Current.MainWindow is MainWindow mainWindow)
                 {
+                    mainWindow.VM.InitAfterLogin();
                     mainWindow.UpdateUserName(CurrentUser.Name);
                 }
 
-                NavigationService.Navigate(new PartMainPage());
+                NavigationService.Navigate(new MainNavigation());
                 return;
             }
 
-            var teacher = _teacherService.Curators.FirstOrDefault(t =>
-                            t.Login == login && t.Password == password);
-            if (teacher != null)
+            var curator = _teacherService.Curators.FirstOrDefault(t => t.Login == login && t.Password == password);
+            if (curator != null)
             {
-                CurrentUser.Id = teacher.Id;
-                CurrentUser.Name = teacher.Name ?? string.Empty;
-                CurrentUser.UserType = "Curator";
-                CurrentUser.Login = _teacherService.GetCuratorById(teacher.Id).Login;
+                if (curator.IsAdmin == true)
+                    CurrentUser.TypeUser = 1;
+                else CurrentUser.TypeUser = 1;
+                CurrentUser.Id = curator.Id;
+                CurrentUser.Name = curator.Name ?? string.Empty;
+                CurrentUser.Login = _teacherService.GetCuratorById(curator.Id).Login;
 
                 if (Application.Current.MainWindow is MainWindow mainWindow)
                 {
@@ -71,7 +74,7 @@ namespace Safety_Wheel.Pages.Participant
                     mainWindow.UpdateUserName(CurrentUser.Name);
                 }
                 
-                NavigationService.Navigate(new CuratorMainPage());
+                NavigationService.Navigate(new MainNavigation());
                 return;
             }
 
@@ -83,8 +86,8 @@ namespace Safety_Wheel.Pages.Participant
 
         private void RequestAccount_Click(object sender, MouseButtonEventArgs e)
         {
-            var requestWindow = new ShellWindow();
-            requestWindow.Show();
+            var window = new ShellWindow(new RegistrationShell());
+            window.Show();
         }
     }
 }

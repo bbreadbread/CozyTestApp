@@ -21,7 +21,11 @@ public partial class Participant
 
     public virtual Curator? CuratorCreate { get; set; }
 
-    public virtual ICollection<ParticipantsAssignedTest> ParticipantsAssignedTests { get; set; } = new List<ParticipantsAssignedTest>();
+    public virtual ICollection<BParticipantAssignedTest> BParticipantAssignedTest { get; set; } = new List<BParticipantAssignedTest>();
+    public virtual ICollection<BParticipantFavoriteTest> BParticipantFavoriteTest { get; set; } = new List<BParticipantFavoriteTest>();
+    public virtual ICollection<BCuratorsParticipant> BCuratorsParticipant { get; set; } = new List<BCuratorsParticipant>();
+    public virtual ICollection<BGroupsParticipant> BGroupsParticipant { get; set; } = new List<BGroupsParticipant>();
+
 
     public virtual ICollection<Curator> Curators { get; set; } = new List<Curator>();
 

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Safety_Wheel.Pages.Curator"
       mc:Ignorable="d" 
       d:DesignHeight="45" HorizontalAlignment="Stretch">
-    <Grid Background="{StaticResource LightViolet}">
+    <Grid Background="{StaticResource LightSwamp}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="330"/>

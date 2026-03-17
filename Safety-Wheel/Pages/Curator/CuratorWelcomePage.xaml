@@ -28,7 +28,7 @@
                 <Image Source="pack://application:,,,/Images/first_arrow_icon.png" VerticalAlignment="Bottom"/>
 
                 <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Orientation ="Vertical">
-                    <TextBlock Style="{StaticResource MainWelcomeTB}" Text="Для начала работы выберите ученика и дату из левого меню" Foreground="{StaticResource DarkViolet}" FontWeight="Bold"/>
+                    <TextBlock Style="{StaticResource MainWelcomeTB}" Text="Для начала работы выберите ученика и дату из левого меню" Foreground="{StaticResource DarkSwamp}" FontWeight="Bold"/>
                     <TextBlock Style="{StaticResource MainWelcomeTB}" Text="Далее выберите конкретное прохождение из таблицы ниже"/>
                 </StackPanel>
 
@@ -51,7 +51,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource MainWelcomeTB}" FontSize="40" FontWeight="Bold" Foreground="{StaticResource DarkViolet}" Text="Добро пожаловать на панель куратора"  Margin="35"/>
+                <TextBlock Grid.ColumnSpan="3" Grid.Row="0" Style="{StaticResource MainWelcomeTB}" FontSize="40" FontWeight="Bold" Foreground="{StaticResource DarkSwamp}" Text="Добро пожаловать на панель куратора"  Margin="35"/>
                 <TextBlock Grid.ColumnSpan="3" Grid.Row="1" Style="{StaticResource MainWelcomeTB}" FontSize="25" Text="Здесь можно следить и управлять процессом тестирования."/>
                 <TextBlock Grid.ColumnSpan="3" Grid.Row="2" Style="{StaticResource MainWelcomeTB}" FontSize="25" Text="Создавайте тесты, следите за успеваемостью и получайте аналитику результатов."/>
                 <TextBlock Grid.ColumnSpan="3" Grid.Row="3" Style="{StaticResource MainWelcomeTB}" FontSize="32" Text="Все инструменты для контроля за тестированием собраны в одном месте" Margin="35"/>

@@ -16,4 +16,6 @@ public partial class Group
     public virtual Curator? Curator { get; set; }
 
     public virtual ICollection<Participant> Participants { get; set; } = new List<Participant>();
+    public virtual ICollection<BGroupsParticipant> BGroupsParticipant { get; set; } = new List<BGroupsParticipant>();
+
 }

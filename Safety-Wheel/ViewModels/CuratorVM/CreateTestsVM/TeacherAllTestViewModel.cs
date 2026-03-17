@@ -1,8 +1,6 @@
 ﻿using Safety_Wheel.Models;
-using Safety_Wheel.Pages.Curator;
 using Safety_Wheel.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 
 namespace Safety_Wheel.ViewModels.CreateTestsVM

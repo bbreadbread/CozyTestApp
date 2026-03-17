@@ -42,7 +42,7 @@ namespace Safety_Wheel.Pages.Curator
         {
             if (_isAttemts == false)
             {
-                var vm = DataContext as MainViewModelCurator;
+                var vm = DataContext as MainViewModel;
                 vm?.ResetApplicationState();
             }
         }

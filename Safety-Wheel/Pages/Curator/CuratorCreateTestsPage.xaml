@@ -58,7 +58,7 @@
                                        Converter={StaticResource IndexPlusOneConverter}}"
                                        FontSize="40"
                                        FontWeight="Bold"
-                                       Foreground="{StaticResource DarkViolet}"/>
+                                       Foreground="{StaticResource DarkSwamp}"/>
                                     <Border Margin="0 5"
                                         Padding="5"
                                 BorderBrush="Gray"
@@ -133,12 +133,12 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
 
-                                                <Border Grid.Column="1" Background="{StaticResource LightViolet}"
+                                                <Border Grid.Column="1" Background="{StaticResource LightSwamp}"
                                                     BorderBrush="Gray" BorderThickness="2" CornerRadius="3" Margin="15">
                                                     <Button Tag="{Binding}"
                                                         IsEnabled="{Binding IsSingleImage}"
                                                         Click="AddQuestionImage_Click"
-                                                        Background="{StaticResource LightViolet}"
+                                                        Background="{StaticResource LightSwamp}"
                                                         Height="350" Width="350">
                                                         <Image Height="300" Width="300">
                                                             <Image.Source>
@@ -157,7 +157,7 @@
                                                     <ToggleButton  DockPanel.Dock="Left" x:Name="ExpandToggle"
                                                        Style="{StaticResource ExpandToggleStyle}"
                                                       Width="25" Height="25"
-                                                      Background="{StaticResource MainViolet}" BorderThickness="0"
+                                                      Background="{StaticResource MainSwamp}" BorderThickness="0"
                                                       VerticalAlignment="Top"/>
 
                                                     <Popup DockPanel.Dock="Left"  IsOpen="{Binding IsChecked, ElementName=ExpandToggle}"

@@ -49,6 +49,7 @@
     <None Remove="Images\profile_icon.png" />
     <None Remove="Images\relax_icon.png" />
     <None Remove="Images\result_icon.png" />
+    <None Remove="Images\search_icon.png" />
     <None Remove="Images\settings_icon.png" />
     <None Remove="Images\sort_icon.png" />
     <None Remove="Images\statistic_icon.png" />
@@ -211,6 +212,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\result_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\search_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\second_arrow_icon.png">

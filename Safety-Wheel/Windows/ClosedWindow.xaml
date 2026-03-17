@@ -7,28 +7,33 @@
         mc:Ignorable="d"
         Title="ClosedWindow" Height="200" Width="400"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        WindowTitleBrush="{StaticResource DarkViolet}"
-        GlowBrush="DarkViolet"
-        BorderBrush="{StaticResource DarkViolet}">
+        WindowTitleBrush="{StaticResource DarkSwamp}"
+        GlowBrush="{StaticResource DarkSwamp}"
+        BorderBrush="{StaticResource DarkSwamp}"
+        ResizeMode="NoResize">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Style="{StaticResource Hint}">
+        <TextBlock Style="{StaticResource Hint}" HorizontalAlignment="Center"  Grid.ColumnSpan="2">
             <Run Text="{Binding WarningText1}"/>
         </TextBlock>
 
-        <TextBlock Grid.Row="1" Style="{StaticResource Hint}">
+        <TextBlock Grid.Row="1" Style="{StaticResource Hint}" HorizontalAlignment="Center"  Grid.ColumnSpan="2">
             <Run Text="{Binding WarningText2}"/>
         </TextBlock>
-        
+
         <StackPanel Grid.Row="2" 
                     Orientation="Horizontal" 
-                    HorizontalAlignment="Center"
-                    Margin="0,10,0,0">
+                    HorizontalAlignment="Left"
+                    Margin="20,10,0,0">
             <Button Style="{StaticResource MiniHomeButton}" x:Name="BtnExit" Grid.Row="3" Grid.ColumnSpan="2" Content="Выход" Click="ButtonExit_Click" />
             <Button Style="{StaticResource MiniHomeButton}" x:Name="BtnCancel" Grid.Row="3" Grid.ColumnSpan="2" Content="Отмена" Click="ButtonCancel_Click" />
         </StackPanel>

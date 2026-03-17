@@ -23,18 +23,19 @@ namespace Safety_Wheel.ViewModels.CreateTestsVM
             IsExcelCard = false;
         }
 
-        public TestListItemViewModel(bool q = false)
+        public TestListItemViewModel(bool? q)
         {
             if (q == true)
             {
                 IsCreateCard = true;
                 IsExcelCard = false;
             }
-            else
+            else if (q == false)
             {
                 IsCreateCard = true;
                 IsExcelCard = true;
             }
+            else return;
         }
 
         public bool? IsPublic

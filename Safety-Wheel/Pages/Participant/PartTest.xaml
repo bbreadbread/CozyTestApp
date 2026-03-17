@@ -57,7 +57,7 @@
                                Text="{Binding TimeLimit, Mode=OneWay}"
                                FontSize="24"
                                FontWeight="Bold"
-                               Foreground="{StaticResource DarkViolet}"/>
+                               Foreground="{StaticResource DarkSwamp}"/>
                         </StackPanel>
                     </Border>
 

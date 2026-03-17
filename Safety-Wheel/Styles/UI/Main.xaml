@@ -26,7 +26,7 @@
     <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="CBStyle">
         <Setter Property="Height" Value="66"/>
         <Setter Property="FontSize" Value="32"/>
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="mah:TextBoxHelper.Watermark" Value="Выберите дисциплину"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
     </Style>
@@ -34,7 +34,7 @@
     <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}" x:Key="TBoxStyle">
         <Setter Property="Height" Value="66"/>
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="AcceptsReturn" Value="True"/>
@@ -116,7 +116,7 @@
 
         <Setter Property="Width" Value="25"/>
         <Setter Property="Height" Value="25"/>
-        <Setter Property="Background" Value="{StaticResource MainViolet}"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
 
@@ -163,13 +163,13 @@
     <!--////<welcome////-->
     <Style TargetType="Border" x:Key="Welcome30r">
         <Setter Property="CornerRadius" Value="50"/>
-        <Setter Property="Background" Value="{StaticResource MainViolet}"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
         <Setter Property="Height" Value="100"/>
     </Style>
 
     <Style TargetType="Border" x:Key="GeneralWelcome50r">
         <Setter Property="CornerRadius" Value="50"/>
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Height" Value="400"/>
         <Setter Property="Width" Value="400"/>
@@ -177,7 +177,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="MainWelcomeTB"  BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="35"/>
@@ -191,12 +191,12 @@
         <Setter Property="Height" Value="45"/>
         <Setter Property="FontSize" Value="25"/>
         <Setter Property="FontWeight" Value="Bold"/>
-<Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
-                            Background="{StaticResource LightViolet}">
+                            Background="{StaticResource LightSwamp}">
                         <ContentPresenter x:Name="content"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center">
@@ -205,12 +205,12 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Selected">
@@ -228,7 +228,30 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
+    <Style TargetType="Button" x:Key="PaleButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        Background="{StaticResource PaleSwamp}"
+                            BorderBrush="{StaticResource MainSwamp}"
+                            BorderThickness="0.5">
+                        <ContentPresenter x:Name="content"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <Style TargetType="Label" x:Key="WelcomeLabel">
         <Setter Property="FontFamily" Value="Ubuntu"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
@@ -239,7 +262,7 @@
     </Style>
 
     <Style TargetType="TextBlock" x:Key="WelcomeTxt" BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="Foreground" Value="{StaticResource MainViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="24"/>
@@ -253,7 +276,7 @@
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Left"/>
     </Style>
@@ -267,18 +290,17 @@
 
     <Style TargetType="TextBlock" x:Key="AuthTitle" BasedOn="{StaticResource MainTitle}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Margin" Value="0"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Hint" BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="18"/>
         <Setter Property="Foreground" Value="{StaticResource Black}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Left"/>
-        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Hint2" BasedOn="{StaticResource GENERALTXT}">
@@ -291,7 +313,7 @@
         <Setter Property="Height" Value="100"/>
         <Setter Property="BorderBrush" Value="{StaticResource White}"/>
         <Setter Property="Background" Value="{StaticResource LightGray}"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="FontSize" Value="48"/>
         <Setter Property="FontWeight" Value="Bold"/>
 
@@ -325,12 +347,12 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource DarkViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DarkViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DarkSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DarkSwamp}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -414,7 +436,7 @@
                             CornerRadius="7"
                             BorderThickness="5"
                             Margin="10 10 10 10"
-                            Background="{StaticResource HoverViolet}"
+                            Background="{StaticResource HoverSwamp}"
                             BorderBrush="{StaticResource White}">
 
                         <Border.Effect>
@@ -458,7 +480,7 @@
         <Setter Property="Height" Value="60"/>
         <Setter Property="Width" Value="400"/>
         <Setter Property="Margin" Value="3"/>
-        <Setter Property="Background" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -470,7 +492,7 @@
         <Setter Property="Width" Value="400"/>
         <Setter Property="Margin" Value="3"/>
         <Setter Property="Background" Value="{StaticResource LightGray}"/>
-        <Setter Property="Foreground" Value="{StaticResource HoverViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource HoverSwamp}"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
@@ -480,8 +502,8 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <Style TargetType="Border" x:Key="BackgroundDarkViolet">
-        <Setter Property="Background" Value="{StaticResource DarkViolet}"/>
+    <Style TargetType="Border" x:Key="BackgroundDarkSwamp">
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
     </Style>
 
     <Style TargetType="Border" x:Key="BorderTime">
@@ -494,7 +516,7 @@
 
     <Style TargetType="Button" x:Key="ButtonTests">
         <Setter Property="Height" Value="170"/>
-        <Setter Property="BorderBrush"  Value="{StaticResource DarkViolet}"/>
+        <Setter Property="BorderBrush"  Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Background" Value="{StaticResource White}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Foreground" Value="{StaticResource Black}"/>
@@ -528,12 +550,12 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource LightViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource LightSwamp}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -580,17 +602,17 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Selected">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="True">
@@ -620,8 +642,8 @@
     </Style>
 
     <Style TargetType="Button" x:Key="DownOptionButton">
-        <Setter Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
-        <Setter Property="Background" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
 
         <Setter Property="Width"      Value="580"/>
@@ -639,8 +661,8 @@
                 CornerRadius="2"
                 BorderThickness="5"
                 Margin="10 10 40 10"
-                Background="{StaticResource LightViolet}"
-                BorderBrush="{StaticResource MainViolet}">
+                Background="{StaticResource LightSwamp}"
+                BorderBrush="{StaticResource MainSwamp}">
                         <ContentPresenter x:Name="content"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center">
@@ -657,13 +679,13 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
                         </Trigger>
 
                         <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="SelectedTrue">
@@ -699,9 +721,9 @@
 
     <!--///////////////////////////////-->
     <Style TargetType="Button" x:Key="QuestItemButton">
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="Background" Value="{StaticResource White}"/>
-        <Setter Property="Foreground" Value="{StaticResource MainViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -714,17 +736,17 @@
                         <ContentPresenter x:Name="contentPresenter"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"
-                        TextElement.Foreground="{StaticResource MainViolet}"/>
+                        TextElement.Foreground="{StaticResource MainSwamp}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource MainViolet}"/>
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource MainViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource MainSwamp}"/>
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource White}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource White}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -743,8 +765,8 @@
 
     <Style TargetType="Button" x:Key="DownQuestItemButton">
 
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
-        <Setter Property="Background" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
 
         <Setter Property="BorderThickness" Value="2"/>
@@ -753,22 +775,22 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
                              CornerRadius="2"
-                             BorderBrush="{StaticResource MainViolet}"
+                             BorderBrush="{StaticResource MainSwamp}"
                              BorderThickness="2"
-                             Background="{StaticResource MainViolet}">
+                             Background="{StaticResource MainSwamp}">
                         <ContentPresenter HorizontalAlignment="Center" 
                               VerticalAlignment="Center"
                               TextElement.Foreground="{StaticResource White}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DarkViolet}"/>
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource DarkViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DarkSwamp}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DarkSwamp}"/>
                             <Setter TargetName="border" Property="TextElement.Foreground" Value="{StaticResource White}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverViolet}"/>
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverViolet}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
                             <Setter TargetName="border" Property="TextElement.Foreground" Value="{StaticResource White}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -996,18 +1018,18 @@
     <!--//////////////////////////////////////////////////////////////-->
 
     <Style x:Key="MainMenuStyle" TargetType="{x:Type mah:HamburgerMenu}">
-     <Setter Property="Background" Value="{StaticResource MainViolet}"/>
+     <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
      <Setter Property="Foreground" Value="{StaticResource White}"/>
-     <Setter Property="PaneBackground" Value="{StaticResource DarkViolet}"/>
+     <Setter Property="PaneBackground" Value="{StaticResource DarkSwamp}"/>
      <Setter Property="CompactPaneLength" Value="80"/>
      <Setter Property="OpenPaneLength" Value="80"/>
      <Setter Property="ShowSelectionIndicator" Value="True"/>
  </Style>
 
  <Style x:Key="SecondMenu" TargetType="{x:Type mah:HamburgerMenu}">
-     <Setter Property="Background" Value="{StaticResource DarkViolet}"/>
+     <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
      <Setter Property="Foreground" Value="{StaticResource White}"/>
-     <Setter Property="PaneBackground" Value="{StaticResource MainViolet}"/>
+     <Setter Property="PaneBackground" Value="{StaticResource MainSwamp}"/>
      <Setter Property="PaneForeground" Value="{StaticResource White}"/>
      <Setter Property="CompactPaneLength" Value="230"/>
      <Setter Property="OpenPaneLength" Value="230"/>
@@ -1017,7 +1039,7 @@
     <Style TargetType="ScottPlot:WpfPlot">
         <Setter Property="Width" Value="500"/>
         <Setter Property="Height" Value="500"/>
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="BorderBrush" Value="#FF555555"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="4"/>
@@ -1033,10 +1055,10 @@
         <Setter Property="mah:CheckBoxHelper.CheckSize" Value="30"/>
 
         <!-- Цвета -->
-        <Setter Property="mah:CheckBoxHelper.ForegroundChecked" Value="{StaticResource DarkViolet}"/>
-        <Setter Property="mah:CheckBoxHelper.BackgroundChecked" Value="{StaticResource LightViolet}"/>
-        <Setter Property="mah:CheckBoxHelper.BorderBrushChecked" Value="{StaticResource DarkViolet}"/>
-        <Setter Property="mah:CheckBoxHelper.BorderBrushUnchecked" Value="{StaticResource MainViolet}"/>
+        <Setter Property="mah:CheckBoxHelper.ForegroundChecked" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BackgroundChecked" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushChecked" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushUnchecked" Value="{StaticResource MainSwamp}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -1090,10 +1112,23 @@
         </Setter>
     </Style>
 
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource MahApps.Styles.Button.Chromeless}">
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource White}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource Black}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--////////////////////////////  SHELL  ////////////////////////////////-->
 
     <Style TargetType="TextBlock" x:Key="ShellTitle"  BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="36"/>
@@ -1104,7 +1139,7 @@
     </Style>
     
     <Style TargetType="TextBlock" x:Key="ShellMainText"  BasedOn="{StaticResource GENERALTXT}">
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="30"/>
@@ -1115,44 +1150,44 @@
     
     <Style TargetType="Button" x:Key="ShellButton">
         <Setter Property="Height" Value="80"/>
-        <Setter Property="Background" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
         <Setter Property="FontSize" Value="36"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
     <Style TargetType="TextBox" x:Key="ShellTextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="4"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="FontSize" Value="32"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
     <Style TargetType="PasswordBox" x:Key="ShellPasswordBox" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="4"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="FontSize" Value="32"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
     <Style TargetType="Border" x:Key="UpMenuTest">
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="Margin" Value="6"/>
 
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="CornerRadius" Value="2"/>
 
-        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkViolet}"/>
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="TextBlock.FontSize" Value="24"/>
     </Style>
 
-    <Style TargetType="Button" x:Key="ShellDarkVioletButton">
+    <Style TargetType="Button" x:Key="ShellDarkSwampButton">
         <Setter Property="Height" Value="45"/>
         <Setter Property="Margin" Value="5"/>
         
@@ -1161,9 +1196,9 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
                         CornerRadius="2"
-                        BorderBrush="{StaticResource DarkViolet}"
+                        BorderBrush="{StaticResource DarkSwamp}"
                         BorderThickness="3"
-                        Background="{StaticResource DarkViolet}">
+                        Background="{StaticResource DarkSwamp}">
                         <ContentPresenter x:Name="contentPresenter"
                                           HorizontalAlignment="Center" 
                                           VerticalAlignment="Center"
@@ -1176,7 +1211,7 @@
         </Setter>
     </Style>
     
-    <Style TargetType="Button" x:Key="ShellPaleVioletButton">
+    <Style TargetType="Button" x:Key="ShellPaleSwampButton">
         <Setter Property="Height" Value="45"/>
         <Setter Property="Margin" Value="5"/>
         
@@ -1185,9 +1220,9 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
                         CornerRadius="2"
-                        BorderBrush="{StaticResource PaleViolet}"
+                        BorderBrush="{StaticResource PaleSwamp}"
                         BorderThickness="3"
-                        Background="{StaticResource PaleViolet}">
+                        Background="{StaticResource PaleSwamp}">
                         <ContentPresenter x:Name="contentPresenter"
                                           HorizontalAlignment="Center" 
                                           VerticalAlignment="Center"
@@ -1204,9 +1239,9 @@
         <Setter Property="Height" Value="45"/>
         <Setter Property="Margin" Value="6"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
 
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="FontSize" Value="24"/>
 
@@ -1217,9 +1252,9 @@
         <Setter Property="Height" Value="45"/>
         <Setter Property="Margin" Value="6"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
-        <Setter Property="Background" Value="{StaticResource LightViolet}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
 
-        <Setter Property="BorderBrush" Value="{StaticResource MainViolet}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="FontSize" Value="24"/>
 

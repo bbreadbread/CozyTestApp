@@ -17,11 +17,14 @@ public partial class Curator
 
     public bool? IsArchive { get; set; }
 
-    public virtual ICollection<Applications> Applications { get; set; } = new List<Applications>();
+    public virtual ICollection<Requests> Requests { get; set; } = new List<Requests>();
 
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
 
     public virtual ICollection<Participant> ParticipantsNavigation { get; set; } = new List<Participant>();
+    public virtual ICollection<BParticipantAssignedTest> BParticipantAssignedTest { get; set; } = new List<BParticipantAssignedTest>();
+    public virtual ICollection<BCuratorsParticipant> BCuratorsParticipant { get; set; } = new List<BCuratorsParticipant>();
+
 
     public virtual ICollection<Test> TestsNavigation { get; set; } = new List<Test>();
 

@@ -1,20 +1,8 @@
 ﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
 using Safety_Wheel.ViewModels.CreateTestsVM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Safety_Wheel.Pages.Curator
 {
@@ -54,7 +42,7 @@ namespace Safety_Wheel.Pages.Curator
 
             if (vm.IsCreateCard)
             {
-                CuratorMainPage.GlobalFrameCurator
+                MainNavigation.GlobalFrameCurator
                     ?.Navigate(new CuratorCreateTestsPage(null));
                 return;
             }
@@ -66,7 +54,7 @@ namespace Safety_Wheel.Pages.Curator
 
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
 
-            CuratorMainPage.GlobalFrameCurator
+            MainNavigation.GlobalFrameCurator
                 ?.Navigate(new CuratorCreateTestsPage(vm.Test));
 
             dm.IsLoading = false;

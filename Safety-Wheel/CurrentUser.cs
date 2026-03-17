@@ -8,16 +8,16 @@ namespace Safety_Wheel
 {
     public static class CurrentUser
     {
+        public static byte TypeUser { get; set; }
         public static int Id { get; set; }
         public static string Name { get; set; }
-        public static string UserType { get; set; }
         public static string Login { get; set; }
 
         public static void Clear()
         {
             Id = 0;
             Name = string.Empty;
-            UserType = string.Empty;
+            TypeUser = 0;
         }
     }
 }
