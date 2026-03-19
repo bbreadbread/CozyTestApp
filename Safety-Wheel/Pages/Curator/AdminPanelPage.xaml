@@ -187,7 +187,7 @@
             </TabControl>
         </Grid>
 
-        <Grid x:Name="GridUsersData1" Grid.Column="2" Visibility="{Binding SelectedTab, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Users}">
+        <Grid x:Name="GridUsersData1" Grid.Column="2"  Visibility="{Binding UsersVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="108"/>
                 <RowDefinition/>
@@ -267,7 +267,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="GridUsersData2" Grid.Column="2"  Visibility="{Binding SelectedTab, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Requests}">
+        <Grid x:Name="GridUsersData2" Grid.Column="2"  Visibility="{Binding RequestsVisibility}">
             <Grid.Resources>
                 <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}"/>
                 <Style TargetType="PasswordBox" BasedOn="{StaticResource ShellPasswordBox}"/>
@@ -316,7 +316,7 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="GridUsersData3" Grid.Column="2" Visibility="{Binding SelectedTab, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Groups}">
+        <Grid x:Name="GridUsersData3" Grid.Column="2"  Visibility="{Binding GroupsVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="108"/>
                 <RowDefinition/>

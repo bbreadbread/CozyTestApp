@@ -1,6 +1,7 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CozyTest.ViewModels.CuratorVM
 {
@@ -10,14 +11,57 @@ namespace CozyTest.ViewModels.CuratorVM
         public enum TabType { Users, Requests, Groups }
 
         private TabType _selectedTab = TabType.Users;
+
         public TabType SelectedTab
         {
             get => _selectedTab;
             set
             {
                 _selectedTab = value;
+                switch (_selectedTab)
+                {
+                    case TabType.Users:
+                        UsersVisibility = Visibility.Visible;
+                        RequestsVisibility = Visibility.Collapsed;
+                        GroupsVisibility = Visibility.Collapsed;
+                        break;
+                    case TabType.Requests:
+                        UsersVisibility = Visibility.Collapsed;
+                        RequestsVisibility = Visibility.Visible;
+                        GroupsVisibility = Visibility.Collapsed;
+                        break;
+                    case TabType.Groups:
+                        UsersVisibility = Visibility.Collapsed;
+                        RequestsVisibility = Visibility.Collapsed;
+                        GroupsVisibility = Visibility.Visible;
+                        break;
+                }
+                
                 OnPropertyChanged(nameof(SelectedTab));
             }
+        }
+
+        private Visibility _usersVisibility = Visibility.Collapsed;
+        public Visibility UsersVisibility
+        {
+            get => _usersVisibility;
+            set { _usersVisibility = value; OnPropertyChanged(); }
+        }
+
+        private Visibility _requestsVisibility = Visibility.Collapsed;
+        public Visibility RequestsVisibility
+        {
+            get => _requestsVisibility;
+            set { _requestsVisibility = value; OnPropertyChanged(); }
+
+        }
+
+        private Visibility _groupsVisibility = Visibility.Collapsed;
+        public Visibility GroupsVisibility
+        {
+            get => _groupsVisibility;
+            set { _groupsVisibility = value; OnPropertyChanged(); }
+
         }
 
         ParticipantService _participantService = new();

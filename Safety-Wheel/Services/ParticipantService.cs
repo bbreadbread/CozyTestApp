@@ -9,6 +9,7 @@ namespace CozyTest.Services
     {
         private readonly CozyTestContext _db = BaseDbService.Instance.Context;
         public ObservableCollection<Participant> Participants { get; set; } = new();
+        public ObservableCollection<ParticipantsPublicTest> ParticipantsPublicTests;
 
         public ParticipantService()
         {
@@ -124,5 +125,6 @@ namespace CozyTest.Services
             }
             return Participants;
         }
+
     }
 }

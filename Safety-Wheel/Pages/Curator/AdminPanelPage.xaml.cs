@@ -81,7 +81,7 @@ namespace CozyTest.Pages.Curator
         }
         private void Button_PublishTest(object sender, RoutedEventArgs e)
         {
-            ShellWindow window = new ShellWindow(new PublicationDetails());
+            ShellWindow window = new ShellWindow(new PublicationDetails(_viewModel.SelectedTest.Id));
             window.Show();
         }
     }

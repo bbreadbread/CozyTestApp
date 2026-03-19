@@ -10,7 +10,6 @@ public partial class Test : ObservableObject
     private int _criteriaId;
     private int _maxNumPassing;
     private bool? _isArchive;
-    private bool? _isPublic;
     private string _description;
     private string _name;
     private int _timeLimitSecond;
@@ -68,12 +67,6 @@ public partial class Test : ObservableObject
     {
         get => _description;
         set => SetProperty(ref _description, value);
-    }
-
-    public bool? IsPublic
-    {
-        get => _isPublic;
-        set => SetProperty(ref _isPublic, value);
     }
 
     public bool? IsArchive

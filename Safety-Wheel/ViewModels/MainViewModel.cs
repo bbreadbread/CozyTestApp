@@ -533,8 +533,14 @@ namespace CozyTest.ViewModels
                 if (value == null || _isNavigating) return;
                 if (!SetProperty(ref _selectedMainMenuItem, value)) return;
 
-                // Запускаем асинхронно, не блокируем сеттер
-                _ = LoadContentAsync(value);
+                _ = LoadContentAsync(value).ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() =>
+                            MessageBox.Show($"Ошибка: {t.Exception?.InnerException?.Message}"));
+                    }
+                }, TaskScheduler.Current);
             }
         }
 

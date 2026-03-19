@@ -8,11 +8,12 @@ namespace CozyTest.Shells.Curator
     /// </summary>
     public partial class PublicationDetails : UserControl
     {
-        PublicDetailsViewModel PublicDetailsViewModel = new();
-        public PublicationDetails()
+        PublicDetailsViewModel _publicDetailsViewModel = new();
+        public PublicationDetails(int testId)
         {
             InitializeComponent();
-            DataContext = PublicDetailsViewModel;
+            _publicDetailsViewModel.currentTestId = testId;
+            DataContext = _publicDetailsViewModel;
         }
     }
 }

@@ -16,20 +16,21 @@ namespace CozyTest.Services
         public ObservableCollection<Group> Group { get; set; } = new();
         public GroupService()
         {
-            GetAllGroupsForUser();
+
         }
         public void GetAllGroupsForUser()
         {
-            var userGroups = _db.Groups
-                               .Include(ug => ug.Participants)
-                               .ToList();
+            //var userGroups = _db.Groups
+            //                   .Include(ug => ug.Participants)
+            //                   .Where(u => u.Participants.Any(p => p.Id == CurrentUser.Id))
+            //                   .ToList();
 
-            Group.Clear();
+            //Group.Clear();
 
-            foreach (var userGroup in userGroups)
-            {
-                Group.Add(userGroup);
-            }
+            //foreach (var userGroup in userGroups)
+            //{
+            //    Group.Add(userGroup);
+            //}
         }
         public void GetAllGroupsForUser(int userId)
         {
@@ -46,19 +47,49 @@ namespace CozyTest.Services
             }
         }
         //нашли доступные группы
-        public ObservableCollection<Group> GetAllGroupsForCurator(int curatorId)
+        public ObservableCollection<Group> GetAllGroupsForCurator(int curatorId, int testId)
         {
             var groups = _db.Groups
                               .Include(ug => ug.Curator)
+                              .Include(ug => ug.Participants)
                               .Where(u => u.CuratorId == curatorId)
                               .ToList();
             Group.Clear();
 
             foreach (var userGroup in groups)
             {
+                userGroup.IsPublished = IsTestPublishedForAllParticipants(userGroup.Id, testId);
                 Group.Add(userGroup);
             }
             return Group;
+        }
+
+        private bool IsTestPublishedForAllParticipants(int groupId, int testId)
+        {
+            var participants = GetAllParticipantForGroup(groupId);
+
+            if (!participants.Any())
+                return false;
+
+            foreach (var participant in participants)
+            {
+                var isPublished = _db.ParticipantsPublicTests
+                                    .Any(ppt => ppt.ParticipantId == participant.Id && ppt.TestId == testId);
+
+                if (!isPublished)
+                    return false;
+            }
+            return true;
+        }
+
+        public List<Participant> GetAllParticipantForGroup(int groupId)
+        {
+            var part = _db.Participants
+                .Include(p => p.Groups)
+                .Where(u => u.Groups.Any(p => p.Id == groupId))
+                .ToList();
+
+            return part;
         }
     }
 }

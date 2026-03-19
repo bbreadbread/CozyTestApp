@@ -7,7 +7,8 @@ namespace CozyTest.Models;
 
 public partial class Participant : ObservableObject
 {
-
+    ParticipantPublicTestService _participantService = new();
+    
     private int _id;
     private string? _name;
     private string? _login;
@@ -65,5 +66,22 @@ public partial class Participant : ObservableObject
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
     public virtual ICollection<Test> Tests { get; set; } = new List<Test>();
 
-   
+    ///////////////////
+
+    [NotMapped]
+    private bool _isPublished;
+    [NotMapped]
+    public bool IsPublished
+    {
+        get 
+        {
+            IsPublished = _participantService.IsBindingUserTest(Id);
+            return _isPublished;
+        }
+
+        set
+        {
+            SetProperty(ref _isPublished, value);
+        }
+    }
 }

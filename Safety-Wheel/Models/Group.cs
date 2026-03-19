@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows;
 
 namespace CozyTest.Models;
 
@@ -43,17 +44,11 @@ public partial class Group : ObservableObject
     {
         get
         {
-            _groupService.GetAllGroupsForCurator(CurrentUser.Id);
-
-            _isPublished = true;
             return _isPublished;
         }
         set
         {
-            if (SetProperty(ref _isPublished, value))
-            {
-
-            }
+            SetProperty(ref _isPublished, value);
         }
     }
 }

@@ -37,17 +37,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
             }
             else return;
         }
-
-        public bool? IsPublic
-        {
-            get => Test.IsPublic;
-            set
-            {
-                Test.IsPublic = value;
-                OnPropertyChanged();
-                _testService.Update(Test);
-            }
-        }
     }
 }
 

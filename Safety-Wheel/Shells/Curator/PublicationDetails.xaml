@@ -5,30 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CozyTest.Shells.Curator"
              mc:Ignorable="d" 
-             Height="700" Width="875">
+             Height="700" Width="875"
+             Margin="-35">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="170"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Опубликовать" Style="{StaticResource ShellMainText}"/>
-            <RadioButton Content="Всем привязанным тестируемым и группам" Style="{StaticResource MahApps.Styles.RadioButton.Win10}"/>
-            <RadioButton Content="Выбрать группы" Style="{StaticResource MahApps.Styles.RadioButton.Win10}"/>
-            <RadioButton Content="Выбрать тестируемых" Style="{StaticResource MahApps.Styles.RadioButton.Win10}"/>
+            <TextBlock Text="Опубликовать:" Style="{StaticResource ShellMainText}" HorizontalAlignment="Left"/>
+            <RadioButton Command="{Binding AllBindCommand}" Content="Всем привязанным вашим тестируемым и группам" Style="{StaticResource MaterialDesignTabRadioButton}" HorizontalAlignment="Left" TextElement.FontSize="20"/>
+            <RadioButton Command="{Binding GroupsBindCommand}" Content="Выбранным группам" Style="{StaticResource MaterialDesignTabRadioButton}"  HorizontalAlignment="Left" TextElement.FontSize="20"/>
+            <RadioButton Command="{Binding ParticipantsBindCommand}" Content="Выбранным тестируемым" Style="{StaticResource MaterialDesignTabRadioButton}" HorizontalAlignment="Left" TextElement.FontSize="20"/>
         </StackPanel>
         
         <StackPanel Grid.Row="1">
-            <DataGrid BorderThickness="0" ItemsSource="{Binding GroupsList}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid Visibility="{Binding GroupsDataGridVisibility}" BorderThickness="0" ItemsSource="{Binding GroupsList}" SelectedItem="{Binding SelectedGroup}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Опубликовать">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding IsPublished, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                              Command="{Binding DataContext.ArchiveParticipantCommand, 
+                              Command="{Binding DataContext.SwitchPublisedGroupsCommand, 
                               RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                              CommandParameter="{Binding}"
-                              IsEnabled="False"/>
+                              CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -36,6 +36,29 @@
                     <DataGridTextColumn Binding="{Binding Id}" Header="ID Группы"/>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Название"/>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Кол-во участников"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DataGrid Visibility="{Binding ParticipantsDataGridVisibility}" BorderThickness="0" ItemsSource="{Binding ParticipantsList}" SelectedItem="{Binding SelectedParticipant}" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Опубликовать">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsPublished, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                       Command="{Binding DataContext.SwitchPublisedParticipantCommand, 
+                       RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                       CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Binding="{Binding Id}" Header="ID"/>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="ФИО"/>
+                    <DataGridTextColumn Binding="{Binding Login}" Header="Логин"/>
+                    <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель"/>
 
                 </DataGrid.Columns>
             </DataGrid>
