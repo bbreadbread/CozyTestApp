@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Safety_Wheel.Pages.Curator.SelectionTape"
+﻿<UserControl x:Class="CozyTest.Pages.Curator.SelectionTape"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Safety_Wheel.Pages.Curator"
+      xmlns:local="clr-namespace:CozyTest.Pages.Curator"
       mc:Ignorable="d" 
       d:DesignHeight="45" HorizontalAlignment="Stretch">
     <Grid Background="{StaticResource LightSwamp}">

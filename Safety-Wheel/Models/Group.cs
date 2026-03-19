@@ -1,13 +1,30 @@
-﻿using System;
+﻿using CozyTest.Services;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Safety_Wheel.Models;
+namespace CozyTest.Models;
 
-public partial class Group
+public partial class Group : ObservableObject
 {
-    public int Id { get; set; }
+    GroupService _groupService = new();
 
-    public string? Name { get; set; }
+    private int _id;
+    private string? _name;
+    private string? _description;
+    private int _curatorId;
+
+    public int Id
+    {
+        get => _id;
+        set => SetProperty(ref _id, value);
+    }
+
+    public string? Name
+    {
+        get => _name;
+        set => SetProperty(ref _name, value);
+    }
 
     public int? CuratorId { get; set; }
 
@@ -15,7 +32,28 @@ public partial class Group
 
     public virtual Curator? Curator { get; set; }
 
-    public virtual ICollection<Participant> Participants { get; set; } = new List<Participant>();
-    public virtual ICollection<BGroupsParticipant> BGroupsParticipant { get; set; } = new List<BGroupsParticipant>();
+    public virtual List<Participant> Participants { get; set; } = new List<Participant>();
 
+    ///////////////////
+    
+    [NotMapped]
+    private bool _isPublished;
+    [NotMapped]
+    public bool IsPublished
+    {
+        get
+        {
+            _groupService.GetAllGroupsForCurator(CurrentUser.Id);
+
+            _isPublished = true;
+            return _isPublished;
+        }
+        set
+        {
+            if (SetProperty(ref _isPublished, value))
+            {
+
+            }
+        }
+    }
 }

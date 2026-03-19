@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel.ViewModels
+namespace CozyTest.ViewModels
 {
     public class MenuItemViewModel : ObservableObject, IHamburgerMenuItemBase
     {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.Pages.Participant
+namespace CozyTest.Pages.Participant
 {
     /// <summary>
     /// Логика взаимодействия для PartProfilePage.xaml

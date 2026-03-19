@@ -1,18 +1,19 @@
-﻿using MahApps.Metro.IconPacks;
-using Safety_Wheel.Models;
-using Safety_Wheel.Pages.Curator;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Pages.Curator;
+using CozyTest.Pages.Participant;
+using CozyTest.Services;
+using CozyTest.ViewModels.StatisticsVM;
+using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Safety_Wheel.ViewModels.StatisticsVM;
 using System.Windows.Media.Imaging;
-using Safety_Wheel.Pages.Participant;
+using System.Windows.Threading;
 
-namespace Safety_Wheel.ViewModels
+namespace CozyTest.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
@@ -213,16 +214,15 @@ namespace Safety_Wheel.ViewModels
             _participantService.ReloadParticipants(CurrentUser.Id);
 
             if (SelectedMainMenuItem?.Tag is MainMenuType.TestResults)
-                LoadParticipantsForResults();
+                LoadParticipantsForResultsAsync();
 
             if (SelectedMainMenuItem?.Tag is MainMenuType.Statistics)
-                LoadParticipantsForStatistics();
+                LoadParticipantsForStatisticsAsync();
         }
 
         public void ResetApplicationState()
         {
             SelectedParticipant = null;
-            SelectedDate = null;
             SelectedMainMenuItem = null;
 
             MenuDatesItems.Clear();
@@ -236,325 +236,320 @@ namespace Safety_Wheel.ViewModels
             SecondMenuVisible = false;
         }
 
-        private void LoadParticipantDates(Participant participant)
-        {
-            if (participant == null) return;
+        //private async void LoadParticipantDatesAsync(Participant participant)
+        //{
+        //    if (participant == null) return;
 
-            MenuDatesItems.Clear();
-            MenuAttemptsItems.Clear();
-            CurrentContent = null;
-            MenuOptionDateItems.Clear();
+        //    MenuDatesItems.Clear();
+        //    MenuAttemptsItems.Clear();
+        //    CurrentContent = null;
+        //    MenuOptionDateItems.Clear();
 
-            List<DateTime> list = _attemptService.GetUniqueAttemptDates(participant.Id);
+        //    List<DateTime> list = _attemptService.GetUniqueAttemptDates(participant.Id);
 
-            foreach (var date in list)
-            {
-                var dateItem = new MenuItemViewModel(this)
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = $"{date:dd.MM}",
-                        FontSize = 20,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = Brushes.White,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    Label = $"Дата: {date:dd.MM.yyyy}",
-                    ToolTip = $"Кликните, чтобы увидеть попытки за {date:dd.MM.yyyy}",
-                    Tag = new DateInfo
-                    {
-                        Date = date,
-                        Participant = participant
-                    }
-                };
+        //    foreach (var date in list)
+        //    {
+        //        var dateItem = new MenuItemViewModel(this)
+        //        {
+        //            Icon = new TextBlock
+        //            {
+        //                Text = $"{date:dd.MM}",
+        //                FontSize = 20,
+        //                FontWeight = FontWeights.Bold,
+        //                Foreground = Brushes.White,
+        //                HorizontalAlignment = HorizontalAlignment.Center,
+        //                VerticalAlignment = VerticalAlignment.Center
+        //            },
+        //            Label = $"Дата: {date:dd.MM.yyyy}",
+        //            ToolTip = $"Кликните, чтобы увидеть попытки за {date:dd.MM.yyyy}",
+        //            Tag = new DateInfo
+        //            {
+        //                Date = date,
+        //                Participant = participant
+        //            }
+        //        };
 
-                MenuDatesItems.Add(dateItem);
-            }
+        //        MenuDatesItems.Add(dateItem);
+        //    }
 
-            var q = new MenuItemViewModel(this)
-            {
-                Icon = new PackIconMaterial
-                {
-                    Kind = PackIconMaterialKind.FilterMenu,
-                    Foreground = Brushes.White,
-                    Width = 30,
-                    Height = 30
-                },
-                Label = "Фильтрация дат",
-                ToolTip = "Фильтрация дат",
-                Tag = MainMenuType.MonthFilter
-            };
+        //    var q = new MenuItemViewModel(this)
+        //    {
+        //        Icon = new PackIconMaterial
+        //        {
+        //            Kind = PackIconMaterialKind.FilterMenu,
+        //            Foreground = Brushes.White,
+        //            Width = 30,
+        //            Height = 30
+        //        },
+        //        Label = "Фильтрация дат",
+        //        ToolTip = "Фильтрация дат",
+        //        Tag = MainMenuType.MonthFilter
+        //    };
 
-            MenuOptionDateItems.Add(q);
+        //    MenuOptionDateItems.Add(q);
 
-            SelectedDate = null;
+        //    SelectedDate = null;
 
-        }
+        //}
 
-        private void LoadParticipantDates(Participant participant, int? year, int? month)
-        {
-            if (participant == null) return;
+        //private async void LoadParticipantDatesAsync(Participant participant, int? year, int? month)
+        //{
+        //    if (participant == null) return;
 
-            MenuDatesItems.Clear();
-            MenuAttemptsItems.Clear();
-            MenuOptionDateItems.Clear();
-            CurrentContent = null;
+        //    MenuDatesItems.Clear();
+        //    MenuAttemptsItems.Clear();
+        //    MenuOptionDateItems.Clear();
+        //    CurrentContent = null;
 
-            var dates = _attemptService
-                .GetUniqueAttemptDates(participant.Id)
-                .AsEnumerable();
+        //    var dates = _attemptService
+        //        .GetUniqueAttemptDates(participant.Id)
+        //        .AsEnumerable();
 
-            if (year.HasValue)
-                dates = dates.Where(d => d.Year == year.Value);
+        //    if (year.HasValue)
+        //        dates = dates.Where(d => d.Year == year.Value);
 
-            if (month.HasValue)
-                dates = dates.Where(d => d.Month == month.Value);
+        //    if (month.HasValue)
+        //        dates = dates.Where(d => d.Month == month.Value);
 
-            foreach (var date in dates.OrderBy(d => d))
-            {
-                MenuDatesItems.Add(new MenuItemViewModel(this)
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = $"{date:dd.MM}",
-                        FontSize = 20,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = Brushes.White
-                    },
-                    Label = $"Дата: {date:dd.MM.yyyy}",
-                    Tag = new DateInfo
-                    {
-                        Date = date,
-                        Participant = participant
-                    }
-                });
-            }
+        //    foreach (var date in dates.OrderBy(d => d))
+        //    {
+        //        MenuDatesItems.Add(new MenuItemViewModel(this)
+        //        {
+        //            Icon = new TextBlock
+        //            {
+        //                Text = $"{date:dd.MM}",
+        //                FontSize = 20,
+        //                FontWeight = FontWeights.Bold,
+        //                Foreground = Brushes.White
+        //            },
+        //            Label = $"Дата: {date:dd.MM.yyyy}",
+        //            Tag = new DateInfo
+        //            {
+        //                Date = date,
+        //                Participant = participant
+        //            }
+        //        });
+        //    }
 
-            var q = new MenuItemViewModel(this)
-            {
-                Icon = new PackIconMaterial
-                {
-                    Kind = PackIconMaterialKind.FilterMenu,
-                    Foreground = Brushes.White,
-                    Width = 30,
-                    Height = 30
-                },
-                Label = "Фильтрация дат",
-                ToolTip = "Фильтрация дат",
-                Tag = MainMenuType.MonthFilter
-            };
+        //    var q = new MenuItemViewModel(this)
+        //    {
+        //        Icon = new PackIconMaterial
+        //        {
+        //            Kind = PackIconMaterialKind.FilterMenu,
+        //            Foreground = Brushes.White,
+        //            Width = 30,
+        //            Height = 30
+        //        },
+        //        Label = "Фильтрация дат",
+        //        ToolTip = "Фильтрация дат",
+        //        Tag = MainMenuType.MonthFilter
+        //    };
 
-            if (dates.Count() == 0)
-            {
-                MenuDatesItems.Add(q);
-                return;
-            }
+        //    if (dates.Count() == 0)
+        //    {
+        //        MenuDatesItems.Add(q);
+        //        return;
+        //    }
 
-            MenuOptionDateItems.Add(q);
-        }
+        //    MenuOptionDateItems.Add(q);
+        //}
 
-        private void LoadDateAttempts(DateInfo dateInfo)
-        {
-            if (dateInfo == null) return;
 
-            MenuAttemptsItems.Clear();
-            CurrentContent = null;
-
-            _attemptService.GetAll(participantId: dateInfo.Participant.Id, date: dateInfo.Date);
-
-            foreach (var attempt in _attemptService.Attempts.OrderByDescending(a => a.StartedAt))
-            {
-                var attemptItem = new MenuItemViewModel(this)
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = $"{attempt.StartedAt:HH:mm}",
-                        FontSize = 16,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = Brushes.White,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    Label = $"+ : {attempt.Score?.ToString() ?? "Не оценено"}",
-                    ToolTip = $"Нажмите для просмотра теста\nВремя: {attempt.StartedAt:HH:mm}\nРезультат: {attempt.Score}",
-                    Tag = attempt
-                };
-                MenuAttemptsItems.Add(attemptItem);
-            }
-            SelectedAttempt = null;
-        }
-
-        private void LoadTests()
+        private async Task LoadTestsAsync()
         {
             MenuTestsItems.Clear();
             CurrentContent = null;
 
-            _testService.GetAll(null, CurrentUser.Id);
-
-            var attemptItemAll = new MenuItemViewModel(this)
+            await Task.Run(() =>
             {
-                Icon = new TextBlock
-                {
-                    Text = $"Все тесты",
-                    FontSize = 16,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                },
-                Label = $"Нажмите для просмотра всех тестов",
-                ToolTip = $"Нажмите для просмотра всех тестов",
-                Tag = null
-            };
-            MenuTestsItems.Add(attemptItemAll);
+                _testService.GetAll(null, CurrentUser.Id);
+            });
 
-            foreach (var test in _testService.Tests)
+
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
-                var attemptItem = new MenuItemViewModel(this)
+                var attemptItemAll = new MenuItemViewModel(this)
                 {
                     Icon = new TextBlock
                     {
-                        Text = $"{test.Name}",
+                        Text = $"Все тесты",
                         FontSize = 16,
                         FontWeight = FontWeights.Bold,
                         Foreground = Brushes.White,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center
                     },
-                    Label = $"лабел",
-                    ToolTip = $"тултип",
-                    Tag = test
+                    Label = $"Нажмите для просмотра всех тестов",
+                    ToolTip = $"Нажмите для просмотра всех тестов",
+                    Tag = null
                 };
-                MenuTestsItems.Add(attemptItem);
-            }
-        }        
+                MenuTestsItems.Add(attemptItemAll);
 
-        private void LoadParticipantsForResults()
-        {
-            MenuItems.Clear();
-
-            foreach (var st in _participantService.Participants)
-            {
-                var view = new MenuItemViewModel(this)
+                foreach (var test in _testService.Tests)
                 {
-                    Icon = new TextBlock
+                    var attemptItem = new MenuItemViewModel(this)
                     {
-                        Text = $"{st.Name}",
-                        FontSize = 20,
-                        FontWeight = FontWeights.Bold,
-                        Foreground = Brushes.White,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    },
-                    Label = $"Попыток: {st.Attempts?.Count ?? 0}",
-                    ToolTip = $"Студент: {st.Name}",
-                    Tag = st
-                };
-
-                MenuItems.Add(view);
-            }
+                        Icon = new TextBlock
+                        {
+                            Text = $"{test.Name}",
+                            FontSize = 16,
+                            FontWeight = FontWeights.Bold,
+                            Foreground = Brushes.White,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+                        Label = $"лабел",
+                        ToolTip = $"тултип",
+                        Tag = test
+                    };
+                    MenuTestsItems.Add(attemptItem);
+                }
+            });
         }
-        private void LoadParticipantsForStatistics()
+
+        private async Task LoadParticipantsForResultsAsync()
         {
             MenuItems.Clear();
 
-            MenuItems.Add(new MenuItemViewModel(this)
-            {
-                Icon = new TextBlock
-                {
-                    Text = "Все",
-                    FontSize = 20,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                },
-                Label = "Общая статистика",
-                ToolTip = "Показать статистику по всем студентам",
-                Tag = null
-            });
 
-            foreach (var st in _participantService.Participants)
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+            {
+                foreach (var st in _participantService.Participants)
+                {
+                    var view = new MenuItemViewModel(this)
+                    {
+                        Icon = new TextBlock
+                        {
+                            Text = $"{st.Name}",
+                            FontSize = 20,
+                            FontWeight = FontWeights.Bold,
+                            Foreground = Brushes.White,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+                        Label = $"Попыток: {st.Attempts?.Count ?? 0}",
+                        ToolTip = $"Студент: {st.Name}",
+                        Tag = st
+                    };
+
+                    MenuItems.Add(view);
+                }
+            });
+        }
+        private async Task LoadParticipantsForStatisticsAsync()
+        {
+            MenuItems.Clear();
+
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 MenuItems.Add(new MenuItemViewModel(this)
                 {
                     Icon = new TextBlock
                     {
-                        Text = $"{st.Name}",
+                        Text = "Все",
                         FontSize = 20,
                         FontWeight = FontWeights.Bold,
                         Foreground = Brushes.White,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center
                     },
-                    Label = "Статистика",
-                    ToolTip = $"Статистика по студенту: {st.Name}",
-                    Tag = st
+                    Label = "Общая статистика",
+                    ToolTip = "Показать статистику по всем студентам",
+                    Tag = null
                 });
-            }
+
+                foreach (var st in _participantService.Participants)
+                {
+                    MenuItems.Add(new MenuItemViewModel(this)
+                    {
+                        Icon = new TextBlock
+                        {
+                            Text = $"{st.Name}",
+                            FontSize = 20,
+                            FontWeight = FontWeights.Bold,
+                            Foreground = Brushes.White,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+                        Label = "Статистика",
+                        ToolTip = $"Статистика по студенту: {st.Name}",
+                        Tag = st
+                    });
+                }
+            });
         }
 
-        private void LoadTopicForEdit()
+        private async Task LoadTopicForEditAsync()
         {
             MenuItems.Clear();
             CurrentContent = null;
             _subjectService.GetAll();
 
-            MenuItems.Add(new MenuItemViewModel(this)
-            {
-                Icon = new TextBlock
-                {
-                    Text = "Все",
-                    FontSize = 20,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                },
-                Label = "Общая статистика",
-                ToolTip = "Показать статистику по всем студентам",
-                Tag = null
-            });
-
-            foreach (var sub in _subjectService.Topics)
+            await Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             {
                 MenuItems.Add(new MenuItemViewModel(this)
                 {
                     Icon = new TextBlock
                     {
-                        Text = $"{sub.Name}",
+                        Text = "Все",
                         FontSize = 20,
                         FontWeight = FontWeights.Bold,
                         Foreground = Brushes.White,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center
                     },
-                    Label = sub.Name,
-                    ToolTip = $"Показать все тесты для {sub.Name}",
-                    Tag = sub
+                    Label = "Общая статистика",
+                    ToolTip = "Показать статистику по всем студентам",
+                    Tag = null
                 });
-            }
+
+                foreach (var sub in _subjectService.Topics)
+                {
+                    MenuItems.Add(new MenuItemViewModel(this)
+                    {
+                        Icon = new TextBlock
+                        {
+                            Text = $"{sub.Name}",
+                            FontSize = 20,
+                            FontWeight = FontWeights.Bold,
+                            Foreground = Brushes.White,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center
+                        },
+                        Label = sub.Name,
+                        ToolTip = $"Показать все тесты для {sub.Name}",
+                        Tag = sub
+                    });
+                }
+            });
         }
+
+        private bool _isNavigating;
         public MenuItemViewModel SelectedMainMenuItem
         {
             get => _selectedMainMenuItem;
             set
             {
-                if (value == null)
-                    return;
+                if (value == null || _isNavigating) return;
+                if (!SetProperty(ref _selectedMainMenuItem, value)) return;
 
-                if (!SetProperty(ref _selectedMainMenuItem, value))
-                    return;
+                // Запускаем асинхронно, не блокируем сеттер
+                _ = LoadContentAsync(value);
+            }
+        }
 
+        private async Task LoadContentAsync(MenuItemViewModel value)
+        {
+            _isNavigating = true;
+
+            try
+            {
                 MainNavigation.GlobalFrameCurator?.Navigate(new Page());
-
                 MenuItems.Clear();
                 MenuDatesItems.Clear();
                 MenuAttemptsItems.Clear();
                 CurrentContent = null;
                 SelectedParticipant = null;
-                SelectedDate = null;
                 SelectedAttempt = null;
 
                 if (value.Tag is MainMenuType menuType)
@@ -565,16 +560,16 @@ namespace Safety_Wheel.ViewModels
                             AttemptsTableVisible = true;
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
-                            LoadParticipantsForResults();
+                            await LoadParticipantsForResultsAsync(); 
                             MainNavigation.GlobalFrameCurator?.Navigate(new CuratorWelcomePage(true));
                             break;
 
                         case MainMenuType.Statistics:
-                            LoadTests();
+                            await LoadTestsAsync();
                             AttemptsTableVisible = false;
                             StatisticTableVisible = true;
                             SecondMenuVisible = true;
-                            LoadParticipantsForStatistics();
+                            await LoadParticipantsForStatisticsAsync();
                             MainNavigation.GlobalFrameCurator?.Navigate(new CuratorStatisticsPage());
                             break;
 
@@ -582,12 +577,12 @@ namespace Safety_Wheel.ViewModels
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
-                            LoadTopicForEdit();
+                            await LoadTopicForEditAsync();
                             MainNavigation.GlobalFrameCurator?.Navigate(new CuratorAllTests(null));
                             break;
-                        
+
                         case MainMenuType.Home:
-                            LoadTests();
+                            await LoadTestsAsync();
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
@@ -600,7 +595,7 @@ namespace Safety_Wheel.ViewModels
                             SecondMenuVisible = false;
                             MainNavigation.GlobalFrameCurator?.Navigate(new PartProfilePage());
                             break;
-                        
+
                         case MainMenuType.CuratorManager:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
@@ -609,6 +604,10 @@ namespace Safety_Wheel.ViewModels
                             break;
                     }
                 }
+            }
+            finally
+            {
+                _isNavigating = false;
             }
         }
 
@@ -657,7 +656,6 @@ namespace Safety_Wheel.ViewModels
                     switch (menuType)
                     {
                         case MainMenuType.TestResults:
-                            LoadParticipantDates(participant);
                             CurrentParticipant = participant;
                             break;
 
@@ -666,29 +664,6 @@ namespace Safety_Wheel.ViewModels
                             CuratorStatisticsPage.DataPageCurator?.LoadStatistics(participant, SelectedTest?.Tag as Test);
                             break;
                     }
-                }
-            }
-        }
-
-
-        public MenuItemViewModel SelectedDate
-        {
-            get => _selectedDate;
-            set
-            {
-                if (!SetProperty(ref _selectedDate, value))
-                    return;
-
-                if (value?.Tag is MainMenuType.MonthFilter)
-                {
-
-                    return;
-                }
-
-                if (value?.Tag is DateInfo dateInfo)
-                {
-                    LoadDateAttempts(dateInfo);
-                    SelectedDateValue = dateInfo.Date;
                 }
             }
         }
@@ -705,7 +680,7 @@ namespace Safety_Wheel.ViewModels
                         var test = _testService.GetTestById(attempt.TestId);
                         int? sec = attempt.FinishedAt == null ? null : (int)(attempt.FinishedAt - attempt.StartedAt)?.TotalSeconds;
 
-                        var studPage = new Safety_Wheel.Pages.Participant.PartTest(test, sec, true, attempt);
+                        var studPage = new CozyTest.Pages.Participant.PartTest(test, sec, true, attempt);
                         MainNavigation.GlobalFrameCurator?.Navigate(studPage);
                     }
                 }

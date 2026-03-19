@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Safety_Wheel.ForShellWindow.CreateEditParticipantAdmin"
+﻿<UserControl x:Class="CozyTest.ForShellWindow.CreateEditParticipantAdmin"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Safety_Wheel.ForShellWindow"
+      xmlns:local="clr-namespace:CozyTest.ForShellWindow"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
   mc:Ignorable="d" 
   Height="800" Width="750" Margin="60 55">
@@ -37,21 +37,21 @@
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
 
-            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding SelectedParticipant.Name}"/>
-            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding SelectedParticipant.Login}"/>
-            <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding SelectedParticipant.Password}"/>
+            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding NameParticipant}" />
+            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding LoginParticipant}"/>
+            <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding PasswordParticipant}"/>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center">
                 <RadioButton Content="Закрепить за мной" FontSize="24"/>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Content="Закрепить за " FontSize="24"/>
-                    <ComboBox Width="290" Style="{StaticResource UpMenuTestComboBox}" DisplayMemberPath="Name" ItemsSource="{Binding CuratorsList}" TextElement.FontSize="24"/>
+                    <ComboBox Width="290" Style="{StaticResource UpMenuTestComboBox}" DisplayMemberPath="Name" ItemsSource="{Binding CuratorsList}" SelectedItem="{Binding SelectedCuratorComboBox}" TextElement.FontSize="24"/>
                 </StackPanel>
                 <RadioButton Content="Не закреплять ни за кем" FontSize="24"/>
             </StackPanel>
 
             <Button Grid.Row="8" Style="{StaticResource ShellButton}" Content="Привязка к группам" FontSize="30" Click="Button_Bind"/>
-            <Button Grid.Row="10" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30"/>
+            <Button Grid.Row="10" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30" Command="{Binding SaveParticipantCommand}"/>
 
         </Grid>
     </StackPanel>

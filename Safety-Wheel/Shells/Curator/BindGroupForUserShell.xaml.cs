@@ -1,4 +1,4 @@
-﻿using Safety_Wheel.ViewModels.CuratorVM;
+﻿using CozyTest.ViewModels.CuratorVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.ForShellWindow
+namespace CozyTest.ForShellWindow
 {
     /// <summary>
     /// Логика взаимодействия для BindGroupForUser.xaml

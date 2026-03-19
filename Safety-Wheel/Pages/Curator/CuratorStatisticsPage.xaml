@@ -1,8 +1,8 @@
-﻿<UserControl x:Class="Safety_Wheel.Pages.Curator.CuratorStatisticsPage"
+﻿<UserControl x:Class="CozyTest.Pages.Curator.CuratorStatisticsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:scottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
-             xmlns:local="clr-namespace:Safety_Wheel.Pages.Curator"
+             xmlns:local="clr-namespace:CozyTest.Pages.Curator"
              Loaded="CuratorStatisticsPage_Loaded">
 
     <Grid Margin="10">

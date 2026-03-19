@@ -1,9 +1,9 @@
-﻿using Safety_Wheel.Models;
+﻿using CozyTest.Models;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.IO;
 
-namespace Safety_Wheel.ViewModels.CreateTestsVM
+namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class OptionCreateViewModel : ObservableObject
     {

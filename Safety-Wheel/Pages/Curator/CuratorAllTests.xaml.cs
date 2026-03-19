@@ -1,10 +1,10 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.ViewModels.CreateTestsVM;
+﻿using CozyTest.Models;
+using CozyTest.ViewModels.CreateTestsVM;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Safety_Wheel.Pages.Curator
+namespace CozyTest.Pages.Curator
 {
     /// <summary>
     /// Логика взаимодействия для CuratorAllTests.xaml

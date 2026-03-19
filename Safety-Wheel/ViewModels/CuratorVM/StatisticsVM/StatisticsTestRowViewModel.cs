@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel.ViewModels.StatisticsVM
+namespace CozyTest.ViewModels.StatisticsVM
 {
     public class StatisticsTestRowViewModel
     {

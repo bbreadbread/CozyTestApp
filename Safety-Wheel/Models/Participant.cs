@@ -1,35 +1,69 @@
-﻿using System;
+﻿using CozyTest.Services;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Safety_Wheel.Models;
+namespace CozyTest.Models;
 
-public partial class Participant
+public partial class Participant : ObservableObject
 {
-    public int Id { get; set; }
 
-    public string? Name { get; set; }
+    private int _id;
+    private string? _name;
+    private string? _login;
+    private string? _password;
+    private int? _curatorCreateId;
+    private bool? _isArchive;
+    private Curator? _curatorCreate;
 
-    public string? Login { get; set; }
+    public int Id
+    {
+        get => _id;
+        set => SetProperty(ref _id, value);
+    }
 
-    public string? Password { get; set; }
+    public string? Name
+    {
+        get => _name;
+        set => SetProperty(ref _name, value);
+    }
 
-    public int? CuratorCreateId { get; set; }
+    public string? Login
+    {
+        get => _login;
+        set => SetProperty(ref _login, value);
+    }
 
-    public bool? IsArchive { get; set; }
+    public string? Password
+    {
+        get => _password;
+        set => SetProperty(ref _password, value);
+    }
+
+    public int? CuratorCreateId
+    {
+        get => _curatorCreateId;
+        set => SetProperty(ref _curatorCreateId, value);
+    }
+
+    public bool? IsArchive
+    {
+        get => _isArchive;
+        set => SetProperty(ref _isArchive, value);
+    }
+
+    public virtual Curator? CuratorCreate
+    {
+        get => _curatorCreate;
+        set => SetProperty(ref _curatorCreate, value);
+    }
 
     public virtual ICollection<Attempt> Attempts { get; set; } = new List<Attempt>();
-
-    public virtual Curator? CuratorCreate { get; set; }
-
-    public virtual ICollection<BParticipantAssignedTest> BParticipantAssignedTest { get; set; } = new List<BParticipantAssignedTest>();
-    public virtual ICollection<BParticipantFavoriteTest> BParticipantFavoriteTest { get; set; } = new List<BParticipantFavoriteTest>();
-    public virtual ICollection<BCuratorsParticipant> BCuratorsParticipant { get; set; } = new List<BCuratorsParticipant>();
-    public virtual ICollection<BGroupsParticipant> BGroupsParticipant { get; set; } = new List<BGroupsParticipant>();
-
-
+    public virtual ICollection<ParticipantsAssignedTest> ParticipantsAssignedTests { get; set; } = new List<ParticipantsAssignedTest>();
+    public virtual ICollection<ParticipantsPublicTest> ParticipantsPublicTests { get; set; } = new List<ParticipantsPublicTest>();
     public virtual ICollection<Curator> Curators { get; set; } = new List<Curator>();
-
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
-
     public virtual ICollection<Test> Tests { get; set; } = new List<Test>();
+
+   
 }

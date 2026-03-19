@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class TestService
     {
@@ -43,7 +44,7 @@ namespace Safety_Wheel.Services
                 .Include(t => t.Topic)
                 .Include(t => t.CuratorCreate)
                 .Include(t => t.Questions)
-                .Include(t => t.DTestType);
+                .Include(t => t.TestType);
 
             if (subjectId != null)
                 query = query.Where(t => t.TopicId == subjectId);
@@ -165,7 +166,24 @@ namespace Safety_Wheel.Services
                 Tests.Clear();
             }
         }
+        public void ArchiveTest(int testId)
+        {
+            try
+            {
+                var user = Tests
+                    .FirstOrDefault(ug => ug.Id == testId);
 
+                if (user != null)
+                {
+                    user.IsArchive = !user.IsArchive;
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
 
     }
 }

@@ -1,5 +1,5 @@
-﻿using Safety_Wheel.Pages.Curator;
-using Safety_Wheel.Services;
+﻿using CozyTest.Pages.Curator;
+using CozyTest.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using WPFCustomMessageBox;
-using Safety_Wheel.ForShellWindow;
+using CozyTest.ForShellWindow;
 
-namespace Safety_Wheel.Pages.Participant
+namespace CozyTest.Pages.Participant
 {
     /// <summary>
     /// Логика взаимодействия для MainNavigation.xaml
@@ -44,6 +44,7 @@ namespace Safety_Wheel.Pages.Participant
                             s.Login == login && s.Password == password);
             if (participant != null)
             {
+                CurrentUser.ClassUser = participant;
                 CurrentUser.TypeUser = 3;
                 CurrentUser.Id = participant.Id;
                 CurrentUser.Name = participant.Name ?? string.Empty;
@@ -61,6 +62,7 @@ namespace Safety_Wheel.Pages.Participant
             var curator = _teacherService.Curators.FirstOrDefault(t => t.Login == login && t.Password == password);
             if (curator != null)
             {
+                CurrentUser.ClassUser = _teacherService.GetCuratorById(curator.Id);
                 if (curator.IsAdmin == true)
                     CurrentUser.TypeUser = 1;
                 else CurrentUser.TypeUser = 1;

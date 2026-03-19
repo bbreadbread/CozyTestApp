@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel.Models
+namespace CozyTest.Models
 {
     public partial class UserActionLog
     {

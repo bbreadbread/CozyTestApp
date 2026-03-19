@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using CozyTest.Models;
+using Azure.Core;
 
-namespace Safety_Wheel.Models;
+namespace CozyTest.Models;
 
 public partial class CozyTestContext : DbContext
 {
@@ -15,9 +17,9 @@ public partial class CozyTestContext : DbContext
     {
     }
 
-    public virtual DbSet<Requests> Requests { get; set; }
-
     public virtual DbSet<Attempt> Attempts { get; set; }
+
+    public virtual DbSet<Criterion> Criteria { get; set; }
 
     public virtual DbSet<Curator> Curators { get; set; }
 
@@ -33,40 +35,25 @@ public partial class CozyTestContext : DbContext
 
     public virtual DbSet<ParticipantAnswer> ParticipantAnswers { get; set; }
 
+    public virtual DbSet<ParticipantsAssignedTest> ParticipantsAssignedTests { get; set; }
+    public virtual DbSet<ParticipantsPublicTest> ParticipantsPublicTests { get; set; }
+
     public virtual DbSet<Question> Questions { get; set; }
+
+    public virtual DbSet<Requests> Requests { get; set; }
 
     public virtual DbSet<Test> Tests { get; set; }
 
     public virtual DbSet<Topic> Topics { get; set; }
 
-    public virtual DbSet<BParticipantFavoriteTest> BParticipantFavoriteTest { get; set; }
-    //public virtual DbSet<BParticipantAssignedTest> BParticipantAssignedTest { get; set; }
-    //public virtual DbSet<BCuratorsParticipant> BCuratorsParticipant { get; set; }
-    //public virtual DbSet<BGroupsParticipant> BGroupsParticipant { get; set; }
+    public virtual DbSet<UserActionLog> UserActionLogs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder
-            .UseSqlServer("Server=HOME-PC;Database=cozy-test;Trusted_Connection=True;TrustServerCertificate=True");
-    }
-        
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=HOME-PC;Database=cozy-test;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
-        modelBuilder.Entity<Requests>(entity =>
-        {
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
-            entity.Property(e => e.DateTimeApplication).HasColumnType("datetime");
-            entity.Property(e => e.ReviewerId).HasColumnName("Reviewer_ID");
-
-            entity.HasOne(d => d.Reviewer).WithMany(p => p.Requests)
-                .HasForeignKey(d => d.ReviewerId)
-                .HasConstraintName("FK_Requests_Curators");
-        });
-
         modelBuilder.Entity<Attempt>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("ID");
@@ -88,11 +75,35 @@ public partial class CozyTestContext : DbContext
                 .HasConstraintName("FK_Attempts_Tests");
         });
 
+        modelBuilder.Entity<Criterion>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("ID");
+        });
+
         modelBuilder.Entity<Curator>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Curators");
+            entity.HasKey(e => e.Id).HasName("PK_Teachers");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+
+            entity.HasMany(d => d.Participants).WithMany(p => p.Curators)
+                .UsingEntity<Dictionary<string, object>>(
+                    "CuratorsParticipant",
+                    r => r.HasOne<Participant>().WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Curators_Participants_Participants"),
+                    l => l.HasOne<Curator>().WithMany()
+                        .HasForeignKey("CuratorId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Curators_Participants_Curators"),
+                    j =>
+                    {
+                        j.HasKey("CuratorId", "ParticipantId");
+                        j.ToTable("Curators_Participants");
+                        j.IndexerProperty<int>("CuratorId").HasColumnName("Curator_ID");
+                        j.IndexerProperty<int>("ParticipantId").HasColumnName("Participant_ID");
+                    });
 
             entity.HasMany(d => d.Tests).WithMany(p => p.Curators)
                 .UsingEntity<Dictionary<string, object>>(
@@ -125,7 +136,7 @@ public partial class CozyTestContext : DbContext
 
         modelBuilder.Entity<DTestType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_DTestType");
+            entity.HasKey(e => e.Id).HasName("PK_TestType");
 
             entity.ToTable("D_TestTypes", tb => tb.HasComment("Тест, опросник"));
 
@@ -140,9 +151,26 @@ public partial class CozyTestContext : DbContext
             entity.HasOne(d => d.Curator).WithMany(p => p.Groups)
                 .HasForeignKey(d => d.CuratorId)
                 .HasConstraintName("FK_Groups_Curators");
-        });
 
-        
+            entity.HasMany(d => d.Participants).WithMany(p => p.Groups)
+                .UsingEntity<Dictionary<string, object>>(
+                    "GroupsParticipant",
+                    r => r.HasOne<Participant>().WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Groups_Participants_Participants"),
+                    l => l.HasOne<Group>().WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Groups_Participants_Groups"),
+                    j =>
+                    {
+                        j.HasKey("GroupId", "ParticipantId");
+                        j.ToTable("Groups_Participants");
+                        j.IndexerProperty<int>("GroupId").HasColumnName("Group_ID");
+                        j.IndexerProperty<int>("ParticipantId").HasColumnName("Participant_ID");
+                    });
+        });
 
         modelBuilder.Entity<Option>(entity =>
         {
@@ -158,7 +186,7 @@ public partial class CozyTestContext : DbContext
 
         modelBuilder.Entity<Participant>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Participants");
+            entity.HasKey(e => e.Id).HasName("PK_Students");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CuratorCreateId).HasColumnName("Curator_Create_ID");
@@ -167,6 +195,24 @@ public partial class CozyTestContext : DbContext
                 .HasForeignKey(d => d.CuratorCreateId)
                 .HasConstraintName("FK_Participants_Curators1");
 
+            entity.HasMany(d => d.Tests).WithMany(p => p.Participants)
+                .UsingEntity<Dictionary<string, object>>(
+                    "ParticipantsFavoriteTest",
+                    r => r.HasOne<Test>().WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Participants_Favorite_Tests_Tests"),
+                    l => l.HasOne<Participant>().WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Participants_Favorite_Tests_Participants"),
+                    j =>
+                    {
+                        j.HasKey("ParticipantId", "TestId");
+                        j.ToTable("Participants_Favorite_Tests");
+                        j.IndexerProperty<int>("ParticipantId").HasColumnName("Participant_ID");
+                        j.IndexerProperty<int>("TestId").HasColumnName("Test_ID");
+                    });
         });
 
         modelBuilder.Entity<ParticipantAnswer>(entity =>
@@ -196,83 +242,52 @@ public partial class CozyTestContext : DbContext
                 .HasConstraintName("FK_ParticipantAnswers_Questions");
         });
 
-        modelBuilder.Entity<BParticipantFavoriteTest>(entity =>
+        modelBuilder.Entity<ParticipantsAssignedTest>(entity =>
         {
             entity.HasKey(e => new { e.ParticipantId, e.TestId });
 
-            entity.ToTable("Participants_Favorite_Tests");
+            entity.ToTable("Participants_Assigned_Tests");
 
+            entity.Property(e => e.ParticipantId).HasColumnName("Participant_ID");
+            entity.Property(e => e.TestId).HasColumnName("Test_ID");
+            entity.Property(e => e.DateTimeAssigned).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Participant)
-                .WithMany()
-                .HasForeignKey(d => d.ParticipantId);
+            entity.HasOne(d => d.Participant).WithMany(p => p.ParticipantsAssignedTests)
+                .HasForeignKey(d => d.ParticipantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Assigned_Tests_Participants");
 
-            entity.HasOne(d => d.Test)
-                .WithMany()
-                .HasForeignKey(d => d.TestId);
+            entity.HasOne(d => d.Test).WithMany(p => p.ParticipantsAssignedTests)
+                .HasForeignKey(d => d.TestId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Assigned_Tests_Tests");
         });
 
-        //modelBuilder.Entity<BParticipantAssignedTest>(entity =>
-        //{
-        //    entity.HasKey(e => new { e.ParticipantId, e.TestId, e.CuratorId });
+        modelBuilder.Entity<ParticipantsPublicTest>(entity =>
+        {
+            entity.HasKey(e => new { e.ParticipantId, e.TestId, e.ResponsibleId });
 
-        //    entity.ToTable("Participants_Assigned_Tests");
+            entity.ToTable("Participants_Public_Tests");
 
-        //    entity.Property(e => e.DateTimeAssigned).HasColumnType("datetime");
+            entity.Property(e => e.ParticipantId).HasColumnName("Participant_ID");
+            entity.Property(e => e.TestId).HasColumnName("Test_ID");
+            entity.Property(e => e.ResponsibleId).HasColumnName("Responsible_ID");
 
-        //    entity.HasOne(d => d.Participant)
-        //        .WithMany()
-        //        .HasForeignKey(d => d.ParticipantId);
+            entity.HasOne(d => d.Participant).WithMany(p => p.ParticipantsPublicTests)
+                .HasForeignKey(d => d.ParticipantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Public_Tests_Participants");
 
-        //    entity.HasOne(d => d.Test)
-        //        .WithMany()
-        //        .HasForeignKey(d => d.TestId);
+            entity.HasOne(d => d.Responsible).WithMany(p => p.ParticipantsPublicTests)
+                .HasForeignKey(d => d.ResponsibleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Public_Tests_Curators");
 
-        //    entity.HasOne(d => d.Curator)
-        //        .WithMany()
-        //        .HasForeignKey(d => d.CuratorId);
-        //});
-
-        //modelBuilder.Entity<BGroupsParticipant>(entity =>
-        //{
-        //    entity.HasKey(e => new { e.GroupId, e.ParticipantId });
-
-        //    entity.ToTable("Groups_Participants");
-
-        //    entity.Property(e => e.GroupId)
-        //        .HasColumnName("Group_ID");
-
-        //    entity.Property(e => e.ParticipantId)
-        //        .HasColumnName("Participant_ID");
-
-        //    entity.HasOne(d => d.Group)
-        //        .WithMany(p => p.BGroupsParticipant)
-        //        .HasForeignKey(d => d.GroupId)
-        //        .OnDelete(DeleteBehavior.ClientSetNull)
-        //        .HasConstraintName("FK_Groups_Participants_Groups");
-
-        //    entity.HasOne(d => d.Participant)
-        //        .WithMany(p => p.BGroupsParticipant)
-        //        .HasForeignKey(d => d.ParticipantId)
-        //        .OnDelete(DeleteBehavior.ClientSetNull)
-        //        .HasConstraintName("FK_Groups_Participants_Participants");
-        //});
-
-        //modelBuilder.Entity<BCuratorsParticipant>(entity =>
-        //{
-        //    entity.HasKey(e => new { e.CuratorId, e.ParticipantId });
-        //    entity.ToTable("Curators_Participants");
-
-        //    entity.HasOne(d => d.Participant)
-        //        .WithMany(p => p.BCuratorsParticipant)
-        //        .HasForeignKey(d => d.ParticipantId);
-
-        //    entity.HasOne(d => d.Curator)
-        //        .WithMany(p => p.BCuratorsParticipant)
-        //        .HasForeignKey(d => d.CuratorId);
-        //});
-
-
+            entity.HasOne(d => d.Test).WithMany(p => p.ParticipantsPublicTests)
+                .HasForeignKey(d => d.TestId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Participants_Public_Tests_Tests");
+        });
 
         modelBuilder.Entity<Question>(entity =>
         {
@@ -289,18 +304,31 @@ public partial class CozyTestContext : DbContext
             entity.HasOne(d => d.Test).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.TestId)
                 .HasConstraintName("FK_Questions_Tests");
-
         });
 
-        
+        modelBuilder.Entity<Requests>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Applications");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.DateTimeApplication).HasColumnType("datetime");
+            entity.Property(e => e.ReviewerId).HasColumnName("Reviewer_ID");
+
+            entity.HasOne(d => d.Reviewer).WithMany(p => p.Requests)
+                .HasForeignKey(d => d.ReviewerId)
+                .HasConstraintName("FK_Applications_Curators");
+        });
 
         modelBuilder.Entity<Test>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CriteriaId).HasColumnName("Criteria_ID");
             entity.Property(e => e.CuratorCreateId).HasColumnName("Curator_Create_ID");
             entity.Property(e => e.DateOfCreating).HasColumnType("datetime");
             entity.Property(e => e.PenaltyMax).HasColumnName("Penalty_Max");
-            entity.Property(e => e.DTestTypeId).HasColumnName("TestType_ID");
+            entity.Property(e => e.TestTypeId).HasColumnName("TestType_ID");
             entity.Property(e => e.TopicId).HasColumnName("Topic_ID");
 
             entity.HasOne(d => d.Criteria).WithMany(p => p.Tests)
@@ -311,8 +339,8 @@ public partial class CozyTestContext : DbContext
                 .HasForeignKey(d => d.CuratorCreateId)
                 .HasConstraintName("FK_Tests_Curators");
 
-            entity.HasOne(d => d.DTestType).WithMany(p => p.Tests)
-                .HasForeignKey(d => d.DTestTypeId)
+            entity.HasOne(d => d.TestType).WithMany(p => p.Tests)
+                .HasForeignKey(d => d.TestTypeId)
                 .HasConstraintName("FK_Tests_D_TestTypes");
 
             entity.HasOne(d => d.Topic).WithMany(p => p.Tests)
@@ -322,7 +350,7 @@ public partial class CozyTestContext : DbContext
 
         modelBuilder.Entity<Topic>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Topic");
+            entity.HasKey(e => e.Id).HasName("PK_Subject");
 
             entity.ToTable(tb => tb.HasComment("Темы тестов"));
 
@@ -344,8 +372,6 @@ public partial class CozyTestContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
-
-
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

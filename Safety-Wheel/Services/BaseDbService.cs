@@ -1,11 +1,11 @@
-﻿using Safety_Wheel.Models;
+﻿using CozyTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class BaseDbService
     {

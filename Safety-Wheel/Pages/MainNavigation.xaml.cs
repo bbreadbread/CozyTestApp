@@ -1,5 +1,5 @@
 ﻿using MahApps.Metro.Controls;
-using Safety_Wheel.ViewModels;
+using CozyTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +14,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+using CozyTest.Models;
+using CozyTest.Services;
 using System.Windows.Media.Animation;
-using static Safety_Wheel.ViewModels.MainViewModel;
-using Safety_Wheel.Pages.Participant;
+using static CozyTest.ViewModels.MainViewModel;
+using CozyTest.Pages.Participant;
 
-namespace Safety_Wheel.Pages.Curator
+namespace CozyTest.Pages.Curator
 {
     /// <summary>
     /// Логика взаимодействия для MainNavigation.xaml

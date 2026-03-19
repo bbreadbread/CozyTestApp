@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.ForShellWindow.Participant
+namespace CozyTest.ForShellWindow.Participant
 {
     /// <summary>
     /// Логика взаимодействия для ViewingAttempts.xaml

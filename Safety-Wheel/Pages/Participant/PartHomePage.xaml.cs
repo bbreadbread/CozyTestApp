@@ -1,12 +1,12 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Pages.Curator;
-using Safety_Wheel.Services;
-using Safety_Wheel.ViewModels.CreateTestsVM;
+﻿using CozyTest.Models;
+using CozyTest.Pages.Curator;
+using CozyTest.Services;
+using CozyTest.ViewModels.CreateTestsVM;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Safety_Wheel.Pages.Participant
+namespace CozyTest.Pages.Participant
 {
     /// <summary>
     /// Логика взаимодействия для PartHomePage.xaml

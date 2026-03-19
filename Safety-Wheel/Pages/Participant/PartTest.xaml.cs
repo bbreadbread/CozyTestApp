@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Notifications.Wpf;
-using Safety_Wheel.Models;
-using Safety_Wheel.Pages.Participant.DTestTypes;
-using Safety_Wheel.Services;
+using CozyTest.Models;
+using CozyTest.Pages.Participant.DTestTypes;
+using CozyTest.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Safety_Wheel.Pages.Participant
+namespace CozyTest.Pages.Participant
 {
     /// <summary>
     /// Логика взаимодействия для PartTest.xaml

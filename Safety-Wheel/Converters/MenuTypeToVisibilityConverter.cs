@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Safety_Wheel.ViewModels;
+using CozyTest.ViewModels;
 
-namespace Safety_Wheel.Converters
+namespace CozyTest.Converters
 {
     public class MenuTypeToSingleVisibilityConverter : IValueConverter
     {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.ForShellWindow
+namespace CozyTest.ForShellWindow
 {
     /// <summary>
     /// Логика взаимодействия для BindCoAuthorForCurator.xaml

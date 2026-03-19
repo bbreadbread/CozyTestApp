@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System.Collections.ObjectModel;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class AttemptService
     {

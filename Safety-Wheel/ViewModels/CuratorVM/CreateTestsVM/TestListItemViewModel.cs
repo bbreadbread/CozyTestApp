@@ -1,12 +1,12 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel.ViewModels.CreateTestsVM
+namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class TestListItemViewModel : ObservableObject
     {

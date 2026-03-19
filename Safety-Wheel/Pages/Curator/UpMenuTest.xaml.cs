@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.Pages.Curator
+namespace CozyTest.Pages.Curator
 {
     /// <summary>
     /// Логика взаимодействия для UpMenuTest.xaml

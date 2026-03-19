@@ -1,10 +1,10 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace Safety_Wheel.ViewModels.CreateTestsVM
+namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class CuratorCreateTestViewModel : ObservableObject
     {

@@ -1,5 +1,5 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.Pages.Participant
+namespace CozyTest.Pages.Participant
 {
     /// <summary>
     /// Логика взаимодействия для PartTestInfo.xaml

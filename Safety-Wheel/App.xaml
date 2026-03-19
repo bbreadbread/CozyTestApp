@@ -1,9 +1,9 @@
-﻿<Application x:Class="Safety_Wheel.App"
+﻿<Application x:Class="CozyTest.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
-             xmlns:local="clr-namespace:Safety_Wheel"
+             xmlns:local="clr-namespace:CozyTest"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿using Safety_Wheel.ViewModels.CuratorVM;
+﻿using CozyTest.ViewModels.CuratorVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.ForShellWindow
+namespace CozyTest.ForShellWindow
 {
     /// <summary>
     /// Логика взаимодействия для CreateEditParticipantAdmin.xaml
@@ -22,11 +22,15 @@ namespace Safety_Wheel.ForShellWindow
     public partial class CreateEditParticipantAdmin : UserControl
     {
         AdminPanelViewModel adminPanelViewModel;
-        public CreateEditParticipantAdmin(AdminPanelViewModel viewModel)
+        public CreateEditParticipantAdmin(AdminPanelViewModel viewModel, int? isNew = null)
         {
             adminPanelViewModel = viewModel;
             InitializeComponent();
-            DataContext = viewModel;
+            if (isNew != null)
+            {
+                adminPanelViewModel.SelectedParticipant = null;
+            }
+            DataContext = adminPanelViewModel;
         }
 
         private void Button_Bind(object sender, RoutedEventArgs e)

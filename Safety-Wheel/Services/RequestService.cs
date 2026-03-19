@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System.Collections.ObjectModel;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
-    public class ApplicationService
+    public class RequestService
     {
         private readonly CozyTestContext _db = BaseDbService.Instance.Context;
-        public ObservableCollection<Requests> Applications { get; set; } = new();
+        public ObservableCollection<Requests> Requests { get; set; } = new();
     
-        public ApplicationService()
+        public RequestService()
         {
             GetAll();
         }
@@ -34,10 +34,10 @@ namespace Safety_Wheel.Services
         {
             var query = _db.Requests;
             var ap = query.ToList();
-            Applications.Clear();
+            Requests.Clear();
             foreach (var apl in ap)
             {
-                Applications.Add(apl);
+                Requests.Add(apl);
             }
         }
     }

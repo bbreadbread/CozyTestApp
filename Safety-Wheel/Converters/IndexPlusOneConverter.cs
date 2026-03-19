@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Safety_Wheel.Converters
+namespace CozyTest.Converters
 {
     public class IndexPlusOneConverter : IValueConverter
     {

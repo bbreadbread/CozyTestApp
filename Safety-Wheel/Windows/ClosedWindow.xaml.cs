@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel
+namespace CozyTest
 {
     public partial class ClosedWindow : MetroWindow, INotifyPropertyChanged
     {

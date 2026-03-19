@@ -1,5 +1,5 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Services;
 using ScottPlot.WPF;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Safety_Wheel.Pages.Curator
+namespace CozyTest.Pages.Curator
 {
     public partial class CuratorStatisticsPage : UserControl
     {

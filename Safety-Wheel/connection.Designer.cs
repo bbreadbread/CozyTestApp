@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Safety_Wheel {
+namespace CozyTest {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

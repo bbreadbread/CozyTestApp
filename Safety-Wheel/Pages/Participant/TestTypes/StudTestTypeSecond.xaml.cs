@@ -1,5 +1,5 @@
-﻿using Safety_Wheel.Models;
-using Safety_Wheel.Services;
+﻿using CozyTest.Models;
+using CozyTest.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +20,7 @@ using Microsoft.Extensions.Options;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
 
-namespace Safety_Wheel.Pages.Participant.DTestTypes
+namespace CozyTest.Pages.Participant.DTestTypes
 {
     /// <summary>
     /// Логика взаимодействия для StudDTestTypeSecond.xaml

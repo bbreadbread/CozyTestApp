@@ -1,10 +1,10 @@
-﻿<Page x:Class="Safety_Wheel.Pages.Curator.AdminPanelPage"
+﻿<Page x:Class="CozyTest.Pages.Curator.AdminPanelPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Safety_Wheel.Pages.Curator"
-      xmlns:conv="clr-namespace:Safety_Wheel.Converters"
+      xmlns:local="clr-namespace:CozyTest.Pages.Curator"
+      xmlns:conv="clr-namespace:CozyTest.Converters"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d" 
       d:DesignHeight="915" d:DesignWidth="1815"
@@ -33,7 +33,7 @@
                         </StackPanel>
 
                         <StackPanel>
-                            <Expander Header="Тестируемые" IsExpanded="False" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                            <Expander Header="Тестируемые" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -54,43 +54,72 @@
                                             <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
                                             <DataGridTextColumn Binding="{Binding CuratorCreateId}" Header="ID создателя" />
                                             <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
-                                            <DataGridCheckBoxColumn Binding="{Binding Path=IsArchive, Mode=OneWay}"
-                                                                     EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                     ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                     Header="В архиве" />
+                                            <DataGridTemplateColumn Header="В архиве">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Command="{Binding DataContext.ArchiveParticipantCommand, 
+                                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                  CommandParameter="{Binding}"
+                                                                  IsEnabled="False"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                         
                                         <DataGrid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Click="Button_CreateParticipant" Header="Редактировать"/>
-                                                <MenuItem Click="Button_ArchiveParticipant" Header="В архив"/>
+                                            <ContextMenu Height="Auto">
+                                                <MenuItem Click="Button_EditParticipant" Header="Редактировать"/>
+                                                <MenuItem Command="{Binding ArchiveParticipantCommand}" Header="В архив"/>
                                             </ContextMenu>
                                         </DataGrid.ContextMenu>
                                     </DataGrid>
                                 </StackPanel>
                             </Expander>
 
-                            <Expander Header="Кураторы" IsExpanded="False" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                            <Expander Header="Кураторы" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
                                 <StackPanel>
                                     <Grid>
                                         <Button Grid.Column="1" Style="{StaticResource PaleButton}" Click="Button_AddCurator">
                                             <Image  Source="pack://application:,,,/Images/plus_icon.png"/>
                                         </Button>
                                     </Grid>
-                                    <DataGrid BorderThickness="0" ItemsSource="{Binding CuratorsList}" AutoGenerateColumns="False" IsReadOnly="True">
+                                    <DataGrid BorderThickness="0" ItemsSource="{Binding CuratorsList}" SelectedItem="{Binding SelectedCurator}" AutoGenerateColumns="False" IsReadOnly="True">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                                             <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
                                             <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
-                                            <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsAdmin, Mode=OneWay}"
-                                                                      EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                      ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                      Header="Админ" />
-                                            <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsArchive, Mode=OneWay}"
-                                                                      EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                      ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                                                      Header="В архиве" />
+                                            <DataGridTemplateColumn Header="Админ">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsAdmin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Command="{Binding DataContext.ArchiveCuratorCommand, 
+                                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                  CommandParameter="{Binding}"
+                                                                  IsEnabled="False"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="В архиве">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Command="{Binding DataContext.AdminStatusCuratorCommand, 
+                                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                  CommandParameter="{Binding}"
+                                                                  IsEnabled="False"/>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                         </DataGrid.Columns>
+
+                                        <DataGrid.ContextMenu>
+                                            <ContextMenu Height="Auto">
+                                                <MenuItem Click="Button_EditParticipant" Header="Редактировать"/>
+                                                <MenuItem Command="{Binding ArchiveCuratorCommand}" Header="В архив"/>
+                                                <MenuItem Command="{Binding AdminStatusCuratorCommand}" Header="Изменить статус админа"/>
+                                            </ContextMenu>
+                                        </DataGrid.ContextMenu>
                                     </DataGrid>
                                 </StackPanel>
                             </Expander>
@@ -166,44 +195,72 @@
             <TextBlock Style="{StaticResource MainText}" Text="{Binding SelectedParticipant.Name, StringFormat='Данные, связанные с пользователем {0}'}"/>
 
             <StackPanel Grid.Row="1">
-                <Expander Header="Привязанные тестируемые" IsExpanded="False" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Expander Header="Привязанные тестируемые" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
                     <StackPanel>
-                        <DataGrid BorderThickness="0">
+                        <DataGrid BorderThickness="0" ItemsSource="{Binding ParticipantsForCuratorList}" SelectedItem="{Binding SelectedParticipant}" AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Title}" Header="ID" />
-                                <DataGridTextColumn Binding="{Binding Artist.Name}" Header="ФИО" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Логин" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Создатель" />
-                                <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
-                                             EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                             ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                             Header="В архиве" />
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
+                                <DataGridTextColumn Binding="{Binding CuratorCreateId}" Header="ID создателя" />
+                                <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
+                                <DataGridTemplateColumn Header="В архиве">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Command="{Binding DataContext.ArchiveParticipantCommand, 
+                                                      RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                      CommandParameter="{Binding}"
+                                                      IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
                 </Expander>
 
-                <Expander Header="Привязанные тесты" IsExpanded="False" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Expander Header="Привязанные тесты" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
                     <StackPanel>
-                        <DataGrid BorderThickness="0">
+                        <DataGrid BorderThickness="0" ItemsSource="{Binding TestsForCuratorList}" SelectedItem="{Binding SelectedTest}" AutoGenerateColumns="False" IsReadOnly="True"><!--SelectedItem="{Binding SelectedParticipant}"-->
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Title}" Header="ID" />
-                                <DataGridTextColumn Binding="{Binding Title}" Header="Тема" />
-                                <DataGridTextColumn Binding="{Binding Artist.Name}" Header="Название" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Описание" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Дата создания" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Время" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Создатель" />
-                                <DataGridTextColumn Binding="{Binding Genre.Name}" Header="Макс. попыток" />
-                                <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
-                                              EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                              ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                              Header="Опубликован" />
-                                <DataGridCheckBoxColumn Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
-                                              EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                              ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                              Header="В архиве" />
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding Topic.Name}" Header="Тема" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                <DataGridTextColumn Binding="{Binding Description}" Header="Описание" />
+                                <DataGridTextColumn Binding="{Binding DateOfCreating}" Header="Дата создания" />
+                                <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
+                                <DataGridTextColumn Binding="{Binding MaxNumPassing}" Header="Макс. попыток" />
+                                <DataGridTemplateColumn Header="В архиве">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Command="{Binding DataContext.ArchiveTestCommand, 
+                                                      RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                      CommandParameter="{Binding}"
+                                                      IsEnabled="False"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Опубликован">
+                                <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsPublic, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     Command="{Binding DataContext.PublishTestCommand, 
+                                                     RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                     CommandParameter="{Binding}"
+                                                     IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
+                            
+                            <DataGrid.ContextMenu>
+                                <ContextMenu Height="Auto">
+                                    <MenuItem Command="{Binding ArchiveTestCommand}" Header="В архив"/>
+                                    <MenuItem Click="Button_PublishTest" Header="Настройки публикации"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
                         </DataGrid>
                     </StackPanel>
                 </Expander>
@@ -267,7 +324,7 @@
             <TextBlock Text="Данные, связанные с группой" Style="{StaticResource MainText}"/>
 
             <StackPanel Grid.Row="1">
-                <Expander Header="Привязанные тестируемые" IsExpanded="False" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Expander Header="Привязанные тестируемые" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>

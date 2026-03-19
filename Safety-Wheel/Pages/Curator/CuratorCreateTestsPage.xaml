@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Safety_Wheel.Pages.Curator.CuratorCreateTestsPage"
+﻿<UserControl x:Class="CozyTest.Pages.Curator.CuratorCreateTestsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:vm="clr-namespace:Safety_Wheel.ViewModels.CreateTestsVM"
-             xmlns:conv="clr-namespace:Safety_Wheel.Converters"
+             xmlns:vm="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
+             xmlns:conv="clr-namespace:CozyTest.Converters"
              Style="{StaticResource CreateEditTest}"
              Loaded="UserControl_Loaded">
 

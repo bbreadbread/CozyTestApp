@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace Safety_Wheel.Converters
+namespace CozyTest.Converters
 {
     public class EnumToVisibilityConverter : IValueConverter
     {

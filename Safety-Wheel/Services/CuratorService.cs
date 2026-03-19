@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class CuratorService
     {
@@ -78,5 +79,45 @@ namespace Safety_Wheel.Services
             return _db.Curators.Any(t => t.Login == login)
                 || _db.Participants.Any(s => s.Login == login);
         }
+
+        public void UpdateCuratorArchiveStatus(int userId)
+        {
+            try
+            {
+                var user = _db.Curators
+                    .FirstOrDefault(ug => ug.Id == userId);
+
+                if (user != null)
+                {
+                    user.IsArchive = !user.IsArchive;
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        public void UpdateCuratorAdminStatus(int userId)
+        {
+            try
+            {
+                var user = _db.Curators
+                    .FirstOrDefault(ug => ug.Id == userId);
+
+                if (user != null)
+                {
+                    user.IsAdmin = !user.IsAdmin;
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
+
+
     }
 }

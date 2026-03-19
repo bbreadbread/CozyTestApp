@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel
+namespace CozyTest
 {
     /// <summary>
     /// Логика взаимодействия для ShellWindow.xaml

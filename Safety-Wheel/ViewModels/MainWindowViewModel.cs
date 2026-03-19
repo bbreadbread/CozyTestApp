@@ -7,6 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Safety_Wheel.ViewModels
+namespace CozyTest.ViewModels
 {
 }

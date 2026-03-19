@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CozyTest.ViewModels.CuratorVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,22 +14,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Safety_Wheel.ForShellWindow
+namespace CozyTest.ForShellWindow
 {
     /// <summary>
     /// Логика взаимодействия для CreateEditParticipant.xaml
     /// </summary>
     public partial class CreateEditParticipant : UserControl
     {
-        public CreateEditParticipant()
+        AdminPanelViewModel adminPanelViewModel;
+        public CreateEditParticipant(AdminPanelViewModel viewModel, int? isNew = null)
         {
+            adminPanelViewModel = viewModel;
             InitializeComponent();
+            DataContext = viewModel;
         }
 
         private void Button_Bind(object sender, RoutedEventArgs e)
         {
-            //ShellWindow window = new ShellWindow(new BindGroupForUser());
-            //window.Show();
+            ShellWindow window = new ShellWindow(new BindGroupForUser(adminPanelViewModel));
+            window.Show();
         }
     }
 }

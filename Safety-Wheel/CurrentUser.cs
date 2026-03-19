@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Safety_Wheel
+namespace CozyTest
 {
     public static class CurrentUser
     {
+        public static object ClassUser { get; set; }
         public static byte TypeUser { get; set; }
         public static int Id { get; set; }
         public static string Name { get; set; }

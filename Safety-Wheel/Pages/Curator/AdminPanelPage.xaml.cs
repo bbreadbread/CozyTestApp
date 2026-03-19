@@ -1,6 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Safety_Wheel.ForShellWindow;
-using Safety_Wheel.ViewModels.CuratorVM;
+using CozyTest.ForShellWindow;
+using CozyTest.ViewModels.CuratorVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CozyTest.Shells.Curator;
 
-namespace Safety_Wheel.Pages.Curator
+namespace CozyTest.Pages.Curator
 {
     /// <summary>
     /// Логика взаимодействия для AdminPanelPage.xaml
@@ -46,16 +47,16 @@ namespace Safety_Wheel.Pages.Curator
         {
             if (CurrentUser.TypeUser == 1)
             {
-                ShellWindow window = new ShellWindow(new CreateEditParticipantAdmin(_viewModel));
+                ShellWindow window = new ShellWindow(new CreateEditParticipantAdmin(_viewModel, 0));
                 window.Show();
             }
             else
             {
-                ShellWindow window = new ShellWindow(new CreateEditParticipant());
+                ShellWindow window = new ShellWindow(new CreateEditParticipant(_viewModel, 0));
                 window.Show();
             }
         }
-        private void Button_CreateParticipant(object sender, RoutedEventArgs e)
+        private void Button_EditParticipant(object sender, RoutedEventArgs e)
         {
             if (CurrentUser.TypeUser == 1)
             {
@@ -64,22 +65,23 @@ namespace Safety_Wheel.Pages.Curator
             }
             else
             {
-                ShellWindow window = new ShellWindow(new CreateEditParticipant());
+                ShellWindow window = new ShellWindow(new CreateEditParticipant(_viewModel));
                 window.Show();
             }
         }
-        private void Button_ArchiveParticipant(object sender, RoutedEventArgs e)
-        {
-            //
-        }
         private void Button_AddCurator(object sender, RoutedEventArgs e)
         {
-            ShellWindow window = new ShellWindow(new CreateEditParticipant());//надо куратора
-            window.Show();
+            //ShellWindow window = new ShellWindow(new CreateEditParticipant());//надо куратора
+            //window.Show();
         }
         private void Button_AddGroup(object sender, RoutedEventArgs e)
         {
             ShellWindow window = new ShellWindow(new CreateEditGroup());
+            window.Show();
+        }
+        private void Button_PublishTest(object sender, RoutedEventArgs e)
+        {
+            ShellWindow window = new ShellWindow(new PublicationDetails());
             window.Show();
         }
     }

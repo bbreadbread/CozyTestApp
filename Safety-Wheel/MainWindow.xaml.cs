@@ -2,13 +2,13 @@
 using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
-using Safety_Wheel.Pages;
-using Safety_Wheel.Pages.Curator;
-using Safety_Wheel.Pages.Participant;
-using Safety_Wheel.Services;
-using Safety_Wheel.ViewModels;
+using CozyTest.Pages;
+using CozyTest.Pages.Curator;
+using CozyTest.Pages.Participant;
+using CozyTest.Services;
+using CozyTest.ViewModels;
 
-namespace Safety_Wheel
+namespace CozyTest
 {
     public partial class MainWindow : MetroWindow
     {

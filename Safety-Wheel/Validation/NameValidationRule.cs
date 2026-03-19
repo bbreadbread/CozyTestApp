@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Safety_Wheel.ValidationRules
+namespace CozyTest.ValidationRules
 {
     public class NameValidationRule : ValidationRule
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Safety_Wheel.Models;
+namespace CozyTest.Models;
 
 public partial class Option
 {

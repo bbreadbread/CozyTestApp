@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
-using Safety_Wheel.Services;
+using CozyTest.Services;
 
-namespace Safety_Wheel.ValidationRules
+namespace CozyTest.ValidationRules
 {
     public class LoginUniqueValidationRule : ValidationRule
     {

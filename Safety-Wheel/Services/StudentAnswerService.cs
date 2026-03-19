@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class ParticipantAnswerService
     {

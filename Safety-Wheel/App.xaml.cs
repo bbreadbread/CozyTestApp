@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Safety_Wheel.Pages.Participant;
+using CozyTest.Pages.Participant;
 using System.Configuration;
 using System.Data;
 using System.Windows;
 
-namespace Safety_Wheel
+namespace CozyTest
 {
     /// <summary>
     /// Interaction logic for App.xaml

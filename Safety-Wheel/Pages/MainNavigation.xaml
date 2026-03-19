@@ -1,12 +1,12 @@
-﻿<Page x:Class="Safety_Wheel.Pages.Curator.MainNavigation"
+﻿<Page x:Class="CozyTest.Pages.Curator.MainNavigation"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      xmlns:viewModels="clr-namespace:Safety_Wheel.ViewModels" 
-      xmlns:viewModelStat="clr-namespace:Safety_Wheel.ViewModels.StatisticsVM" 
-      xmlns:core="clr-namespace:Safety_Wheel.Converters"
-      xmlns:views="clr-namespace:Safety_Wheel.Pages.Curator"
+      xmlns:viewModels="clr-namespace:CozyTest.ViewModels" 
+      xmlns:viewModelStat="clr-namespace:CozyTest.ViewModels.StatisticsVM" 
+      xmlns:core="clr-namespace:CozyTest.Converters"
+      xmlns:views="clr-namespace:CozyTest.Pages.Curator"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       Loaded="Page_Loaded">
 

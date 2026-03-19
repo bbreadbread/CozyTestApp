@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Safety_Wheel.Models;
+using CozyTest.Models;
 using System.Collections.ObjectModel;
+using System.Windows;
 
-namespace Safety_Wheel.Services
+namespace CozyTest.Services
 {
     public class ParticipantService
     {
@@ -88,6 +89,40 @@ namespace Safety_Wheel.Services
                 Commit();
             }
         }
-        
+
+        public void UpdateParticipantArchiveStatus(int userId)
+        {
+            try
+            {
+                var user = _db.Participants
+                    .FirstOrDefault(ug => ug.Id == userId);
+
+                if (user != null)
+                {
+                    user.IsArchive = !user.IsArchive;
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
+        public ObservableCollection<Participant> GetAllParticipantForGroup(int groupId)
+        {
+            var users = _db.Participants
+                              .Include(ug => ug.Groups)
+                              .Where(u => u.Groups.Any(p => p.Id == groupId))
+                              .ToList();
+
+            Participants.Clear();
+
+            foreach (var userGroup in users)
+            {
+                Participants.Add(userGroup);
+            }
+            return Participants;
+        }
     }
 }

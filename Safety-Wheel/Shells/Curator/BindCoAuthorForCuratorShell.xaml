@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Safety_Wheel.ForShellWindow.BindCoAuthorForCurator"
+﻿<UserControl x:Class="CozyTest.ForShellWindow.BindCoAuthorForCurator"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Safety_Wheel.ForShellWindow"
+      xmlns:local="clr-namespace:CozyTest.ForShellWindow"
       mc:Ignorable="d" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       Height="700" Width="875">

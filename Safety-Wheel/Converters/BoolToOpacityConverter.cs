@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Safety_Wheel.Converters
+namespace CozyTest.Converters
 {
     public class BoolToOpacityConverter : IValueConverter
     {
