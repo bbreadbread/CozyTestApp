@@ -48,8 +48,14 @@ namespace CozyTest.ViewModels
             EditCreateTests,
             CuratorManager,
             MonthFilter,
+
             Home,
-            Profile
+            Profile,
+
+            Participants,
+            Curators,
+            Requests,
+            Groups,
         }
 
         public MainViewModel()
@@ -63,7 +69,7 @@ namespace CozyTest.ViewModels
             switch (CurrentUser.TypeUser)
             {
                 case 1:
-                    MainMenuItems = new ObservableCollection<MenuItemViewModel> { 
+                    MainMenuItems = new ObservableCollection<MenuItemViewModel> {
                         new MenuItemViewModel(this)
                         {
                              Icon = new Image
@@ -102,7 +108,7 @@ namespace CozyTest.ViewModels
                             Label = "Создание тестов",
                             ToolTip = "Создание и редактирование тестов",
                             Tag = MainMenuType.EditCreateTests
-                        } 
+                        }
                     };
 
                     MenuOptionItems = new ObservableCollection<MenuItemViewModel>
@@ -119,6 +125,145 @@ namespace CozyTest.ViewModels
                             Label = "Управление учениками",
                             ToolTip = "Ученики преподавателя",
                             Tag = MainMenuType.CuratorManager
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/users_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Тестируемые",
+                            ToolTip = "Пользователи",
+                            Tag = MainMenuType.Participants
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/users_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Кураторы",
+                            ToolTip = "Пользователи",
+                            Tag = MainMenuType.Curators
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/requests_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Заявки",
+                            ToolTip = "Заявки",
+                            Tag = MainMenuType.Requests
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/group_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Группы",
+                            ToolTip = "Группы",
+                            Tag = MainMenuType.Groups
+                        }
+                    };
+                    break;
+
+                case 2:
+                    MainMenuItems = new ObservableCollection<MenuItemViewModel> {
+                        new MenuItemViewModel(this)
+                        {
+                             Icon = new Image
+                             {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/statistic_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                             },
+                            Label = "Статистика",
+                            ToolTip = "Статистика по тестам и студентам",
+                            Tag = MainMenuType.Statistics
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                            Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/result_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Результаты тестирования",
+                            ToolTip = "Просмотр результатов тестирования студентов",
+                            Tag = MainMenuType.TestResults
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                            Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/test_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Создание тестов",
+                            ToolTip = "Создание и редактирование тестов",
+                            Tag = MainMenuType.EditCreateTests
+                        }
+                    };
+
+                    MenuOptionItems = new ObservableCollection<MenuItemViewModel>
+                    {
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/settings_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Управление учениками",
+                            ToolTip = "Ученики преподавателя",
+                            Tag = MainMenuType.CuratorManager
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/settings_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Тестируемые",
+                            ToolTip = "Пользователи",
+                            Tag = MainMenuType.Participants
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/group_icon.png")),
+                                Width = 50,
+                                Height = 50,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Группы",
+                            ToolTip = "Группы",
+                            Tag = MainMenuType.Groups
                         }
                     };
                     break;
@@ -161,9 +306,6 @@ namespace CozyTest.ViewModels
                 default:
                     break;
             }
-            
-
-           
         }
 
         public void CreateMenuItems()
@@ -562,11 +704,12 @@ namespace CozyTest.ViewModels
                 {
                     switch (menuType)
                     {
+                        //куртор
                         case MainMenuType.TestResults:
                             AttemptsTableVisible = true;
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
-                            await LoadParticipantsForResultsAsync(); 
+                            await LoadParticipantsForResultsAsync();
                             MainNavigation.GlobalFrameCurator?.Navigate(new CuratorWelcomePage(true));
                             break;
 
@@ -587,6 +730,42 @@ namespace CozyTest.ViewModels
                             MainNavigation.GlobalFrameCurator?.Navigate(new CuratorAllTests(null));
                             break;
 
+                        case MainMenuType.CuratorManager:
+                            AttemptsTableVisible = false;
+                            StatisticTableVisible = false;
+                            SecondMenuVisible = false;
+                            MainNavigation.GlobalFrameCurator?.Navigate(new AdminPanelPage());
+                            break;
+
+                        case MainMenuType.Participants:
+                            AttemptsTableVisible = false;
+                            StatisticTableVisible = false;
+                            SecondMenuVisible = false;
+                            MainNavigation.GlobalFrameCurator?.Navigate(new ParticipantsPage());
+                            break;
+
+                        case MainMenuType.Curators:
+                            AttemptsTableVisible = false;
+                            StatisticTableVisible = false;
+                            SecondMenuVisible = false;
+                            MainNavigation.GlobalFrameCurator?.Navigate(new CuratorsPage());
+                            break;
+
+                        case MainMenuType.Requests:
+                            AttemptsTableVisible = false;
+                            StatisticTableVisible = false;
+                            SecondMenuVisible = false;
+                            MainNavigation.GlobalFrameCurator?.Navigate(new RequestsPage());
+                            break;
+
+                        case MainMenuType.Groups:
+                            AttemptsTableVisible = false;
+                            StatisticTableVisible = false;
+                            SecondMenuVisible = false;
+                            MainNavigation.GlobalFrameCurator?.Navigate(new GroupsPage());
+                            break;
+
+                        //тестиркемый
                         case MainMenuType.Home:
                             await LoadTestsAsync();
                             AttemptsTableVisible = false;
@@ -600,13 +779,6 @@ namespace CozyTest.ViewModels
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
                             MainNavigation.GlobalFrameCurator?.Navigate(new PartProfilePage());
-                            break;
-
-                        case MainMenuType.CuratorManager:
-                            AttemptsTableVisible = false;
-                            StatisticTableVisible = false;
-                            SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new AdminPanelPage());
                             break;
                     }
                 }

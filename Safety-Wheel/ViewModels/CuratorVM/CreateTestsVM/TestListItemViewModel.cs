@@ -1,10 +1,12 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace CozyTest.ViewModels.CreateTestsVM
 {
@@ -34,6 +36,11 @@ namespace CozyTest.ViewModels.CreateTestsVM
             {
                 IsCreateCard = true;
                 IsExcelCard = true;
+            }
+            else if (CurrentUser.TypeUser == 3)
+            {
+                IsCreateCard = false;
+                IsExcelCard = false;
             }
             else return;
         }

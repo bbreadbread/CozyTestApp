@@ -1022,7 +1022,7 @@
      <Setter Property="Foreground" Value="{StaticResource White}"/>
      <Setter Property="PaneBackground" Value="{StaticResource DarkSwamp}"/>
      <Setter Property="CompactPaneLength" Value="80"/>
-     <Setter Property="OpenPaneLength" Value="80"/>
+     <Setter Property="OpenPaneLength" Value="210"/>
      <Setter Property="ShowSelectionIndicator" Value="True"/>
  </Style>
 
@@ -1131,7 +1131,7 @@
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="MaxWidth" Value="800"/>
@@ -1158,9 +1158,9 @@
 
     <Style TargetType="TextBox" x:Key="ShellTextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
-        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
-        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontSize" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
@@ -1236,14 +1236,12 @@
     </Style>
 
     <Style TargetType="ComboBox"  BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="UpMenuTestComboBox">
-        <Setter Property="Height" Value="45"/>
-        <Setter Property="Margin" Value="6"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
         <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
 
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="25"/>
 
         <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
     </Style>

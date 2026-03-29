@@ -5,8 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CozyTest.ForShellWindow"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
       mc:Ignorable="d" 
       Height="650" Width="750" Margin="60 0 62 55" >
+
+    <UserControl.DataContext>
+        <view:RequestViewModel x:Name="sea"/>
+    </UserControl.DataContext>
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Отправка заявки на регистрацию" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
@@ -34,12 +39,12 @@
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
 
-            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия"/>
-            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин"/>
-            <PasswordBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль"/>
-            <PasswordBox Grid.Row="6" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Повтор пароля"/>
+            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding Name}"/>
+            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding Login}"/>
+            <PasswordBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" x:Name="PasswordB"/>
+            <PasswordBox Grid.Row="6" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Повтор пароля" x:Name="RePasswordB"/>
 
-            <Button Grid.Row="8" Margin="0 0 0 0" Style="{StaticResource ShellButton}" Content="Отправить заявку"/>
+            <Button Command="{Binding SendRequestCommand}" Click="Button_Click" Grid.Row="8" Margin="0 0 0 0" Style="{StaticResource ShellButton}" Content="Отправить заявку"/>
         </Grid>
     </StackPanel>
 </UserControl>

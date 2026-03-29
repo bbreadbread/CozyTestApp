@@ -4,9 +4,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
              xmlns:local="clr-namespace:CozyTest"
+             xmlns:converters="clr-namespace:CozyTest.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
         <ResourceDictionary>
+            <converters:RoleVisibilityConverter x:Key="RoleVisibilityConverter"/>
+            <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
+            <converters:EnabledConverter x:Key="EnabledConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -14,10 +19,10 @@
 
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Teal" SecondaryColor="Teal"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-                
+
                 <ResourceDictionary Source="/Styles/Color/Default.xaml"/>
                 <ResourceDictionary Source="/Styles/UI/Main.xaml"/>
-                
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

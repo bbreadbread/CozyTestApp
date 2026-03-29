@@ -48,6 +48,20 @@ namespace CozyTest.Services
             }
         }
 
+        public void GetAll(int userId)
+        {
+            var teachers = _db.Curators
+                .Include(t => t.Participants)
+                .Where(o=>o.Participants.Any(p=>p.Id == userId))
+                .ToList();
+            Curators.Clear();
+
+            foreach (var teacher in teachers)
+            {
+                Curators.Add(teacher);
+            }
+        }
+
         public Curator GetCuratorById(int id)
         {
             var tea = Curators.Where(q=> q.Id == id).FirstOrDefault();

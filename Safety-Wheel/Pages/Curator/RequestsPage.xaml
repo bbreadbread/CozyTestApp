@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="CozyTest.Pages.Curator.RequestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CozyTest.Pages.Curator"
+      mc:Ignorable="d" 
+            xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+            d:DesignHeight="915" d:DesignWidth="1815">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Width="90" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsCheckedReq}" />
+                <ToggleButton Width="90" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsCheckedReq}"/>
+                <TextBox Width="270" Height="42" Margin="20 10" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchTextRequest, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <StackPanel>
+                    <DataGrid BorderThickness="3" ItemsSource="{Binding RequestsList}" SelectedItem="{Binding SelectedRequests}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                            <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Статус заявки" />
+                            <DataGridTextColumn Binding="{Binding DateTimeApplication}" Header="Время подачи" />
+                            <DataGridTextColumn Binding="{Binding ReviewerId}" Header="Кто рассмотрел ID" />
+                            <DataGridTextColumn Binding="{Binding Reviewer.Name}" Header="Заявку рассмотрел" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

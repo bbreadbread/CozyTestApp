@@ -1,6 +1,4 @@
-﻿using CozyTest.ViewModels.CuratorVM;
-using CozyTest.ViewModels.CuratorVM.AdministrationVM;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CozyTest.ForShellWindow
+namespace CozyTest.Pages.Curator
 {
     /// <summary>
-    /// Логика взаимодействия для CreateEditGroup.xaml
+    /// Логика взаимодействия для RequestsPage.xaml
     /// </summary>
-    public partial class CreateEditGroup : UserControl
+    public partial class RequestsPage : UserControl
     {
-        public CreateEditGroup(AdminPanelViewModel viewModel)
+        public RequestsPage()
         {
             InitializeComponent();
-            DataContext = new CreateEditGroupViewModel(viewModel);
         }
     }
 }

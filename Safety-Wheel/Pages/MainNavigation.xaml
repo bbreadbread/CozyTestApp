@@ -81,7 +81,6 @@
                                SelectedItem="{Binding SelectedMainMenuItem, Mode=TwoWay}" 
                                SelectedOptionsItem="{Binding SelectedMainMenuItem, Mode=TwoWay}" 
                                SelectedIndex="0"
-                               HamburgerVisibility="Collapsed" 
                                Style="{StaticResource MainMenuStyle}" 
                                DockPanel.Dock="Left"/>
 

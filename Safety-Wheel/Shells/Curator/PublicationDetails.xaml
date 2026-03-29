@@ -14,9 +14,32 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Опубликовать:" Style="{StaticResource ShellMainText}" HorizontalAlignment="Left"/>
-            <RadioButton Command="{Binding AllBindCommand}" Content="Всем привязанным вашим тестируемым и группам" Style="{StaticResource MaterialDesignTabRadioButton}" HorizontalAlignment="Left" TextElement.FontSize="20"/>
-            <RadioButton Command="{Binding GroupsBindCommand}" Content="Выбранным группам" Style="{StaticResource MaterialDesignTabRadioButton}"  HorizontalAlignment="Left" TextElement.FontSize="20"/>
-            <RadioButton Command="{Binding ParticipantsBindCommand}" Content="Выбранным тестируемым" Style="{StaticResource MaterialDesignTabRadioButton}" HorizontalAlignment="Left" TextElement.FontSize="20"/>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsAllPublic}"/>
+                <RadioButton IsChecked="{Binding IsAllBindSelected}" 
+                 Command="{Binding AllBindCommand}" 
+                 Content="Всем привязанным вашим тестируемым и группам" 
+                 Style="{StaticResource MaterialDesignTabRadioButton}" 
+                 HorizontalAlignment="Left" 
+                 TextElement.FontSize="20"/>
+            </StackPanel>
+            
+
+            <RadioButton IsChecked="{Binding IsGroupsBindSelected}" 
+                         Command="{Binding GroupsBindCommand}" 
+                         Content="Выбранным группам" 
+                         Style="{StaticResource MaterialDesignTabRadioButton}"  
+                         HorizontalAlignment="Left" 
+                         TextElement.FontSize="20"
+                         IsEnabled="{Binding IsEnabledGroup}"/>
+
+            <RadioButton IsChecked="{Binding IsParticipantsBindSelected}" 
+                         Command="{Binding ParticipantsBindCommand}" 
+                         Content="Выбранным тестируемым" 
+                         Style="{StaticResource MaterialDesignTabRadioButton}" 
+                         HorizontalAlignment="Left" 
+                         TextElement.FontSize="20"
+                         IsEnabled="{Binding IsEnabledParticipant}"/>
         </StackPanel>
         
         <StackPanel Grid.Row="1">
@@ -32,11 +55,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
                     <DataGridTextColumn Binding="{Binding Id}" Header="ID Группы"/>
                     <DataGridTextColumn Binding="{Binding Name}" Header="Название"/>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Кол-во участников"/>
-
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
@@ -48,9 +69,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding IsPublished, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                       Command="{Binding DataContext.SwitchPublisedParticipantCommand, 
-                       RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                       CommandParameter="{Binding}"/>
+                                           Command="{Binding DataContext.SwitchPublisedParticipantCommand, 
+                                           RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                           CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

@@ -13,7 +13,7 @@
                  WindowStartupLocation="CenterScreen"
                  ResizeMode="NoResize">
     <Grid>
-        <Viewbox Width="675" Height="530">
+        <Viewbox Margin="30">
             <Frame x:Name="ShellGlobalFrame" NavigationUIVisibility="Hidden"/>
         </Viewbox>
     </Grid>

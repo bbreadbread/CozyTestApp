@@ -2,6 +2,8 @@
 using CozyTest.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ControlzEx.Standard;
+using System.Windows.Controls;
 
 namespace CozyTest.Services
 {
@@ -13,30 +15,15 @@ namespace CozyTest.Services
 
         public ParticipantService()
         {
-            GetAllParticipants(CurrentUser.Id);
+            if (CurrentUser.TypeUser == 1)
+            GetAllParticipants();
+            else GetAllParticipants(CurrentUser.Id);
         }
-
-        public void Add(Participant participant)
-        {
-            var _participant = new Participant
-            {
-                Name = participant.Name,
-                Login = participant.Login,
-                Password = participant.Password,
-                CuratorCreateId = participant.CuratorCreateId
-            };
-            _db.Add(_participant);
-            Participants.Add(_participant);
-            Commit();
-        }
-
-        public int Commit() => _db.SaveChanges();
-
         public void GetAllParticipants(int? teacherId = null)
         {
-            IQueryable<Participant> query = _db.Participants
+            var query = _db.Participants
                 .Include(s => s.Curators)
-                .Include(s => s.Attempts);
+                .Include(s => s.Attempts).AsEnumerable();
 
             if (teacherId != null)
                 query = query.Where(s => s.CuratorCreateId == teacherId);
@@ -48,6 +35,40 @@ namespace CozyTest.Services
             {
                 Participants.Add(participant);
             }
+        }
+        public void Add(Participant participant)
+        {
+            var _participant = new Participant
+            {
+                Name = participant.Name,
+                Login = participant.Login,
+                Password = participant.Password,
+                CuratorCreateId = participant.CuratorCreateId,
+                IsArchive = participant.IsArchive,
+            };
+            _db.Add(_participant);
+            Participants.Add(_participant);
+            Commit();
+        }
+
+        public int Commit() => _db.SaveChanges();
+
+        public ObservableCollection<Participant> GetAll(int? teacherId = null)
+        {
+            var query = _db.Participants
+                .Include(s => s.Curators)
+                .ToList();
+
+            return new ObservableCollection<Participant>(query.ToList());
+        }
+        public ObservableCollection<Participant> GetAllBind(int teacherId)
+        {
+            var query = _db.Participants
+                                .Include(s => s.Curators)
+                                .Where(ug => ug.Curators.Any(ug => ug.Id == teacherId))
+                                .ToList();
+
+            return new ObservableCollection<Participant>(query.ToList());
         }
 
         public void ReloadParticipants(int teacherId)
@@ -109,6 +130,98 @@ namespace CozyTest.Services
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
+        public void UpdateParticipantBindForCurator(int userId, bool bind)//bind- надо ли привязывать. true - надо привязать, false - надо отвязать
+        {
+            try
+            {
+                var participant = _db.Participants
+                    .Include(p => p.Curators)
+                    .FirstOrDefault(p => p.Id == userId);
+
+                if (participant == null)
+                {
+                    MessageBox.Show("Участник не найден");
+                    return;
+                }
+
+                var curator = _db.Curators
+                    .FirstOrDefault(c => c.Id == CurrentUser.Id);
+
+                if (curator == null)
+                {
+                    MessageBox.Show("Куратор не найден");
+                    return;
+                }
+
+                if (bind) 
+                {
+                    if (!participant.Curators.Any(c => c.Id == curator.Id))
+                    {
+                        participant.Curators.Add(curator);
+                        _db.SaveChanges();
+                    }
+                }
+                else 
+                {
+                    var existingCurator = participant.Curators
+                        .FirstOrDefault(c => c.Id == curator.Id);
+
+                    if (existingCurator != null)
+                    {
+                        participant.Curators.Remove(existingCurator);
+                        _db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+        
+        public void UpdateParticipantBindForGroup(Participant participant, Group group, bool bind)//bind- надо ли привязывать. true - надо привязать, false - надо отвязать
+        {
+            try
+            {
+
+                if (participant == null)
+                {
+                    MessageBox.Show("Участник не найден");
+                    return;
+                }
+
+
+                if (group == null)
+                {
+                    MessageBox.Show("Группа не найдена");
+                    return;
+                }
+
+                if (bind) 
+                {
+                    if (!participant.Groups.Any(c => c.Id == group.Id))
+                    {
+                        participant.Groups.Add(group);
+                        _db.SaveChanges();
+                    }
+                }
+                else 
+                {
+                    var existingCurator = participant.Groups
+                        .FirstOrDefault(c => c.Id == group.Id);
+
+                    if (existingCurator != null)
+                    {
+                        participant.Groups.Remove(existingCurator);
+                        _db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
 
         public ObservableCollection<Participant> GetAllParticipantForGroup(int groupId)
         {
@@ -125,6 +238,5 @@ namespace CozyTest.Services
             }
             return Participants;
         }
-
     }
 }

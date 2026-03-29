@@ -41,6 +41,7 @@
     <None Remove="Images\exit_logo.png" />
     <None Remove="Images\favorite.png" />
     <None Remove="Images\first_arrow_icon.png" />
+    <None Remove="Images\group_icon.png" />
     <None Remove="Images\home_icon.png" />
     <None Remove="Images\icon.ico" />
     <None Remove="Images\magnifier_icon.png" />
@@ -48,6 +49,7 @@
     <None Remove="Images\plus_icon.png" />
     <None Remove="Images\profile_icon.png" />
     <None Remove="Images\relax_icon.png" />
+    <None Remove="Images\requests_icon.png" />
     <None Remove="Images\result_icon.png" />
     <None Remove="Images\search_icon.png" />
     <None Remove="Images\settings_icon.png" />
@@ -137,6 +139,7 @@
     <None Remove="Images\tests_img\pdd-3\2-3-9-4.jpg" />
     <None Remove="Images\test_icon.png" />
     <None Remove="Images\time_icon.png" />
+    <None Remove="Images\users_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -190,6 +193,9 @@
     <Content Include="Images\first_arrow_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\group_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\home_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -209,6 +215,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\relax_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\requests_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\result_icon.png">
@@ -479,6 +488,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\time_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\users_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

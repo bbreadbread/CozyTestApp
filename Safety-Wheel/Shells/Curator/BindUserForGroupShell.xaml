@@ -6,7 +6,9 @@
       xmlns:local="clr-namespace:CozyTest.ForShellWindow"
       mc:Ignorable="d" 
                xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-         Height="700" Width="875" >
+      xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+             
+         Height="700" Width="875" Background="White">
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
@@ -26,14 +28,29 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Настройка привязки тестируемых к группе ID Название" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
+        <TextBlock Text="{Binding CurrentGroup.Name, StringFormat='Настройка привязки тестируемых к группе {0}'}"  Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
 
-        <TextBox Grid.Column="0" Grid.Row="1" Margin="5" mah:TextBoxHelper.Watermark="Поиск по имени"/>
-        <ComboBox Grid.Row="2" Height="70" Margin="5" mah:TextBoxHelper.Watermark="Принадлежность к куратору" Style="{StaticResource UpMenuTestComboBox}"/>
-        <ListView Grid.Row="3"
-                  ItemsSource="{Binding service.InterestGroups}"
-                  SelectedItem="{Binding current}" Width="400">
-            
+        <TextBox Grid.Column="0" Grid.Row="1" Margin="5" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <ComboBox Grid.Row="2" Height="70" Margin="5"  DisplayMemberPath="Name"  ItemsSource="{Binding CuratorsList}" SelectedItem="{Binding SelectedCuratorComboBox}" mah:TextBoxHelper.Watermark="Принадлежность к куратору" Style="{StaticResource UpMenuTestComboBox}"/>
+        
+        <ListView Grid.Row="3" ItemsSource="{Binding FilteredParticipantsList}" SelectedItem="{Binding SelectedParticipant}" Width="400" MouseDoubleClick="ListView_Add">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>
+                                <Run Text="Имя: "/>
+                                <Run Text="{Binding Name}" FontWeight="Bold"/>
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="ID: "/>
+                                <Run Text="{Binding Id}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
 
         <Border BorderBrush="{StaticResource DarkSwamp}" BorderThickness="5" Grid.Row="1" Grid.RowSpan="3" Grid.Column="1"/>
@@ -41,10 +58,26 @@
         <TextBlock Text="Пользователи в группе" Grid.Column="2" Grid.Row="1" Style="{StaticResource ShellMainText}"/>
         <ListView Grid.Row="2"
                   Grid.RowSpan="2"
-                  Grid.Column="1"
-                  ItemsSource="{Binding serviceUser.UserInterestGroups}"
-                  SelectedItem="{Binding currentUser}" Width="400">
-           
+                  Grid.Column="2"
+                  ItemsSource="{Binding ParticipantsCurrentList}"
+                  SelectedItem="{Binding SelectedCurrentParticipant}" Width="400"
+                  MouseDoubleClick="ListView_Remove">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>
+                         <Run Text="Имя: "/>
+                         <Run Text="{Binding Name}" FontWeight="Bold"/>
+                            </TextBlock>
+                            <TextBlock>
+                         <Run Text="ID: "/>
+                         <Run Text="{Binding Id}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
     </Grid>
 </UserControl>

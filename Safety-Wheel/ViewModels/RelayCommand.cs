@@ -12,12 +12,6 @@ namespace CozyTest.ViewModels
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;
 
-        public RelayCommand(Action execute)
-            : this(_ => execute(), null) { }
-
-        public RelayCommand(Action execute, Func<bool> canExecute)
-            : this(_ => execute(), _ => canExecute?.Invoke() ?? true) { }
-
         public RelayCommand(Action<object> execute)
             : this(execute, null) { }
 

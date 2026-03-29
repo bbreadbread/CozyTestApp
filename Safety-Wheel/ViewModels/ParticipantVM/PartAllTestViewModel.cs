@@ -4,17 +4,16 @@ using CozyTest.ViewModels.CreateTestsVM;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-
-namespace CozyTest.ViewModels.ParticipantVM.HomeVM
+namespace CozyTest.ViewModels.ParticipantVM
 {
-    class CuratorAllTestViewModel : ObservableObject
+    public class PartAllTestViewModel : ObservableObject
     {
         private readonly TestService _testService = new();
-        private readonly Topic _subject;
+        private readonly Topic? _subject;
 
         public ObservableCollection<TestListItemViewModel> Tests { get; } = new ObservableCollection<TestListItemViewModel>();
 
-        public CuratorAllTestViewModel(Topic? subject = null)
+        public PartAllTestViewModel(Topic? subject = null)
         {
             _subject = subject;
             LoadTests();
@@ -25,15 +24,32 @@ namespace CozyTest.ViewModels.ParticipantVM.HomeVM
             Tests.Clear();
             if (_subject == null)
             {
-                _testService.GetAll(null, CurrentUser.Id);
+                _testService.GetAllForParticipants(CurrentUser.Id);
             }
             else
             {
-                _testService.GetTestsByTopicId(_subject.Id, CurrentUser.Id);
             }
 
             foreach (var test in _testService.Tests)
                 Tests.Add(new TestListItemViewModel(test, _testService));
+        }
+
+        public void RemoveTest(Test test)
+        {
+            var result = MessageBox.Show(
+                $"Удалить тест «{test.Name}»?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            _testService.Remove(test);
+
+            var item = Tests.FirstOrDefault(x => x.Test == test);
+            if (item != null)
+                Tests.Remove(item);
         }
 
         private bool _isLoading;

@@ -1,44 +1,41 @@
 ﻿using CozyTest.ForShellWindow;
-using CozyTest.Shells.Curator;
 using CozyTest.ViewModels.CuratorVM;
-using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace CozyTest.Pages.Curator
 {
     /// <summary>
-    /// Логика взаимодействия для AdminPanelPage.xaml
+    /// Логика взаимодействия для UsersPage.xaml
     /// </summary>
-    public partial class AdminPanelPage : Page
+    public partial class ParticipantsPage : UserControl
     {
         private AdminPanelViewModel _viewModel = new();
-        public AdminPanelPage()
+
+        public ParticipantsPage()
         {
             InitializeComponent();
             DataContext = _viewModel;
         }
 
-        private void TabItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is TabItem tabItem && tabItem.Tag is string tag)
-            {
-                _viewModel.SelectedTab = Enum.Parse<AdminPanelViewModel.TabType>(tag);
-            }
-        }
-        
-        private void Button_BindUserForGroup(object sender, RoutedEventArgs e)
-        {
-            ShellWindow window = new ShellWindow(new BindUserForGroup(_viewModel.SelectedGroup));
-            window.Show();
-        }
         private void Button_SearchParticipant(object sender, RoutedEventArgs e)
         {
             ShellWindow window = new ShellWindow(new SearchParticipantShell());
             window.Show();
         }
-        
+
         private void Button_AddParticipant(object sender, RoutedEventArgs e)
         {
             if (CurrentUser.TypeUser == 1)
@@ -52,6 +49,7 @@ namespace CozyTest.Pages.Curator
                 window.Show();
             }
         }
+
         private void Button_EditParticipant(object sender, RoutedEventArgs e)
         {
             if (CurrentUser.TypeUser == 1)
@@ -64,23 +62,6 @@ namespace CozyTest.Pages.Curator
                 ShellWindow window = new ShellWindow(new CreateEditParticipant(_viewModel));
                 window.Show();
             }
-        }
-        private void Button_AddCurator(object sender, RoutedEventArgs e)
-        {
-            //ShellWindow window = new ShellWindow(new CreateEditParticipant());//надо куратора
-            //window.Show();
-        }
-        private void Button_AddGroup(object sender, RoutedEventArgs e)
-        {
-            ShellWindow window = new ShellWindow(new CreateEditGroup(_viewModel));
-
-            window.Show();
-        }
-
-        private void Button_PublishTest(object sender, RoutedEventArgs e)
-        {
-            ShellWindow window = new ShellWindow(new PublicationDetails(_viewModel.SelectedTest.Id));
-            window.Show();
         }
     }
 }

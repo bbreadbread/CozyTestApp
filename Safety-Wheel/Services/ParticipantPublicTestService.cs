@@ -56,6 +56,36 @@ namespace CozyTest.Services
             return true;
         }
 
+        public void SwitchParticipantPublicStatus(int testId, ObservableCollection<Participant> participants)
+        {
+            try
+            {
+                var existingParticipantIds = ParticipantsPublicTests
+                    .Where(ppt => ppt.TestId == testId)
+                    .Select(ppt => ppt.ParticipantId)
+                    .ToHashSet();
+
+                foreach (var participant in participants)
+                {
+                    if (!existingParticipantIds.Contains(participant.Id))
+                    {
+                        Add(new ParticipantsPublicTest
+                        {
+                            TestId = testId,
+                            ParticipantId = participant.Id,
+                            ResponsibleId = CurrentUser.Id
+                        });
+                    }
+                }
+
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
         public void SwitchParticipantPublicStatus(int userId, int testId)
         {
             try
@@ -89,7 +119,6 @@ namespace CozyTest.Services
         {
             try
             {
-                // Получаем ID всех групп куратора для проверки пересечений
                 var curatorGroups = _db.Groups
                     .Where(g => g.CuratorId == CurrentUser.Id)
                     .Include(g => g.Participants)
@@ -99,16 +128,13 @@ namespace CozyTest.Services
 
                 if (isCurrentlyPublishedForAll)
                 {
-                    // Снимаем публикацию с группы
                     foreach (var participant in participants)
                     {
-                        // ПРОВЕРКА: находится ли участник в других опубликованных группах
                         bool isInOtherPublishedGroup = curatorGroups
-                            .Where(g => g.Id != groupId) // Исключаем текущую группу
-                            .Where(g => g.Participants.Any(p => p.Id == participant.Id)) // Где есть этот участник
-                            .Any(g => IsTestPublishedForGroup(g.Id, testId)); // И группа опубликована
+                            .Where(g => g.Id != groupId)
+                            .Where(g => g.Participants.Any(p => p.Id == participant.Id))
+                            .Any(g => IsTestPublishedForGroup(g.Id, testId));
 
-                        // Если участник НЕ в другой опубликованной группе — удаляем публикацию
                         if (!isInOtherPublishedGroup)
                         {
                             var existing = _db.ParticipantsPublicTests
@@ -126,7 +152,6 @@ namespace CozyTest.Services
                 }
                 else
                 {
-                    // Публикуем для всех (здесь без изменений)
                     foreach (var participant in participants)
                     {
                         var existing = _db.ParticipantsPublicTests
@@ -155,14 +180,12 @@ namespace CozyTest.Services
             }
         }
 
-        // Новый вспомогательный метод для проверки публикации группы
         private bool IsTestPublishedForGroup(int groupId, int testId)
         {
             var participants = GetParticipantsForGroup(groupId);
             return IsPublishedForAll(testId, participants);
         }
 
-        // Вынесем получение участников группы в отдельный метод
         private List<Participant> GetParticipantsForGroup(int groupId)
         {
             return _db.Participants
@@ -184,6 +207,11 @@ namespace CozyTest.Services
             }
 
             return true;
+        }
+
+        public bool IsPublished(int testId, int participantId)
+        {
+            return ParticipantsPublicTests.Any(pt => pt.TestId == testId && pt.ParticipantId == participantId);
         }
     }
 }

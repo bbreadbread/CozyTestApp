@@ -2,6 +2,7 @@
 using CozyTest.Pages.Curator;
 using CozyTest.Services;
 using CozyTest.ViewModels.CreateTestsVM;
+using CozyTest.ViewModels.ParticipantVM;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,25 +16,11 @@ namespace CozyTest.Pages.Participant
     {
         Topic _subject;
 
-        public PartHomePage(Topic subject = null)
+        public PartHomePage()
         {
-            _subject = subject;
-            DataContext = new CuratorAllTestViewModel(_subject);
+            DataContext = new PartAllTestViewModel();
             InitializeComponent();
         }
-
-        //private void RemoveTest_Click(object sender, RoutedEventArgs e)
-        //{
-        //    e.Handled = true;
-
-        //    if (sender is Button btn &&
-        //        btn.Tag is Test test &&
-        //        DataContext is CuratorAllTestViewModel vm)
-        //    {
-        //        vm.RemoveTest(test);
-        //    }
-        //}
-
 
         private async void Card_Click(object sender, MouseButtonEventArgs e)
         {
@@ -63,6 +50,16 @@ namespace CozyTest.Pages.Participant
 
             dm.IsLoading = false;
         }
-
     }
 }
+        //private void RemoveTest_Click(object sender, RoutedEventArgs e)
+        //{
+        //    e.Handled = true;
+
+        //    if (sender is Button btn &&
+        //        btn.Tag is Test test &&
+        //        DataContext is CuratorAllTestViewModel vm)
+        //    {
+        //        vm.RemoveTest(test);
+        //    }
+        //}

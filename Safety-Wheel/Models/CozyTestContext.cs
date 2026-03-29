@@ -311,7 +311,6 @@ public partial class CozyTestContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK_Applications");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.DateTimeApplication).HasColumnType("datetime");
             entity.Property(e => e.ReviewerId).HasColumnName("Reviewer_ID");

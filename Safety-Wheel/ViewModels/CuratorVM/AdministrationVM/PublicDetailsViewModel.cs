@@ -13,7 +13,6 @@ namespace CozyTest.ViewModels.CuratorVM
         ParticipantPublicTestService _participantPublicTestService = new();
 
         private ObservableCollection<Group> _groupsList;
-
         public ObservableCollection<Group> GroupsList
         {
             get
@@ -27,8 +26,8 @@ namespace CozyTest.ViewModels.CuratorVM
                 OnPropertyChanged(nameof(GroupsList));
             }
         }
-        private ObservableCollection<Participant> _participantsList;
 
+        private ObservableCollection<Participant> _participantsList;
         public ObservableCollection<Participant> ParticipantsList
         {
             get
@@ -50,7 +49,6 @@ namespace CozyTest.ViewModels.CuratorVM
         public RelayCommand SwitchPublisedGroupsCommand { get; }
         public RelayCommand SwitchPublisedParticipantCommand { get; }
 
-
         private Visibility _groupsDataGridVisibility = Visibility.Collapsed;
         public Visibility GroupsDataGridVisibility
         {
@@ -69,19 +67,71 @@ namespace CozyTest.ViewModels.CuratorVM
         public Participant SelectedParticipant
         {
             get => _selectedParticipant;
-            set
-            {
-                SetProperty(ref _selectedParticipant, value);
-            }
+            set => SetProperty(ref _selectedParticipant, value);
         }
 
         private Group _selectedGroup;
         public Group SelectedGroup
         {
             get => _selectedGroup;
+            set => SetProperty(ref _selectedGroup, value);
+        }
+
+        private bool _isAllBindSelected;
+        public bool IsAllBindSelected
+        {
+            get => _isAllBindSelected;
+            set { _isAllBindSelected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isGroupsBindSelected;
+        public bool IsGroupsBindSelected
+        {
+            get => _isGroupsBindSelected;
+            set { _isGroupsBindSelected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isParticipantsBindSelected;
+        public bool IsParticipantsBindSelected
+        {
+            get => _isParticipantsBindSelected;
+            set { _isParticipantsBindSelected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isEnabledGroup = true;
+        public bool IsEnabledGroup
+        {
+            get => _isEnabledGroup;
+            set { _isEnabledGroup = value; OnPropertyChanged(); }
+        }
+
+        private bool _isEnabledParticipant = true;
+        public bool IsEnabledParticipant
+        {
+            get => _isEnabledParticipant;
+            set { _isEnabledParticipant = value; OnPropertyChanged(); }
+        }
+
+        private bool _isAllPublic;
+        public bool IsAllPublic
+        {
+            get => _isAllPublic;
             set
             {
-                SetProperty(ref _selectedGroup, value);
+                _isAllPublic = value;
+                OnPropertyChanged();
+
+                if (IsAllPublic == true)
+                {
+                    IsEnabledGroup = false;
+                    IsEnabledParticipant = false;
+                }
+                else
+                {
+                    IsEnabledGroup = true;
+                    IsEnabledParticipant = true;
+                }
+
             }
         }
 
@@ -96,22 +146,58 @@ namespace CozyTest.ViewModels.CuratorVM
             SwitchPublisedParticipantCommand = new RelayCommand(_ => SwitchPublisedParticipant());
 
             _participantPublicTestService.GetAll(currentTestId);
+
+            DetermineInitialBindState();
         }
 
         public void AllBind()
         {
-            GroupsDataGridVisibility = System.Windows.Visibility.Collapsed;
-            ParticipantsDataGridVisibility = System.Windows.Visibility.Collapsed;
+            var participants = _participantService.GetAll(CurrentUser.Id);
+
+            if (!participants.Any())
+            {
+                MessageBox.Show("Нет привязанных к Вам тестируемых");
+                IsAllBindSelected = false;
+                return;
+            }
+
+            IsEnabledGroup = false;
+            IsEnabledParticipant = false;
+
+            IsGroupsBindSelected = false;
+            IsParticipantsBindSelected = false;
+            IsAllPublic = true;
+
+            GroupsDataGridVisibility = Visibility.Collapsed;
+            ParticipantsDataGridVisibility = Visibility.Collapsed;
+
+            _participantPublicTestService.SwitchParticipantPublicStatus(currentTestId, participants);
         }
+
         public void GroupsBind()
         {
-            GroupsDataGridVisibility = System.Windows.Visibility.Visible;
-            ParticipantsDataGridVisibility = System.Windows.Visibility.Collapsed;
+            IsEnabledGroup = true;
+            IsEnabledParticipant = true;
+            IsAllPublic = false;
+
+            GroupsDataGridVisibility = Visibility.Visible;
+            ParticipantsDataGridVisibility = Visibility.Collapsed;
+
+            IsAllBindSelected = false;
+            IsParticipantsBindSelected = false;
         }
+
         public void ParticipantsBind()
         {
-            GroupsDataGridVisibility = System.Windows.Visibility.Collapsed;
-            ParticipantsDataGridVisibility = System.Windows.Visibility.Visible;
+            IsEnabledGroup = true;
+            IsEnabledParticipant = true;
+            IsAllPublic = false;
+
+            GroupsDataGridVisibility = Visibility.Collapsed;
+            ParticipantsDataGridVisibility = Visibility.Visible;
+
+            IsAllBindSelected = false;
+            IsGroupsBindSelected = false;
         }
 
         public void SwitchPublisedGroups()
@@ -127,22 +213,90 @@ namespace CozyTest.ViewModels.CuratorVM
             }
 
             _participantPublicTestService.SwitchParticipantPublicStatus(currentTestId, SelectedGroup.Id, participants);
-
             SelectedGroup.IsPublished = !SelectedGroup.IsPublished;
 
             _participantService.GetAllParticipants();
             ParticipantsList = _participantService.Participants;
+
+            CheckIfAllParticipantsSelected();
         }
+
         public void SwitchPublisedParticipant()
         {
             if (SelectedGroup != null)
             {
                 _groupService.GetAllGroupsForCurator(SelectedGroup.Id, currentTestId);
             }
-            
-            _participantPublicTestService.SwitchParticipantPublicStatus(SelectedParticipant.Id ,currentTestId);
 
+            _participantPublicTestService.SwitchParticipantPublicStatus(SelectedParticipant.Id, currentTestId);
             GroupsList = _groupService.GetAllGroupsForCurator(CurrentUser.Id, currentTestId);
+
+            CheckIfAllParticipantsSelected();
+        }
+
+        private void CheckIfAllParticipantsSelected()
+        {
+            var allParticipants = _participantService.GetAll(CurrentUser.Id);
+
+            if (!allParticipants.Any())
+                return;
+
+            bool allPublished = allParticipants.All(p =>
+                _participantPublicTestService.IsPublished(currentTestId, p.Id));
+
+            IsAllPublic = allPublished;
+        }
+
+        private void DetermineInitialBindState()
+        {
+            var participants = _participantService.GetAll(CurrentUser.Id);
+            var groups = _groupService.GetAllGroupsForCurator(CurrentUser.Id, currentTestId);
+
+            bool allParticipantsPublished = participants.Any() &&
+                participants.All(p => _participantPublicTestService.IsPublished(currentTestId, p.Id));
+
+            bool hasGroupBindings = groups.Any(g => g.IsPublished);
+            bool hasIndividualBindings = participants.Any(p =>
+                _participantPublicTestService.IsPublished(currentTestId, p.Id)) && !allParticipantsPublished;
+
+            if (allParticipantsPublished)
+            {
+                IsAllPublic = true;
+                IsAllBindSelected = true;
+                IsEnabledGroup = true;
+                IsEnabledParticipant = true;
+            }
+            else if (hasGroupBindings)
+            {
+                IsAllBindSelected = false;
+                IsGroupsBindSelected = true;
+                IsParticipantsBindSelected = false;
+                IsAllPublic = false;
+                IsEnabledGroup = true;
+                IsEnabledParticipant = true;
+
+                GroupsBind();
+            }
+            else if (hasIndividualBindings)
+            {
+                IsAllBindSelected = false;
+                IsGroupsBindSelected = false;
+                IsParticipantsBindSelected = true;
+                IsAllPublic = false;
+                IsEnabledGroup = true;
+                IsEnabledParticipant = true;
+
+                ParticipantsBind();
+            }
+            else
+            {
+                IsAllBindSelected = false;
+                IsGroupsBindSelected = false;
+                IsParticipantsBindSelected = false;
+                IsAllPublic = false;
+                IsEnabledGroup = true;
+                IsEnabledParticipant = true;
+            }
         }
     }
 }

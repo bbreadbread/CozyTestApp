@@ -43,8 +43,17 @@
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
                     </Border.Effect>
-                    <TextBox x:Name="TbLogin" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontWeight="Medium" FontSize="30" mah:TextBoxHelper.ClearTextButton="True">
-                        <TextBox.Template>
+                        <TextBox 
+                            x:Name="TbLogin"
+                            Text="123"
+                            AutomationProperties.Name="Login"
+                            BorderThickness="0"
+                            Background="Transparent" 
+                            VerticalAlignment="Center"
+                            FontWeight="Medium" 
+                            FontSize="30"
+                            mah:TextBoxHelper.ClearTextButton="True">
+                            <TextBox.Template>
                             <ControlTemplate TargetType="TextBox">
                                 <Border x:Name="border" Background="Transparent">
                                     <ScrollViewer x:Name="PART_ContentHost" Margin="8,0"/>
@@ -59,7 +68,15 @@
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
                     </Border.Effect>
-                    <PasswordBox x:Name="TbPassword" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontWeight="Medium"  FontSize="30">
+                        <PasswordBox 
+                            AutomationProperties.Name="Password" 
+                            Password="123" 
+                            x:Name="TbPassword"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            VerticalAlignment="Center"
+                            FontWeight="Medium"
+                            FontSize="30">
                         <PasswordBox.Template>
                             <ControlTemplate TargetType="PasswordBox">
                                 <Border x:Name="border" Background="Transparent">

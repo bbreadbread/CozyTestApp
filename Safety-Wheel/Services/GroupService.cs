@@ -1,12 +1,6 @@
 ﻿using CozyTest.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace CozyTest.Services
 {
@@ -18,25 +12,60 @@ namespace CozyTest.Services
         {
 
         }
+
+        public void Add(Group group)
+        {
+            var _group = new Group
+            {
+                Name = group.Name,
+                Description = group.Description,
+                CuratorId = group.CuratorId,
+            };
+            _db.Add(_group);
+            Commit();
+            Group.Add(group);
+        }
+
+        public void Delete(Group group)
+        {
+            _db.Remove(group);
+            if (Commit() > 0)
+                if (Group.Contains(group))
+                    Group.Remove(group);
+        }
+
+        public int Commit() => _db.SaveChanges();
+
         public void GetAllGroupsForUser()
         {
-            //var userGroups = _db.Groups
-            //                   .Include(ug => ug.Participants)
-            //                   .Where(u => u.Participants.Any(p => p.Id == CurrentUser.Id))
-            //                   .ToList();
+            var userGroups = _db.Groups
+                               .ToList();
 
-            //Group.Clear();
+            Group.Clear();
 
-            //foreach (var userGroup in userGroups)
-            //{
-            //    Group.Add(userGroup);
-            //}
+            foreach (var userGroup in userGroups)
+            {
+                Group.Add(userGroup);
+            }
         }
         public void GetAllGroupsForUser(int userId)
         {
             var groups = _db.Groups
                                .Include(ug => ug.Participants)
                                .Where(u => u.Participants.Any(p => p.Id == userId))
+                               .ToList();
+
+            Group.Clear();
+
+            foreach (var userGroup in groups)
+            {
+                Group.Add(userGroup);
+            }
+        }
+        public void GetAllGroupsForCurator(int userId)
+        {
+            var groups = _db.Groups
+                               .Where(p => p.CuratorId == userId)
                                .ToList();
 
             Group.Clear();

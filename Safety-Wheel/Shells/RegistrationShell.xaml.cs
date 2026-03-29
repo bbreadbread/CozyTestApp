@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,22 @@ namespace CozyTest.ForShellWindow
     /// </summary>
     public partial class RegistrationShell : UserControl
     {
+        string passwordBox;
+        string rePasswordBox;
         public RegistrationShell()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        { 
+            passwordBox = PasswordB.Password;
+            rePasswordBox = RePasswordB.Password;
+            if (DataContext is RequestViewModel vm && passwordBox != null && rePasswordBox != null)
+            {
+                vm.Password = passwordBox;
+                vm.RePassword = rePasswordBox;
+            }
         }
     }
 }

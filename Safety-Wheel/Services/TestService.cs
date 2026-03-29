@@ -40,11 +40,12 @@ namespace CozyTest.Services
 
         public void GetAll(int? subjectId = null, int? teacherId = null)
         {
-            IQueryable<Test> query = _db.Tests
+            var query = _db.Tests
                 .Include(t => t.Topic)
                 .Include(t => t.CuratorCreate)
                 .Include(t => t.Questions)
-                .Include(t => t.TestType);
+                .Include(t => t.TestType)
+                .AsEnumerable();
 
             if (subjectId != null)
                 query = query.Where(t => t.TopicId == subjectId);
@@ -52,6 +53,21 @@ namespace CozyTest.Services
                 query = query.Where(t => t.CuratorCreateId == teacherId);
 
             var tests = query.ToList();
+            Tests.Clear();
+
+            foreach (var test in tests)
+            {
+                Tests.Add(test);
+            }
+        }
+
+        public void GetAllForParticipants(int? partId = null)
+        {
+            var tests = _db.Tests
+                .Include(t => t.ParticipantsPublicTests)
+                .Where(o=>o.ParticipantsPublicTests.Any(p=>p.ParticipantId == partId))
+                .ToList();
+
             Tests.Clear();
 
             foreach (var test in tests)

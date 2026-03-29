@@ -65,7 +65,7 @@ namespace CozyTest.Pages.Participant
                 CurrentUser.ClassUser = _teacherService.GetCuratorById(curator.Id);
                 if (curator.IsAdmin == true)
                     CurrentUser.TypeUser = 1;
-                else CurrentUser.TypeUser = 1;
+                else CurrentUser.TypeUser = 2;
                 CurrentUser.Id = curator.Id;
                 CurrentUser.Name = curator.Name ?? string.Empty;
                 CurrentUser.Login = _teacherService.GetCuratorById(curator.Id).Login;

@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:CozyTest.ForShellWindow"
              mc:Ignorable="d" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             Height="700" Width="875" >
+             xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+             Height="700" Width="875"  Background="White">
+
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
