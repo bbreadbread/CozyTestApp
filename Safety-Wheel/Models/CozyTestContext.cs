@@ -295,7 +295,7 @@ public partial class CozyTestContext : DbContext
             entity.Property(e => e.PicturePath).HasColumnName("Picture_Path");
             entity.Property(e => e.QuestionTypeId).HasColumnName("QuestionType_ID");
             entity.Property(e => e.TestId).HasColumnName("Test_ID");
-            entity.Property(e => e.TestQuest).HasColumnName("Test_Quest");
+            entity.Property(e => e.TestQuest).HasColumnName("Text_Quest");
 
             entity.HasOne(d => d.QuestionType).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.QuestionTypeId)

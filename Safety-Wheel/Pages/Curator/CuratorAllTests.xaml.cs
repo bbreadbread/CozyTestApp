@@ -1,4 +1,5 @@
 ﻿using CozyTest.Models;
+using CozyTest.Services;
 using CozyTest.ViewModels.CreateTestsVM;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,53 +12,29 @@ namespace CozyTest.Pages.Curator
     /// </summary>
     public partial class CuratorAllTests : UserControl
     {
-        Topic _subject;
-        public CuratorAllTests(Topic subject = null)
+        public CuratorAllTests()
         {
-            _subject = subject;
-            DataContext = new CuratorAllTestViewModel(_subject);
             InitializeComponent();
         }
-        private void RemoveTest_Click(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
 
+        private void Card_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border &&
+                border.Tag is TestListItemViewModel vm &&
+                DataContext is CuratorAllTestViewModel dm)
+            {
+                dm.OnCardClick(vm);
+            }
+        }
+
+        private void ArchiveTest_Click(object sender, RoutedEventArgs e)
+        {
             if (sender is Button btn &&
                 btn.Tag is Test test &&
                 DataContext is CuratorAllTestViewModel vm)
             {
-                vm.RemoveTest(test);
+                vm.OnArchiveTest(test);
             }
-        }
-
-
-        private async void Card_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not Border border ||
-                border.Tag is not TestListItemViewModel vm ||
-                DataContext is not CuratorAllTestViewModel dm)
-                return;
-
-            dm.IsLoading = true;
-
-            if (vm.IsCreateCard)
-            {
-                MainNavigation.GlobalFrameCurator
-                    ?.Navigate(new CuratorCreateTestsPage(null));
-                return;
-            }
-
-            if (vm.Test == null)
-                return;
-
-
-
-            await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
-
-            MainNavigation.GlobalFrameCurator
-                ?.Navigate(new CuratorCreateTestsPage(vm.Test));
-
-            dm.IsLoading = false;
         }
     }
 }

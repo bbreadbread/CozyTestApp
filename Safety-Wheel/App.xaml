@@ -4,14 +4,15 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
              xmlns:local="clr-namespace:CozyTest"
-             xmlns:converters="clr-namespace:CozyTest.Converters"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:CozyTest.Converters">
     <Application.Resources>
 
         <ResourceDictionary>
             <converters:RoleVisibilityConverter x:Key="RoleVisibilityConverter"/>
             <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
             <converters:EnabledConverter x:Key="EnabledConverter"/>
+            <converters:RequestCountConverter x:Key="RequestCountConverter"/>
+            <converters:PasswordEditVisibilityConverter x:Key="PasswordEditVisibilityConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />

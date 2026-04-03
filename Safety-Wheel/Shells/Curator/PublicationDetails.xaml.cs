@@ -1,19 +1,16 @@
 ﻿using CozyTest.ViewModels.CuratorVM;
 using System.Windows.Controls;
 
-namespace CozyTest.Shells.Curator
+namespace CozyTest.ForShellWindow
 {
     /// <summary>
     /// Логика взаимодействия для PublicationDetails.xaml
     /// </summary>
     public partial class PublicationDetails : UserControl
     {
-        PublicDetailsViewModel _publicDetailsViewModel = new();
-        public PublicationDetails(int testId)
+        public PublicationDetails()
         {
             InitializeComponent();
-            _publicDetailsViewModel.currentTestId = testId;
-            DataContext = _publicDetailsViewModel;
         }
     }
 }

@@ -5,16 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:CozyTest"
+        xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+        xmlns:vmC="clr-namespace:CozyTest.ViewModels.CuratorVM.CreateTestsVM"
+        xmlns:views="clr-namespace:CozyTest.ForShellWindow"
         mc:Ignorable="d"
-                 Height="630" Width="775"
+        Height="630" Width="775"
         WindowTitleBrush="{StaticResource DarkSwamp}"
         GlowBrush="{StaticResource DarkSwamp}"
         BorderBrush="{StaticResource DarkSwamp}"
-                 WindowStartupLocation="CenterScreen"
-                 ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="{Binding WindowTitle}">
+
+    <mah:MetroWindow.Resources>
+        <DataTemplate DataType="{x:Type vm:CreateEditParticipantViewModel}">
+            <views:CreateEditParticipantAdmin/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:RegistrationViewModel}">
+            <views:RegistrationShell/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:PublicDetailsViewModel}">
+            <views:PublicationDetails/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:CreateEditGroupViewModel}">
+            <views:CreateEditGroup/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BindGroupForUserViewModel}">
+            <views:BindGroupForUser/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BindUserForGroupViewModel}">
+            <views:BindUserForGroup/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SearchParticipantViewModel}">
+            <views:SearchParticipantShell/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vmC:ImportExcelViewModel}">
+            <views:ImportExcelShell/>
+        </DataTemplate>
+    </mah:MetroWindow.Resources>
+
     <Grid>
-        <Viewbox Margin="30">
-            <Frame x:Name="ShellGlobalFrame" NavigationUIVisibility="Hidden"/>
+        <Viewbox Margin="15">
+            <ContentPresenter Content="{Binding}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         </Viewbox>
     </Grid>
 </mah:MetroWindow>

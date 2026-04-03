@@ -12,14 +12,12 @@ namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class TestListItemViewModel : ObservableObject
     {
-        private TestService _testService;
         public Test? Test { get; } = new();
         public bool IsCreateCard { get; }
         public bool IsExcelCard { get; }
 
         public TestListItemViewModel(Test test, TestService testService)
         {
-            _testService = testService;
             Test = test;
             IsCreateCard = false;
             IsExcelCard = false;

@@ -1,9 +1,8 @@
 ﻿using CozyTest.Models;
 using CozyTest.Pages.Curator;
-using CozyTest.Pages.Participant;
 using CozyTest.Services;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using CozyTest.ViewModels.StatisticsVM;
-using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -12,11 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using CozyTest.ViewModels.CreateTestsVM;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CozyTest.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
+        private readonly IDialogService _dialogService;    
+        private readonly INavigationService _navigationService;
 
         private ObservableCollection<MenuItemViewModel> _mainMenuItems;
         private ObservableCollection<MenuItemViewModel> _menuOptionItems;
@@ -58,10 +61,16 @@ namespace CozyTest.ViewModels
             Groups,
         }
 
-        public MainViewModel()
+        public MainViewModel(IDialogService dialogService, INavigationService navigationService)
         {
+            _dialogService = dialogService;
+            _navigationService = navigationService;
+
             GoBackCommand = new RelayCommand(_ => ExecuteGoBack());
             ExitCommand = new RelayCommand(_ => ExecuteExit());
+
+            CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
+
         }
 
         public void CreateMainMenuItems()
@@ -75,8 +84,8 @@ namespace CozyTest.ViewModels
                              Icon = new Image
                              {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/statistic_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                              },
                             Label = "Статистика",
@@ -88,8 +97,8 @@ namespace CozyTest.ViewModels
                             Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/result_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Результаты тестирования",
@@ -101,8 +110,8 @@ namespace CozyTest.ViewModels
                             Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/test_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Создание тестов",
@@ -117,22 +126,9 @@ namespace CozyTest.ViewModels
                         {
                            Icon = new Image
                             {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/settings_icon.png")),
-                                Width = 50,
-                                Height = 50,
-                                Stretch = Stretch.Uniform
-                            },
-                            Label = "Управление учениками",
-                            ToolTip = "Ученики преподавателя",
-                            Tag = MainMenuType.CuratorManager
-                        },
-                        new MenuItemViewModel(this)
-                        {
-                           Icon = new Image
-                            {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/users_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/participant_icon.png")),
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Тестируемые",
@@ -143,12 +139,25 @@ namespace CozyTest.ViewModels
                         {
                            Icon = new Image
                             {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/users_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/group_icon.png")),
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
-                            Label = "Кураторы",
+                            Label = "Группы",
+                            ToolTip = "Группы",
+                            Tag = MainMenuType.Groups
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/curator_icon.png")),
+                                Width = 45,
+                                Height = 45,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Экзаменаторы",
                             ToolTip = "Пользователи",
                             Tag = MainMenuType.Curators
                         },
@@ -157,27 +166,15 @@ namespace CozyTest.ViewModels
                            Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/requests_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Заявки",
                             ToolTip = "Заявки",
                             Tag = MainMenuType.Requests
-                        },
-                        new MenuItemViewModel(this)
-                        {
-                           Icon = new Image
-                            {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/group_icon.png")),
-                                Width = 50,
-                                Height = 50,
-                                Stretch = Stretch.Uniform
-                            },
-                            Label = "Группы",
-                            ToolTip = "Группы",
-                            Tag = MainMenuType.Groups
                         }
+                        
                     };
                     break;
 
@@ -188,8 +185,8 @@ namespace CozyTest.ViewModels
                              Icon = new Image
                              {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/statistic_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                              },
                             Label = "Статистика",
@@ -201,8 +198,8 @@ namespace CozyTest.ViewModels
                             Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/result_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Результаты тестирования",
@@ -214,8 +211,8 @@ namespace CozyTest.ViewModels
                             Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/test_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Создание тестов",
@@ -230,22 +227,9 @@ namespace CozyTest.ViewModels
                         {
                            Icon = new Image
                             {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/settings_icon.png")),
-                                Width = 50,
-                                Height = 50,
-                                Stretch = Stretch.Uniform
-                            },
-                            Label = "Управление учениками",
-                            ToolTip = "Ученики преподавателя",
-                            Tag = MainMenuType.CuratorManager
-                        },
-                        new MenuItemViewModel(this)
-                        {
-                           Icon = new Image
-                            {
-                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/settings_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/participant_icon.png")),
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Тестируемые",
@@ -257,14 +241,28 @@ namespace CozyTest.ViewModels
                            Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/group_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Группы",
                             ToolTip = "Группы",
                             Tag = MainMenuType.Groups
+                        },
+                        new MenuItemViewModel(this)
+                        {
+                           Icon = new Image
+                            {
+                                Source = new BitmapImage(new Uri("pack://application:,,,/Images/curator_icon.png")),
+                                Width = 45,
+                                Height = 45,
+                                Stretch = Stretch.Uniform
+                            },
+                            Label = "Экзаменаторы",
+                            ToolTip = "Пользователи",
+                            Tag = MainMenuType.Curators
                         }
+                        
                     };
                     break;
 
@@ -275,8 +273,8 @@ namespace CozyTest.ViewModels
                              Icon = new Image
                              {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/home_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                              },
                             Label = "Статистика",
@@ -288,8 +286,8 @@ namespace CozyTest.ViewModels
                             Icon = new Image
                             {
                                 Source = new BitmapImage(new Uri("pack://application:,,,/Images/profile_icon.png")),
-                                Width = 50,
-                                Height = 50,
+                                Width = 45,
+                                Height = 45,
                                 Stretch = Stretch.Uniform
                             },
                             Label = "Результаты тестирования",
@@ -327,6 +325,8 @@ namespace CozyTest.ViewModels
                     CreateMenuItems();
 
                     _participantService.GetAllParticipants(CurrentUser.Id);
+                    CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
+
 
                     break;
 
@@ -336,6 +336,8 @@ namespace CozyTest.ViewModels
                     CreateMenuItems();
 
                     _participantService.GetAllParticipants(CurrentUser.Id);
+
+                    CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
 
                     break;
 
@@ -692,7 +694,6 @@ namespace CozyTest.ViewModels
 
             try
             {
-                MainNavigation.GlobalFrameCurator?.Navigate(new Page());
                 MenuItems.Clear();
                 MenuDatesItems.Clear();
                 MenuAttemptsItems.Clear();
@@ -704,13 +705,12 @@ namespace CozyTest.ViewModels
                 {
                     switch (menuType)
                     {
-                        //куртор
                         case MainMenuType.TestResults:
                             AttemptsTableVisible = true;
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
                             await LoadParticipantsForResultsAsync();
-                            MainNavigation.GlobalFrameCurator?.Navigate(new CuratorWelcomePage(true));
+                            CurrentContent = null;
                             break;
 
                         case MainMenuType.Statistics:
@@ -719,7 +719,7 @@ namespace CozyTest.ViewModels
                             StatisticTableVisible = true;
                             SecondMenuVisible = true;
                             await LoadParticipantsForStatisticsAsync();
-                            MainNavigation.GlobalFrameCurator?.Navigate(new CuratorStatisticsPage());
+                            CurrentContent = new StatisticsViewModel(null);
                             break;
 
                         case MainMenuType.EditCreateTests:
@@ -727,58 +727,51 @@ namespace CozyTest.ViewModels
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
                             await LoadTopicForEditAsync();
-                            MainNavigation.GlobalFrameCurator?.Navigate(new CuratorAllTests(null));
-                            break;
-
-                        case MainMenuType.CuratorManager:
-                            AttemptsTableVisible = false;
-                            StatisticTableVisible = false;
-                            SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new AdminPanelPage());
+                            CurrentContent = App.Services.GetRequiredService<CuratorAllTestViewModel>(); 
                             break;
 
                         case MainMenuType.Participants:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new ParticipantsPage());
+                            CurrentContent = App.Services.GetRequiredService<ParticipantsViewModel>();
+
                             break;
 
                         case MainMenuType.Curators:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new CuratorsPage());
+                            CurrentContent = App.Services.GetRequiredService<CuratorsViewModel>();
                             break;
 
                         case MainMenuType.Requests:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new RequestsPage());
+                            CurrentContent = App.Services.GetRequiredService<RequestsViewModel>();
                             break;
 
                         case MainMenuType.Groups:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new GroupsPage());
+                            CurrentContent = App.Services.GetRequiredService<GroupsViewModel>();
                             break;
 
-                        //тестиркемый
                         case MainMenuType.Home:
                             await LoadTestsAsync();
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new PartHomePage());
+                            CurrentContent = null; 
                             break;
 
                         case MainMenuType.Profile:
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            MainNavigation.GlobalFrameCurator?.Navigate(new PartProfilePage());
+                            CurrentContent = null;
                             break;
                     }
                 }
@@ -813,18 +806,16 @@ namespace CozyTest.ViewModels
                 {
                     if (value?.Tag == null)
                     {
-                        MainNavigation.GlobalFrameCurator
-                            ?.Navigate(new CuratorAllTests(null));
+                        _navigationService.NavigateTo(new CuratorsViewModel(_dialogService, _navigationService));
                     }
                     else if (value?.Tag is Topic subject)
                     {
-                        MainNavigation.GlobalFrameCurator
-                            ?.Navigate(new CuratorAllTests(subject));
+                        _navigationService.NavigateTo(new CuratorsViewModel(_dialogService, _navigationService));
                     }
                 }
                 else if (menuType == MainMenuType.TestResults)
                 {
-                    MainNavigation.GlobalFrameCurator?.Navigate(new CuratorWelcomePage(true));
+                    _navigationService.NavigateTo(new CuratorsViewModel(_dialogService, _navigationService));
                 }
 
 
@@ -853,14 +844,14 @@ namespace CozyTest.ViewModels
             {
                 if (SetProperty(ref _selectedAttempt, value))
                 {
-                    if (value?.Tag is Attempt attempt && CurrentParticipant != null)
-                    {
-                        var test = _testService.GetTestById(attempt.TestId);
-                        int? sec = attempt.FinishedAt == null ? null : (int)(attempt.FinishedAt - attempt.StartedAt)?.TotalSeconds;
+                    //if (value?.Tag is Attempt attempt && CurrentParticipant != null)
+                    //{
+                    //    var test = _testService.GetTestById(attempt.TestId);
+                    //    int? sec = attempt.FinishedAt == null ? null : (int)(attempt.FinishedAt - attempt.StartedAt)?.TotalSeconds;
 
-                        var studPage = new CozyTest.Pages.Participant.PartTest(test, sec, true, attempt);
-                        MainNavigation.GlobalFrameCurator?.Navigate(studPage);
-                    }
+                    //    var studPage = new CozyTest.Pages.Participant.PartTest(test, sec, true, attempt);
+                    //    _navigationService.NavigateTo(studPage);
+                    //}
                 }
             }
         }
@@ -929,7 +920,10 @@ namespace CozyTest.ViewModels
         public object CurrentContent
         {
             get => _currentContent;
-            set => SetProperty(ref _currentContent, value);
+            set
+            {
+                SetProperty(ref _currentContent, value);
+            }
         }
         public Participant CurrentParticipant
         {

@@ -10,10 +10,9 @@ namespace CozyTest.ForShellWindow
     /// </summary>
     public partial class BindUserForGroup : UserControl
     {
-        public BindUserForGroup(Group group)
+        public BindUserForGroup()
         {
             InitializeComponent();
-            DataContext = new BindUserForGroupViewModel(group);
         }
         private void ListView_Add(object sender, MouseButtonEventArgs e)
         {

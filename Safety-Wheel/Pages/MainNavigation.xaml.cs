@@ -19,6 +19,8 @@ using CozyTest.Services;
 using System.Windows.Media.Animation;
 using static CozyTest.ViewModels.MainViewModel;
 using CozyTest.Pages.Participant;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CozyTest.Pages.Curator
 {
@@ -27,23 +29,10 @@ namespace CozyTest.Pages.Curator
     /// </summary>
     public partial class MainNavigation : Page
     {
-        public static Frame GlobalFrameCurator = new();
         public MainNavigation()
         {
             PartTest._isTestActivated = false;
             InitializeComponent();
-
-            switch (CurrentUser.TypeUser)
-            {
-                case (1):
-                    FrameCurator.Navigate(new CuratorWelcomePage());
-                    break;
-                default:
-                    FrameCurator.Navigate(new PartHomePage());
-                    break;
-            }
-            
-            GlobalFrameCurator = FrameCurator;
         }
 
         private void DataGridRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -59,6 +48,17 @@ namespace CozyTest.Pages.Curator
             if (Application.Current.MainWindow is MainWindow mw)
             {
                 DataContext = mw.VM;
+
+                //!
+                switch (CurrentUser.TypeUser)
+                {
+                    case 1 or 2: 
+                        mw.VM.CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>(); ;
+                        break;
+                    default:
+                        mw.VM.CurrentContent = null; 
+                        break;
+                }
             }
         }
 

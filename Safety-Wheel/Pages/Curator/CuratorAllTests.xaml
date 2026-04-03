@@ -4,24 +4,140 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:conv="clr-namespace:CozyTest.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
-             HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch">
-
+             Width="Auto"
+             Style="{StaticResource CreateEditTest}">
     <UserControl.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility"/>
+        <conv:CardWidthConverter x:Key="CardWidthConverter"/>
+        <conv:CardMarginConverter x:Key="CardMarginConverter"/>
     </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid>
-            <ScrollViewer Margin="40" Grid.Row="0" 
-                          HorizontalAlignment="Center" 
-                          VerticalAlignment="Center" 
-                          VerticalScrollBarVisibility="Hidden"
-                          HorizontalScrollBarVisibility="Disabled">
+
+        <Grid MinWidth="1300" Grid.Row="0" Margin="0 20 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="170"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+
+            <RadioButton Grid.Row="0" Grid.Column="0" 
+                      Content="Своё авторство" 
+                      VerticalAlignment="Center" 
+                      Margin="20 0 0 0"
+                      IsChecked="{Binding IsOwnAuthorship}" TextElement.FontSize="20" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"
+                         GroupName="123"/>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" 
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Center" 
+                        Margin="20 0 20 0">
+                <RadioButton Content="Авторство: " 
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsNotMyAuthorship}"  TextElement.FontSize="20" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"
+                              GroupName="123"/>
+                <ComboBox Height="45" 
+                          Width="300" 
+                          Style="{StaticResource UpMenuTestComboBox}"
+                          mah:TextBoxHelper.Watermark="Выберите автора" 
+                          ItemsSource="{Binding Curators}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedCoauthor}"
+                          IsEnabled="{Binding IsNotMyAuthorship}"/>
+            </StackPanel>
+
+            <ComboBox Height="45" 
+                      Grid.Row="0" 
+                      Grid.Column="2"  
+                      mah:TextBoxHelper.Watermark="Тема" 
+                      Style="{StaticResource UpMenuTestComboBox}"
+                      ItemsSource="{Binding Topics}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedTopic}"/>
+
+            <Button Grid.Row="0" 
+                    Grid.Column="4"
+                    Width="130"
+                    Height="50"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    Command="{Binding ClearFiltersCommand}">
+                <StackPanel Orientation="Horizontal">
+                     <Image Source="pack://application:,,,/Images/plus_icon.png"
+                       Width="40"
+                       Height="40"/>
+                    <TextBlock Text="Создать тему" TextWrapping="Wrap" Width="80" Margin="10 0 0 0" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
+                </StackPanel>
+               
+            </Button>
+
+            <Button Grid.Row="0" 
+                    Grid.Column="3"
+                    Width="120"
+                    Height="50"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Margin="3"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ClearFiltersCommand}">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Images/clear_icon.png"
+                           Width="40"
+                           Height="40"/>
+                    <TextBlock Text="Очистить фильтры" TextWrapping="Wrap" Width="80" Margin="10 0 0 0" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
+                </StackPanel>
+            </Button>
+
+            <DatePicker Height="45" 
+                        Grid.Row="1" 
+                        Grid.Column="0" 
+                        Margin="20 0 0 0"
+                        SelectedDate="{Binding SelectedDate}"/>
+
+            <TextBox Height="45" 
+                     Grid.Row="1" 
+                     Grid.Column="1" 
+                     Grid.ColumnSpan="2" 
+                     mah:TextBoxHelper.Watermark="Введите название теста" 
+                     Background="{StaticResource LightSwamp}" 
+                     BorderBrush="{StaticResource MainSwamp}"
+                     BorderThickness="3" 
+                     Margin="20 0 20 0"
+                     Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox Height="45" 
+                      Grid.Row="1" 
+                      Grid.Column="3" 
+                      Grid.ColumnSpan="2" 
+                      mah:TextBoxHelper.Watermark="Соавтор" 
+                      Style="{StaticResource UpMenuTestComboBox}"
+                      ItemsSource="{Binding Curators}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedCoauthor}"/>
+    </Grid>
+    <Grid Grid.Row="1">
+            <ScrollViewer Grid.Row="0" 
+               VerticalScrollBarVisibility="Hidden"
+              HorizontalScrollBarVisibility="Disabled" MaxHeight="1000" MaxWidth="1400">
                 <Grid>
                     <ItemsControl ItemsSource="{Binding Tests}">
                         <ItemsControl.ItemsPanel>
@@ -32,16 +148,21 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border 
-                                MouseLeftButtonUp="Card_Click"
-                                Tag="{Binding}"
-                                Style="{StaticResource CardBorderStyle}">
-                                    <Grid>
+                                <Border Style="{StaticResource CardBorderStyle}"
+                                        Width="{Binding Converter={StaticResource CardWidthConverter}}"
+                                        Margin="{Binding Converter={StaticResource CardMarginConverter}}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CardClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
 
+                                    <Grid>
                                         <Grid Visibility="{Binding IsCreateCard, Converter={StaticResource BoolToVisibility}}">
                                             <Border BorderThickness="2" 
                                                   Background="{StaticResource lightTurquoise}"
-                                                  CornerRadius="6">     
+                                                  CornerRadius="6">
                                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                                     <Image Source="pack://application:,,,/Images/plus_icon.png"
                                                            Width="80"
@@ -49,7 +170,7 @@
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
-                                        
+
                                         <Grid Visibility="{Binding IsExcelCard, Converter={StaticResource BoolToVisibility}}">
                                             <Border BorderThickness="2" 
                                             Background="{StaticResource LightGreen}"
@@ -82,15 +203,15 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 25 0" Grid.Row="0" Grid.Column="0">
-                                                    <TextBlock Text="{Binding Test.DTestType.Name}" FontSize="20" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Test.TestType.Name}" FontSize="20" FontWeight="Bold"/>
                                                 </StackPanel>
 
                                                 <Border BorderBrush="Black" BorderThickness="2" Margin="0 10" Grid.Column="1"/>
-                                                
+
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 25 0" Grid.Row="0" Grid.Column="2">
                                                     <TextBlock Text="{Binding Test.Topic.Name}" FontSize="20" FontWeight="Bold"/>
                                                 </StackPanel>
-                                                
+
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3">
                                                     <TextBlock Text="{Binding Test.Name}" FontSize="32"/>
                                                 </StackPanel>
@@ -102,45 +223,66 @@
                                             </Grid>
 
                                             <Border Grid.Row="1"
-                                                    BorderBrush="{StaticResource LightGray}"
+                                                    BorderBrush="{StaticResource MainSwamp}"
                                                     BorderThickness="2"/>
 
                                             <Grid Grid.Row="2">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
 
-                                                <TextBlock Grid.Column="0" Grid.Row="0"
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0"
                                                            Text="{Binding Test.DateOfCreating, StringFormat={}{0:dd.MM.yyyy}}"
-                                                           VerticalAlignment="Center"  FontSize="20" Margin="30 0 0 0"/>
+                                                           VerticalAlignment="Bottom"   
+                                                           FontSize="20" 
+                                                           Margin="10 5 0 0"/>
 
-                                                <TextBlock Grid.Column="1" Grid.Row="0"
-                                                           Text="{Binding Test.CuratorCreate.Name}" VerticalAlignment="Center"  FontSize="20" Margin="30 0 0 0"/>
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding Test.CuratorCreate.Name}"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Bottom"  
+                                                           FontSize="20" 
+                                                           Margin="0 5 10 0"
+                                                           TextWrapping="Wrap"/>
+                                                </Grid>
 
-                                                <CheckBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"
-                                                          IsChecked="{Binding IsPublic}" Content="Опубликовать" VerticalAlignment="Center"  FontSize="20" Margin="30 0 0 0"/>
+                                                <Grid Grid.Row="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="2*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Grid.Column="0"  Grid.RowSpan="2"
+                                                           Content="Опубликовать" VerticalAlignment="Center" FontSize="20" Grid.ColumnSpan="2" Margin="10 0 0 0"/> <!--IsChecked="{Binding IsPublic}"-->
 
-                                                <Button Grid.Column="1"
-                                                        Grid.Row="1"
-                                                        Tag="{Binding Test}"
-                                                        Click="RemoveTest_Click"
-                                                        Width="50"
-                                                        Height="50"
-                                                        HorizontalAlignment="Right"
-                                                        Background="Transparent"
-                                                        BorderThickness="0"
-                                                        Padding="0">
 
-                                                    <Image Source="pack://application:,,,/Images/delete_icon.png"
-                                                           Width="50"
-                                                           Height="50"/>
-                                                </Button>
+                                                    <Menu Grid.Column="1"
+                                                          Width="50"
+                                                          Height="50"
+                                                          HorizontalAlignment="Right"
+                                                          VerticalAlignment="Center"
+                                                          Background="Transparent" Margin="5">
+                                                        <MenuItem Width="50" Height="50" Padding="-10">
+                                                            <MenuItem.Header>
+                                                                <Image Source="pack://application:,,,/Images/menu_icon.png"
+                                                                       Width="50"
+                                                                       Height="50"
+                                                                       Stretch="Uniform"/>
+                                                            </MenuItem.Header>
+                                                            <MenuItem Header="Детализация публикации"/>
+                                                            <MenuItem Header="Посмотреть прохождения"/>
+                                                            <MenuItem Header="В архив" 
+                                                                      Command="{Binding DataContext.ArchiveTestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                      CommandParameter="{Binding Test}"/>
+                                                        </MenuItem>
+                                                    </Menu>
+                                                </Grid>
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -150,24 +292,25 @@
                     </ItemsControl>
                 </Grid>
             </ScrollViewer>
-            <Grid Background="#80000000"
-                  Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"
-                  Panel.ZIndex="100">
+
+            <!--<Grid Background="#80000000"
+      Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}"
+      Panel.ZIndex="100">
 
                 <StackPanel VerticalAlignment="Center"
-            HorizontalAlignment="Center">
+                HorizontalAlignment="Center">
 
                     <ProgressBar Width="200"
-                 Height="20"
-                 IsIndeterminate="True"/>
+                     Height="20"
+                     IsIndeterminate="True"/>
 
                     <TextBlock Text="Загрузка..."
-               Foreground="White"
-               FontSize="16"
-               Margin="0,10,0,0"
-               HorizontalAlignment="Center"/>
+                   Foreground="White"
+                   FontSize="16"
+                   Margin="0,10,0,0"
+                   HorizontalAlignment="Center"/>
                 </StackPanel>
-            </Grid>
+            </Grid>-->
         </Grid>
     </Grid>
 </UserControl>

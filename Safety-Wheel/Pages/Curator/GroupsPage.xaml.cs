@@ -22,19 +22,11 @@ namespace CozyTest.Pages.Curator
     /// </summary>
     public partial class GroupsPage : UserControl
     {
-        private AdminPanelViewModel _viewModel = new();
 
         public GroupsPage()
         {
             InitializeComponent();
-            DataContext = _viewModel;
         }
 
-        private void Button_AddGroup(object sender, RoutedEventArgs e)
-        {
-            ShellWindow window = new ShellWindow(new CreateEditGroup(_viewModel));
-
-            window.Show();
-        }
     }
 }

@@ -79,16 +79,5 @@ namespace CozyTest.Pages.Curator
                 vm.Save();
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_test != null)
-            {
-                DataContext = new CuratorCreateTestViewModel(_test);
-            }
-            else
-            {
-                DataContext = new CuratorCreateTestViewModel();
-            }
-        }
     }
 }

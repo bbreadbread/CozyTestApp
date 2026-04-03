@@ -18,6 +18,8 @@ public partial class Question
     public int? QuestionTypeId { get; set; }
 
     public string? Comments { get; set; }
+    public int? Version { get; set; }
+    public bool? IsArchive { get; set; }
 
     public virtual ICollection<Option> Options { get; set; } = new List<Option>();
 

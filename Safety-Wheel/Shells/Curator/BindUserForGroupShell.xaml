@@ -28,7 +28,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding CurrentGroup.Name, StringFormat='Настройка привязки тестируемых к группе {0}'}"  Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
+        <StackPanel Grid.ColumnSpan="3" Orientation="Vertical">
+            <TextBlock Text="{Binding CurrentGroup.Name, StringFormat='Настройка привязки тестируемых к группе {0}'}"  Style="{StaticResource ShellTitle}"/>
+            <TextBlock Text="Для управления привязкой дважды кликните по элементу" Margin="5 0 0 0"/>
+        </StackPanel>
+        
 
         <TextBox Grid.Column="0" Grid.Row="1" Margin="5" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
 

@@ -14,6 +14,7 @@ public partial class Option
     public string? TextAnswer { get; set; }
 
     public bool? IsCorrect { get; set; }
+    public bool? IsArchive { get; set; }
 
     public virtual ICollection<ParticipantAnswer> ParticipantAnswers { get; set; } = new List<ParticipantAnswer>();
 

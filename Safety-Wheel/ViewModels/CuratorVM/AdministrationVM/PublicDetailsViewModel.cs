@@ -1,12 +1,15 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace CozyTest.ViewModels.CuratorVM
+namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
-    public class PublicDetailsViewModel : ObservableObject
+    public class PublicDetailsViewModel : BaseViewModel
     {
+        public override string WindowTitle => "Настройка публикации теста";
+
         public int currentTestId = 0;
         GroupService _groupService = new();
         ParticipantService _participantService = new();
@@ -135,7 +138,9 @@ namespace CozyTest.ViewModels.CuratorVM
             }
         }
 
-        public PublicDetailsViewModel()
+        public PublicDetailsViewModel(
+            IDialogService dialogService,
+            INavigationService navigationService) : base(navigationService, dialogService)
         {
             GroupsList = new ObservableCollection<Group>(_groupService.GetAllGroupsForCurator(CurrentUser.Id, currentTestId));
             AllBindCommand = new RelayCommand(_ => AllBind());

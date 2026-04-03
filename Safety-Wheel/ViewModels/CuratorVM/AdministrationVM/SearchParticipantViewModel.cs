@@ -1,137 +1,136 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
-    public class SearchParticipantViewModel : ObservableObject
+    public class SearchParticipantViewModel : BaseViewModel
     {
+        public override string WindowTitle => "Настройка привязки тестируемых к Вам";
+
+        private readonly ParticipantsViewModel _parentViewModel;
         public ParticipantService _participantService = new();
         public CuratorService _curatorService = new();
 
+        private ObservableCollection<Participant> _allParticipants = new();  
+        private ObservableCollection<Participant> _boundParticipants = new();
 
-        public Participant _selectedParticipant;
         public Participant SelectedParticipant
         {
-            get { return _selectedParticipant; }
-            set
-            {
-                _selectedParticipant = value;
-                OnPropertyChanged();
-            }
+            get => _selectedParticipant;
+            set { _selectedParticipant = value; OnPropertyChanged(); }
         }
-        
-        
-        public Participant _selectedCurrentParticipant;
+        private Participant _selectedParticipant;
+
         public Participant SelectedCurrentParticipant
         {
-            get { return _selectedCurrentParticipant; }
-            set
-            {
-                _selectedCurrentParticipant = value;
-                OnPropertyChanged();
-            }
+            get => _selectedCurrentParticipant;
+            set { _selectedCurrentParticipant = value; OnPropertyChanged(); }
         }
+        private Participant _selectedCurrentParticipant;
 
-        
-        private ObservableCollection<Participant> _participantsList = new();
-        public ObservableCollection<Participant> ParticipantsList
+        public ObservableCollection<Participant> ParticipantsList 
         {
             get => _participantsList;
-            set
-            {
-                _participantsList = value;
-                OnPropertyChanged(nameof(ParticipantsList));
-            }
+            set { _participantsList = value; OnPropertyChanged(nameof(ParticipantsList)); }
         }
+        private ObservableCollection<Participant> _participantsList = new();
 
-
-        private ObservableCollection<Participant> _participantsCurrentList = new();
         public ObservableCollection<Participant> ParticipantsCurrentList
         {
             get => _participantsCurrentList;
-            set
-            {
-                _participantsCurrentList = value;
-                OnPropertyChanged(nameof(ParticipantsCurrentList));
-            }
+            set { _participantsCurrentList = value; OnPropertyChanged(nameof(ParticipantsCurrentList)); }
         }
+        private ObservableCollection<Participant> _participantsCurrentList = new();
 
-
-        private ObservableCollection<Participant> _filteredParticipantsList;
         public ObservableCollection<Participant> FilteredParticipantsList
         {
             get => _filteredParticipantsList;
             set { _filteredParticipantsList = value; OnPropertyChanged(); }
         }
+        private ObservableCollection<Participant> _filteredParticipantsList;
 
-
-        private string _searchText;
         public string SearchText
         {
             get => _searchText;
-            set
-            {
-                _searchText = value;
-                OnPropertyChanged();
-                ApplyFiltersBind();
-            }
+            set { _searchText = value; OnPropertyChanged(); ApplyFiltersBind(); }
         }
+        private string _searchText;
 
-
-        private Curator _selectedCuratorComboBox;
         public Curator SelectedCuratorComboBox
         {
             get => _selectedCuratorComboBox;
-            set
-            {
-                _selectedCuratorComboBox = value;
-                OnPropertyChanged();
-                ApplyFiltersBind();
-            }
+            set { _selectedCuratorComboBox = value; OnPropertyChanged(); ApplyFiltersBind(); }
         }
+        private Curator _selectedCuratorComboBox;
 
-        private ObservableCollection<Curator> _curatorsList;
         public ObservableCollection<Curator> CuratorsList
         {
             get => _curatorsList;
-            set
-            {
-                _curatorsList = value;
-                OnPropertyChanged(nameof(CuratorsList));
-            }
+            set { _curatorsList = value; OnPropertyChanged(nameof(CuratorsList)); }
         }
-        public SearchParticipantViewModel()
+        private ObservableCollection<Curator> _curatorsList;
+
+        public SearchParticipantViewModel(
+            IDialogService dialogService,
+            INavigationService navigationService,
+            ParticipantsViewModel participantsViewModel) : base(navigationService, dialogService)
         {
+            _parentViewModel = participantsViewModel;
             LoadData();
             CuratorsList = new ObservableCollection<Curator>(_curatorService.Curators);
         }
 
         private void LoadData()
         {
-            var allParticipants = _participantService.GetAll(CurrentUser.Id);
-            ParticipantsList = FilteredParticipantsList = new ObservableCollection<Participant>(allParticipants);
+            _allParticipants = new ObservableCollection<Participant>(_participantService.GetAllActive(CurrentUser.Id));
 
-            var boundParticipants = _participantService.GetAllBind(CurrentUser.Id);
-            ParticipantsCurrentList = new ObservableCollection<Participant>(boundParticipants);
+            _boundParticipants = new ObservableCollection<Participant>(_participantService.GetAllBind(CurrentUser.Id));
+            ParticipantsCurrentList = new ObservableCollection<Participant>(_boundParticipants);
+
+            UpdateParticipantsList();
+        }
+
+        private void UpdateParticipantsList()
+        {
+            var boundIds = _boundParticipants.Select(p => p.Id).ToHashSet();
+            var available = _allParticipants.Where(p => !boundIds.Contains(p.Id));
+
+            ParticipantsList = new ObservableCollection<Participant>(available);
+            ApplyFiltersBind();
         }
 
         public void BindParticipant(Participant participant)
         {
-            _participantService.UpdateParticipantBindForCurator(participant.Id, true);
-            LoadData();
+            if (participant == null) return;
+
+            _participantService.UpdateParticipantBindForCurator(participant.Id, CurrentUser.Id, true);
+
+            _allParticipants.Remove(participant);
+            _boundParticipants.Add(participant);
+            ParticipantsCurrentList.Add(participant);
+
+            UpdateParticipantsList();
+            _parentViewModel?.ApplyFilters();
         }
 
         public void RemoveParticipant(Participant participant)
         {
-            _participantService.UpdateParticipantBindForCurator(participant.Id, false);
-            LoadData();
+            if (participant == null) return;
+
+            _participantService.UpdateParticipantBindForCurator(participant.Id, CurrentUser.Id, false);
+
+            _boundParticipants.Remove(participant);
+            ParticipantsCurrentList.Remove(participant);
+            _allParticipants.Add(participant);
+
+            UpdateParticipantsList();
+            _parentViewModel?.ApplyFilters();
         }
 
         void ApplyFiltersBind()
         {
-            if (ParticipantsList == null) return;
-
             var filtered = ParticipantsList.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(SearchText))
@@ -147,6 +146,11 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
 
             FilteredParticipantsList = new ObservableCollection<Participant>(filtered);
+        }
+
+        public void SelectParticipantForParent(Participant participant)
+        {
+            _parentViewModel.SelectedParticipant = participant;
         }
     }
 }

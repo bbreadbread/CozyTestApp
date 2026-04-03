@@ -21,10 +21,9 @@ namespace CozyTest.ForShellWindow
     /// </summary>
     public partial class BindGroupForUser : UserControl
     {
-        public BindGroupForUser(AdminPanelViewModel viewModel)
+        public BindGroupForUser()
         {
             InitializeComponent();
-            DataContext = viewModel;
         }
     }
 }

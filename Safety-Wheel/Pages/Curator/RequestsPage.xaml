@@ -5,19 +5,40 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CozyTest.Pages.Curator"
       mc:Ignorable="d" 
-            xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-            d:DesignHeight="915" d:DesignWidth="1815">
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      d:DesignHeight="915" d:DesignWidth="1815"         
+      xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM">
+
     <Grid>
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="15" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <ToggleButton Width="90" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsCheckedReq}" />
                 <ToggleButton Width="90" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsCheckedReq}"/>
                 <TextBox Width="270" Height="42" Margin="20 10" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchTextRequest, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
-            <StackPanel>
-                <StackPanel>
-                    <DataGrid BorderThickness="3" ItemsSource="{Binding RequestsList}" SelectedItem="{Binding SelectedRequests}" AutoGenerateColumns="False" IsReadOnly="True">
+            <Expander Header="Заявки" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="0"
+                      BorderThickness="3" 
+                      BorderBrush="{StaticResource MainSwamp}"
+                      ItemsSource="{Binding RequestsList}" 
+                      SelectedItem="{Binding SelectedRequests}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HeadersVisibility="Column" Background="White">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                             <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
@@ -28,8 +49,56 @@
                             <DataGridTextColumn Binding="{Binding Reviewer.Name}" Header="Заявку рассмотрел" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </StackPanel>
+                </Grid>
+            </Expander>
+        </DockPanel>
+
+        <Grid x:Name="GridUsersData2" Grid.Column="2" Margin="70">
+            <Grid.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}"/>
+                <Style TargetType="PasswordBox" BasedOn="{StaticResource ShellPasswordBox}"/>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <TextBlock Text="{Binding SelectedRequests.Id, StringFormat='Заявка №{0} '}" Style="{StaticResource MainText}"/>
+                <TextBlock Text="{Binding SelectedRequests.DateTimeApplication, StringFormat='от {0:dd.MM.yyyy HH:mm}'}" Style="{StaticResource MainText}"/>
             </StackPanel>
-        </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,20">
+                <TextBox mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding Name}" Height="70"/>
+                <TextBox mah:TextBoxHelper.Watermark="Логин" Text="{Binding Login}" IsEnabled="False" Margin="0,20,0,0" Height="70"/>
+                <TextBox mah:TextBoxHelper.Watermark="Дата подачи заявления" Text="{Binding Date}" IsEnabled="False" Margin="0,20,0,0" Height="70"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,15">
+                <RadioButton GroupName="123" Content="Закрепить за мной" FontSize="24" IsChecked="{Binding BindMe}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <RadioButton GroupName="123" Content="Закрепить за " FontSize="24" IsChecked="{Binding BindFor}"/>
+                    <ComboBox Width="305" Margin="10,0,0,0"
+                      Style="{StaticResource UpMenuTestComboBox}" 
+                      FontSize="24" 
+                      ItemsSource="{Binding CuratorsList}" 
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedCuratorForBind}"/>
+                </StackPanel>
+                <RadioButton GroupName="123" Content="Не закреплять ни за кем" FontSize="24" IsChecked="{Binding BindNone}" Margin="0,8,0,0"/>
+            </StackPanel>
+
+            <UniformGrid Grid.Row="3" Columns="2" Margin="0,20,0,0">
+                <Button Content="Принять заявку" Command="{Binding AcceptRequestCommand}" 
+                Style="{StaticResource ShellDarkSwampButton}" Height="70" 
+                IsEnabled="{Binding AcceptEnabled}"/>
+                <Button Content="Отклонить заявку" Command="{Binding RejectRequestCommand}" 
+                Style="{StaticResource ShellDarkSwampButton}" Height="70" 
+                IsEnabled="{Binding RejectEnabled}" Margin="10,0,0,0"/>
+            </UniformGrid>
+        </Grid>
     </Grid>
 </UserControl>

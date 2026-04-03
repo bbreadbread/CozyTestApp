@@ -1,11 +1,12 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace CozyTest.ViewModels.CuratorVM
 {
-    public class AdminPanelViewModel : ObservableObject
+    public class AdminPanelViewModel : BaseViewModel
     {
 
         public enum TabType { Users, Requests, Groups }
@@ -413,7 +414,9 @@ namespace CozyTest.ViewModels.CuratorVM
             set => SetProperty(ref _passwordParticipant, value);
         }
         
-        public AdminPanelViewModel()
+        public AdminPanelViewModel(
+            IDialogService dialogService,
+            INavigationService navigationService) : base(navigationService, dialogService)
         {
             ParticipantsList = new ObservableCollection<Participant>(_participantService.Participants);
             CuratorsList = new ObservableCollection<Curator>(_curatorService.Curators);

@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
-    public class RequestViewModel : ObservableObject
+    public class RegistrationViewModel : BaseViewModel
     {
+        public override string WindowTitle => "Отправка заявки на регистрацию";
+
         public string _name;
         public string _login;
         public string _password;
@@ -23,7 +25,9 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
         public RelayCommand SendRequestCommand { get; }
 
-        public RequestViewModel()
+        public RegistrationViewModel(
+            IDialogService dialogService,
+            INavigationService navigationService) : base(navigationService, dialogService)
         {
             SendRequestCommand = new RelayCommand(_ => SendRequest());
         }

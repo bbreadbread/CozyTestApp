@@ -7,44 +7,25 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
       mc:Ignorable="d" 
-      Height="650" Width="750" Margin="60 0 62 55" >
+      Height="Auto" Width="750" Margin="100">
 
-    <UserControl.DataContext>
-        <view:RequestViewModel x:Name="sea"/>
-    </UserControl.DataContext>
 
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="Отправка заявки на регистрацию" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
-        <Grid>
-            <Grid.Resources>
-                <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}"/>
-                <Style TargetType="PasswordBox" BasedOn="{StaticResource ShellPasswordBox}"/>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
+        <StackPanel.Resources>
+            <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
+                <Setter Property="Height" Value="90"/>
+                <Setter Property="Margin" Value="0 15"/>
+            </Style>
+            <Style TargetType="PasswordBox" BasedOn="{StaticResource ShellPasswordBox}">
+                <Setter Property="Height" Value="90"/>
+                <Setter Property="Margin" Value="0 15"/>
+            </Style>
+        </StackPanel.Resources>
+        <TextBox mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding Name}"/>
+        <TextBox mah:TextBoxHelper.Watermark="Логин" Text="{Binding Login}"/>
+        <PasswordBox mah:TextBoxHelper.Watermark="Пароль" x:Name="PasswordB"/>
+        <PasswordBox mah:TextBoxHelper.Watermark="Повтор пароля" x:Name="RePasswordB"/>
 
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-            </Grid.RowDefinitions>
-
-            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding Name}"/>
-            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding Login}"/>
-            <PasswordBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" x:Name="PasswordB"/>
-            <PasswordBox Grid.Row="6" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Повтор пароля" x:Name="RePasswordB"/>
-
-            <Button Command="{Binding SendRequestCommand}" Click="Button_Click" Grid.Row="8" Margin="0 0 0 0" Style="{StaticResource ShellButton}" Content="Отправить заявку"/>
-        </Grid>
+        <Button Command="{Binding SendRequestCommand}" Click="Button_Click" Style="{StaticResource ShellButton}" Content="Отправить заявку" Margin=" 0 15" Height="90"/>
     </StackPanel>
 </UserControl>

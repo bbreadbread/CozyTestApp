@@ -11,8 +11,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -33,13 +32,12 @@
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
             </Style>
         </Grid.Resources>
-        <TextBlock Text="Система оценивания для теста ПДД Тест А" Grid.Row="0" Style="{StaticResource ShellTitle}"/>
-        <CheckBox Grid.Column="0" Grid.Row="1"
+        <CheckBox Grid.Column="0" Grid.Row="0"
                   Content="Нужна система оценивания"
                   VerticalAlignment="Center"
                   FontSize="22"/>
 
-        <StackPanel Grid.Column="0" Grid.Row="2">
+        <StackPanel Grid.Column="0" Grid.Row="1">
             <StackPanel Orientation="Horizontal" Margin="0 25">
                  <CheckBox VerticalAlignment="Center"
                            FontSize="20"/>
@@ -73,6 +71,6 @@
             </StackPanel>
         </StackPanel>
 
-        <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource ShellButton}" Content="Сохранить"/>
+        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource ShellButton}" Content="Сохранить"/>
     </Grid>
 </UserControl>

@@ -1,12 +1,14 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
+using CozyTest.ViewModels.CuratorVM;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace CozyTest.ViewModels.CreateTestsVM
 {
-    public class CuratorCreateTestViewModel : ObservableObject
+    public class CuratorCreateTestViewModel: BaseViewModel
     {
         public bool IsEditMode { get; }
         public Test Test { get; set; }
@@ -35,14 +37,16 @@ namespace CozyTest.ViewModels.CreateTestsVM
         private readonly QuestionService _questionService = new();
         private readonly OptionService _optionService = new();
 
-        public CuratorCreateTestViewModel()
+        public CuratorCreateTestViewModel(INavigationService navigationService,
+ IDialogService dialogService) : base(navigationService, dialogService)
         {
             IsEditMode = false;
             Test = new Test();
             AddGhostQuestion();
         }
 
-        public CuratorCreateTestViewModel(Test test)
+        public CuratorCreateTestViewModel(INavigationService navigationService,
+ IDialogService dialogService, Test test) : base(navigationService, dialogService)
         {
             IsEditMode = true;
             LoadTestForEdit(test);

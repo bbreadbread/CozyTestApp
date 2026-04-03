@@ -34,6 +34,18 @@ namespace CozyTest.Services
                     Group.Remove(group);
         }
 
+        public void Update(Group group)
+        {
+            var existing = _db.Groups.Find(group.Id);
+            if (existing != null)
+            {
+                existing.Name = group.Name;
+                existing.Description = group.Description;
+                existing.CuratorId = group.CuratorId;
+                Commit();
+            }
+        }
+
         public int Commit() => _db.SaveChanges();
 
         public void GetAllGroupsForUser()

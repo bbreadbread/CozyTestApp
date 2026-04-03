@@ -14,18 +14,18 @@ namespace CozyTest
     {
         private readonly AttemptService _attemptService = new();
 
-        public MainWindow()
+        public MainViewModel VM { get; set; }
+
+        public MainWindow(MainViewModel viewModel) 
         {
             InitializeComponent();
-            VM = new MainViewModel();
+            VM = viewModel;
             DataContext = VM;
 
             VM.NavigationRequested += OnNavigationRequested;
             VM.ExitRequested += OnExitRequested;
             VM.ClearRequested += OnClearRequested;
         }
-
-        public MainViewModel VM { get; set; }
 
         public void UpdateUserName(string userName)
         {
@@ -47,7 +47,7 @@ namespace CozyTest
                                "Тест будет считаться завершенным.",
                                () => {
                                    PartTest._isTestActivated = false;
-                                   MainFrame.Navigate(new PartHomePage());
+                                   MainFrame.Content = (new PartHomePage());
                                });
                     break;
 
@@ -56,17 +56,16 @@ namespace CozyTest
                                () => {
                                    PartTest._isTestActivated = false;
                                    VM.RequestClear();
-                                   MainFrame.Navigate(new AuthorizationPage());
+                                   MainFrame.Content = (new AuthorizationPage());
                                });
                     break;
 
                 case PartHomePage:
                     PartTest._isTestActivated = false;
-                    MainFrame.Navigate(new PartHomePage());
+                    MainFrame.Content = (new PartHomePage());
                     break;
 
                 default:
-                    if (MainFrame.CanGoBack) MainFrame.GoBack();
                     break;
             }
         }
@@ -77,7 +76,7 @@ namespace CozyTest
                        () => {
                            PartTest._isTestActivated = false;
                            VM.RequestClear();
-                           MainFrame.Navigate(new AuthorizationPage());
+                           MainFrame.Content = (new AuthorizationPage());
                        });
         }
 

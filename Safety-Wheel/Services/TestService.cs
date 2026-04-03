@@ -28,11 +28,17 @@ namespace CozyTest.Services
                 TopicId = test.TopicId,
                 CuratorCreateId = CurrentUser.Id,
                 PenaltyMax = i,
-                MaxNumPassing = i,
                 DateOfCreating = DateTime.Now,
+                TestTypeId = 1,
+                TimeLimitSecond = test.TimeLimitSecond,
+                Description = test.Description,
+                IsArchive = false,
+                MaxNumPassing = i,
+                CriteriaId = 1,
+                Questions = test.Questions,
             };
-            _db.Add(_test);
-            Tests.Add(_test);
+            Tests.Add(_test);            
+            _db.Tests.Add(_test);            
             Commit();
         }
 

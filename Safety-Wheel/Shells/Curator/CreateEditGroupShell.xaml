@@ -9,9 +9,6 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              Height="550" Width="750" Margin="60 55">
 
-    <UserControl.DataContext>
-        <vm:CreateEditGroupViewModel x:Name="vm"/>
-    </UserControl.DataContext>
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Работа с группой" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>

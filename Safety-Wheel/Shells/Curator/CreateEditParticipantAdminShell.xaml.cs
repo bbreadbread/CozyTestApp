@@ -21,21 +21,14 @@ namespace CozyTest.ForShellWindow
     /// </summary>
     public partial class CreateEditParticipantAdmin : UserControl
     {
-        AdminPanelViewModel adminPanelViewModel;
-        public CreateEditParticipantAdmin(AdminPanelViewModel viewModel, int? isNew = null)
+        public CreateEditParticipantAdmin()
         {
-            adminPanelViewModel = viewModel;
             InitializeComponent();
-            if (isNew != null)
-            {
-                adminPanelViewModel.SelectedParticipant = null;
-            }
-            DataContext = adminPanelViewModel;
         }
 
         private void Button_Bind(object sender, RoutedEventArgs e)
         {
-            ShellWindow window = new ShellWindow(new BindGroupForUser(adminPanelViewModel));
+            ShellWindow window = new ShellWindow(new BindGroupForUser());
             window.Show();
         }
     }

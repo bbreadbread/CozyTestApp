@@ -24,31 +24,31 @@ namespace CozyTest.Pages.Participant
 
         private async void Card_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not Border border ||
-                border.Tag is not TestListItemViewModel vm ||
-                DataContext is not CuratorAllTestViewModel dm)
-                return;
+            //if (sender is not Border border ||
+            //    border.Tag is not TestListItemViewModel vm ||
+            //    DataContext is not CuratorAllTestViewModel dm)
+            //    return;
 
-            dm.IsLoading = true;
+            //dm.IsLoading = true;
 
-            if (vm.IsCreateCard)
-            {
-                MainNavigation.GlobalFrameCurator
-                    ?.Navigate(new CuratorCreateTestsPage(null));
-                return;
-            }
+            //if (vm.IsCreateCard)
+            //{
+            //    MainNavigation.GlobalFrameCurator
+            //        ?.Navigate(new CuratorCreateTestsPage(null));
+            //    return;
+            //}
 
-            if (vm.Test == null)
-                return;
+            //if (vm.Test == null)
+            //    return;
 
 
 
-            await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
+            //await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
 
-            MainNavigation.GlobalFrameCurator
-                ?.Navigate(new CuratorCreateTestsPage(vm.Test));
+            //MainNavigation.GlobalFrameCurator
+            //    ?.Navigate(new CuratorCreateTestsPage(vm.Test));
 
-            dm.IsLoading = false;
+            //dm.IsLoading = false;
         }
     }
 }

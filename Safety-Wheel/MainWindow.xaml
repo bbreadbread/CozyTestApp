@@ -79,10 +79,9 @@
                 </StackPanel>
             </Grid>
         </Border>
-
-        <Frame x:Name="MainFrame" 
+        <ContentControl x:Name="MainFrame" 
                Grid.Row="1"
-               NavigationUIVisibility="Hidden"
-               Source="Pages/AuthorizationPage.xaml" Grid.ColumnSpan="2"/>
+               Content="{Binding CurrentContent}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
     </Grid>
 </Controls:MetroWindow>

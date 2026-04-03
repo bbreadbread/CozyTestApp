@@ -43,6 +43,10 @@ namespace CozyTest.Services
                 Requests.Add(apl);
             }
         }
+        public List<Requests> GetAllActive()
+        {
+            return Requests.Where(p => p.Status == "Ожидает подтверждения").ToList();
+        }
 
 
         public void Update(Requests oldRequest)

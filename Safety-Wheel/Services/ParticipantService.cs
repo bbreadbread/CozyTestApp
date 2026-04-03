@@ -12,7 +12,6 @@ namespace CozyTest.Services
         private readonly CozyTestContext _db = BaseDbService.Instance.Context;
         public ObservableCollection<Participant> Participants { get; set; } = new();
         public ObservableCollection<ParticipantsPublicTest> ParticipantsPublicTests;
-
         public ParticipantService()
         {
             if (CurrentUser.TypeUser == 1)
@@ -53,10 +52,27 @@ namespace CozyTest.Services
 
         public int Commit() => _db.SaveChanges();
 
+        public Participant GetLast()
+        {
+            var query = _db.Participants
+                .OrderByDescending(a => a.Id)
+                      .FirstOrDefault();
+
+            return query;
+        }
         public ObservableCollection<Participant> GetAll(int? teacherId = null)
         {
             var query = _db.Participants
                 .Include(s => s.Curators)
+                .ToList();
+
+            return new ObservableCollection<Participant>(query.ToList());
+        }
+        public ObservableCollection<Participant> GetAllActive(int? teacherId = null)
+        {
+            var query = _db.Participants
+                .Include(s => s.Curators)
+                .Where(p => p.IsArchive == false)
                 .ToList();
 
             return new ObservableCollection<Participant>(query.ToList());
@@ -130,7 +146,7 @@ namespace CozyTest.Services
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
-        public void UpdateParticipantBindForCurator(int userId, bool bind)//bind- надо ли привязывать. true - надо привязать, false - надо отвязать
+        public void UpdateParticipantBindForCurator(int userId, int curatorId, bool bind)//bind- надо ли привязывать. true - надо привязать, false - надо отвязать
         {
             try
             {
@@ -145,7 +161,7 @@ namespace CozyTest.Services
                 }
 
                 var curator = _db.Curators
-                    .FirstOrDefault(c => c.Id == CurrentUser.Id);
+                    .FirstOrDefault(c => c.Id == curatorId);
 
                 if (curator == null)
                 {

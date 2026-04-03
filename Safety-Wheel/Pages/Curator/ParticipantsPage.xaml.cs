@@ -22,46 +22,10 @@ namespace CozyTest.Pages.Curator
     /// </summary>
     public partial class ParticipantsPage : UserControl
     {
-        private AdminPanelViewModel _viewModel = new();
 
         public ParticipantsPage()
         {
             InitializeComponent();
-            DataContext = _viewModel;
-        }
-
-        private void Button_SearchParticipant(object sender, RoutedEventArgs e)
-        {
-            ShellWindow window = new ShellWindow(new SearchParticipantShell());
-            window.Show();
-        }
-
-        private void Button_AddParticipant(object sender, RoutedEventArgs e)
-        {
-            if (CurrentUser.TypeUser == 1)
-            {
-                ShellWindow window = new ShellWindow(new CreateEditParticipantAdmin(_viewModel, 0));
-                window.Show();
-            }
-            else
-            {
-                ShellWindow window = new ShellWindow(new CreateEditParticipant(_viewModel, 0));
-                window.Show();
-            }
-        }
-
-        private void Button_EditParticipant(object sender, RoutedEventArgs e)
-        {
-            if (CurrentUser.TypeUser == 1)
-            {
-                ShellWindow window = new ShellWindow(new CreateEditParticipantAdmin(_viewModel));
-                window.Show();
-            }
-            else
-            {
-                ShellWindow window = new ShellWindow(new CreateEditParticipant(_viewModel));
-                window.Show();
-            }
         }
     }
 }

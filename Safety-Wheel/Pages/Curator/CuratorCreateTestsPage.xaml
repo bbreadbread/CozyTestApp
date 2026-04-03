@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
              xmlns:conv="clr-namespace:CozyTest.Converters"
              Style="{StaticResource CreateEditTest}"
-             Loaded="UserControl_Loaded">
+             Width="Auto">
 
     <UserControl.Resources>
         <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>
@@ -15,22 +15,93 @@
         <conv:NullImageConverter x:Key="NullImageConverter"/>
     </UserControl.Resources>
 
-    <UserControl.DataContext>
-        <vm:CuratorCreateTestViewModel/>
-    </UserControl.DataContext>
 
-    <Viewbox>
-        <Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid MinWidth="1100" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Frame Source="SelectionTape.xaml" Grid.Row="0"/>
-            <Frame Source="UpMenuTest.xaml" Grid.Row="1"/>
-            
-            <ScrollViewer Grid.Row="2"  Height="950" Width="920" VerticalScrollBarVisibility="Auto">
+            <Border Style="{StaticResource UpMenuTest}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox Grid.Column="0" Margin="1 1 5 2" Background="{StaticResource LightSwamp}" BorderThickness="0"/>
+                    <Border Background="{StaticResource DarkSwamp}" Grid.Row="1" Margin="10 0"/>
+                    <TextBlock Grid.Column="1" Text="мин." Grid.RowSpan="3"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UpMenuTest}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                <StackPanel>
+                    <TextBox Margin="0" Background="{StaticResource LightSwamp}" BorderThickness="0"/>
+                </StackPanel>
+            </Border>
+
+            <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" mah:TextBoxHelper.Watermark="Тема">
+            </ComboBox>
+
+            <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" mah:TextBoxHelper.Watermark="Тип">
+            </ComboBox>
+
+
+            <ComboBox Style="{StaticResource UpMenuTestComboBox}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="1" mah:TextBoxHelper.Watermark="Макс. кол. прох-ий на 1 чел.">
+            </ComboBox>
+
+            <Button Style="{StaticResource ShellDarkSwampButton}" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1">
+                <Button.Content>
+                    <TextBlock TextWrapping="Wrap" 
+                       Text="Соавторство" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       TextElement.Foreground="{StaticResource White}"
+                       TextElement.FontSize="18"/>
+                </Button.Content>
+            </Button>
+
+            <Button Style="{StaticResource ShellDarkSwampButton}" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1">
+                <Button.Content>
+                    <TextBlock TextWrapping="Wrap" 
+                       Text="Система оценивания" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       MinWidth="170"
+                       TextElement.Foreground="{StaticResource White}"
+                       TextElement.FontSize="18"/>
+                </Button.Content>
+            </Button>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Row="0" 
+              VerticalScrollBarVisibility="Auto"
+              HorizontalScrollBarVisibility="Disabled" MaxHeight="1000">
                 <StackPanel Margin="20">
                     <TextBlock Text="Дисциплина"
            FontWeight="Bold"
@@ -199,6 +270,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-    </Viewbox>
+    </Grid>
+
 
 </UserControl>

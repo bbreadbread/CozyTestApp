@@ -36,15 +36,20 @@
 
             <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding NameParticipant}" />
             <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding LoginParticipant}"/>
-            <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding PasswordParticipant}"/>
+            <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding PasswordParticipant}"  Visibility="{Binding Converter={StaticResource PasswordEditVisibilityConverter}, ConverterParameter=Admin}"/>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center">
-                <RadioButton Content="Закрепить за мной" FontSize="24"/>
-                <StackPanel Orientation="Horizontal">
-                    <RadioButton Content="Закрепить за " FontSize="24"/>
-                    <ComboBox Width="290" Style="{StaticResource UpMenuTestComboBox}" DisplayMemberPath="Name" ItemsSource="{Binding CuratorsList}" SelectedItem="{Binding SelectedCuratorComboBox}" TextElement.FontSize="24"/>
+                <RadioButton GroupName="123" Content="Закрепить за мной" FontSize="24" IsChecked="{Binding BindMe}"/>
+                <StackPanel Orientation="Horizontal"  Visibility="{Binding Converter={StaticResource PasswordEditVisibilityConverter}, ConverterParameter=Admin}">
+                    <RadioButton GroupName="123" Content="Закрепить за " FontSize="24" IsChecked="{Binding BindFor}"/>
+                    <ComboBox Width="305" Margin="10,0,0,0"
+                              Style="{StaticResource UpMenuTestComboBox}" 
+                              FontSize="24" 
+                              ItemsSource="{Binding CuratorsList}" 
+                              DisplayMemberPath="Name"
+                              SelectedItem="{Binding SelectedCuratorForBind}"/>
                 </StackPanel>
-                <RadioButton Content="Не закреплять ни за кем" FontSize="24"/>
+                <RadioButton GroupName="123" Content="Не закреплять ни за кем" FontSize="24" IsChecked="{Binding BindNone}" />
             </StackPanel>
 
             <Button Grid.Row="8" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30" Command="{Binding SaveParticipantCommand}"/>

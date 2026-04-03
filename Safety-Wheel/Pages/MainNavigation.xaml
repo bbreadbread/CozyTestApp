@@ -8,69 +8,210 @@
       xmlns:core="clr-namespace:CozyTest.Converters"
       xmlns:views="clr-namespace:CozyTest.Pages.Curator"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      Loaded="Page_Loaded">
+      Loaded="Page_Loaded"
+       xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+       xmlns:vmC="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
+       xmlns:vmS="clr-namespace:CozyTest.ViewModels.StatisticsVM">
 
-    <Border Background="{StaticResource White}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.Resources>
-                <!-- this is the template for the items (options too) -->
-                <core:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-                <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModels:MenuItemViewModel}">
-                    <Grid x:Name="RootGrid" Height="80">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
-                        <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="16" Text="{Binding Label}" Foreground="White"/>
-                    </Grid>
-                    <DataTemplate.Triggers>
-                        <!-- фон листбоксов внутри меню -->
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
-                            <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
-                            <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
-                            <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
-                            <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <!-- this is the template for the items (options too) -->
+            <core:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModels:MenuItemViewModel}">
+                <Grid x:Name="RootGrid" Height="80">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
+                    <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="16" Text="{Binding Label}" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+                <DataTemplate.Triggers>
+                    <!-- фон листбоксов внутри меню -->
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                        <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
+                        <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
 
-                <DataTemplate x:Key="MenuItemTemplateLittle" DataType="{x:Type viewModels:MenuItemViewModel}">
-                    <Grid x:Name="RootGrid" Height="60">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
-                        <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Text="{Binding Label}" Foreground="White"/>
-                    </Grid>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
-                            <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
-                            <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
-                            <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
-                            <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </Grid.Resources>
-            <mah:HamburgerMenu Grid.Column="0"
+            <DataTemplate x:Key="MenuItemTemplateLittle" DataType="{x:Type viewModels:MenuItemViewModel}">
+                <Grid x:Name="RootGrid" Height="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
+                    <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Text="{Binding Label}" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                        <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
+                        <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+
+            <!--<DataTemplate DataType="{x:Type vmS:StatisticsViewModel}">
+                <views:CuratorStatisticsPage DataContext="{Binding}" />
+            </DataTemplate>-->
+            
+            <DataTemplate DataType="{x:Type vmC:CuratorAllTestViewModel}">
+                <views:CuratorAllTests DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmC:CuratorCreateTestViewModel}">
+                <views:CuratorCreateTestsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:ParticipantsViewModel}">
+                <views:ParticipantsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:CuratorsViewModel}">
+                <views:CuratorsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:RequestsViewModel}">
+                <views:RequestsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:GroupsViewModel}">
+                <views:GroupsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:CuratorWelcomePageViewModel}">
+                <views:CuratorWelcomePage DataContext="{Binding}" />
+            </DataTemplate>
+
+           
+
+        </Grid.Resources>
+
+        <!-- Контент -->
+        <Grid Grid.Column="0" Margin="85 0 0 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--<Frame x:Name="FrameCurator"
+                           Grid.Column="1" 
+                           Grid.Row="0"
+                           NavigationUIVisibility="Hidden" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Top"/>-->
+
+                <ContentControl Grid.Column="1" Grid.Row="0"
+                Content="{Binding CurrentContent}"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"/>
+                
+                <!--Попытки для прохождений-->
+                <DataGrid Grid.Row="1" Grid.Column="0"
+                              Height="200"
+                              ItemsSource="{Binding MenuAttemptsItems}"
+                              SelectedItem="{Binding SelectedAttempt}"
+                              SelectionUnit="FullRow"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False"
+                              HeadersVisibility="Column"
+                              IsReadOnly="True"
+                              Visibility="{Binding AttemptsTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <EventSetter Event="PreviewMouseLeftButtonDown"
+                                             Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#334A90E2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Время"
+                                         Binding="{Binding Tag.StartedAt, StringFormat=HH:mm}" />
+
+                        <DataGridTextColumn Header="Результат"
+                                            Binding="{Binding Tag.Score}" />
+
+                        <DataGridTextColumn Header="Тест"
+                                            Binding="{Binding Tag.Test.Name}" />
+
+                        <DataGridTextColumn Header="Предмет"
+                                            Binding="{Binding Tag.Test.Topic.Name}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--Тесты для статистики-->
+                <DataGrid Grid.Row="1" Grid.Column="0"
+                              IsReadOnly="True"
+                              Height="200"
+                              ItemsSource="{Binding MenuItems}"
+                              SelectedItem="{Binding SelectedTest}"
+                              SelectionUnit="FullRow"
+                              SelectionMode="Single"
+                              AutoGenerateColumns="False"
+                              HeadersVisibility="Column"
+                              Visibility="{Binding StatisticTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <EventSetter Event="PreviewMouseLeftButtonDown"
+                         Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#334A90E2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название теста"
+                        Binding="{Binding Tag.Name, 
+                                  FallbackValue='Все тесты',
+                                  TargetNullValue='Все тесты'}" />
+
+                        <DataGridTextColumn Header="Предмет"
+                        Binding="{Binding Tag.Topic.Name, 
+                                  FallbackValue='Нажмите для просмотра всех тестов',
+                                  TargetNullValue='Нажмите для просмотра всех тестов'}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <!-- Меню поверх контента -->
+        <mah:HamburgerMenu Grid.Column="0"
                                x:Name="MainMenuControl" 
-                               DisplayMode="CompactInline" 
+                               DisplayMode="CompactOverlay" 
                                IsPaneOpen="False" 
                                
                                ItemsSource="{Binding MainMenuItems}"
@@ -82,12 +223,15 @@
                                SelectedOptionsItem="{Binding SelectedMainMenuItem, Mode=TwoWay}" 
                                SelectedIndex="0"
                                Style="{StaticResource MainMenuStyle}" 
-                               DockPanel.Dock="Left"/>
+                           
+                           HorizontalAlignment="Left"
+                   VerticalAlignment="Stretch"
+                   Panel.ZIndex="1000"/>
 
-            <StackPanel Orientation="Vertical" Grid.Column="1" Background="{StaticResource MainSwamp}">
-                <mah:HamburgerMenu 
+        <!--<StackPanel Orientation="Vertical" Grid.Column="0" Background="{StaticResource MainSwamp}" Panel.ZIndex="999">
+            <mah:HamburgerMenu 
                                x:Name="PeopleMenuControl"
-                               DisplayMode="CompactInline" 
+                               DisplayMode="CompactOverlay" 
                                IsPaneOpen="False" 
                                
                                ItemsSource="{Binding MenuItems}"
@@ -98,107 +242,6 @@
                                HamburgerVisibility="Collapsed" 
                                Style="{StaticResource SecondMenu}"
                                Visibility="{Binding SecondMenuVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            </StackPanel>
-
-            <Grid Grid.Column="3">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Frame x:Name="FrameCurator"
-                           Grid.Column="1" 
-                           Grid.Row="0"
-                           NavigationUIVisibility="Hidden" 
-                           HorizontalAlignment="Stretch" 
-                           VerticalAlignment="Top"/>
-
-                    <!--Попытки для прохождений-->
-                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                              Height="200"
-                              ItemsSource="{Binding MenuAttemptsItems}"
-                              SelectedItem="{Binding SelectedAttempt}"
-                              SelectionUnit="FullRow"
-                              SelectionMode="Single"
-                              AutoGenerateColumns="False"
-                              HeadersVisibility="Column"
-                              IsReadOnly="True"
-                              Visibility="{Binding AttemptsTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <EventSetter Event="PreviewMouseLeftButtonDown"
-                                             Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#334A90E2"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-
-
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Время"
-                                         Binding="{Binding Tag.StartedAt, StringFormat=HH:mm}" />
-
-                            <DataGridTextColumn Header="Результат"
-                                            Binding="{Binding Tag.Score}" />
-
-                            <DataGridTextColumn Header="Тест"
-                                            Binding="{Binding Tag.Test.Name}" />
-
-                            <DataGridTextColumn Header="Предмет"
-                                            Binding="{Binding Tag.Test.Topic.Name}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <!--Тесты для статистики-->
-                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                              IsReadOnly="True"
-                              Height="200"
-                              ItemsSource="{Binding MenuTestsItems}"
-                              SelectedItem="{Binding SelectedTest}"
-                              SelectionUnit="FullRow"
-                              SelectionMode="Single"
-                              AutoGenerateColumns="False"
-                              HeadersVisibility="Column"
-                              Visibility="{Binding StatisticTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <EventSetter Event="PreviewMouseLeftButtonDown"
-                         Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#334A90E2"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Название теста"
-                        Binding="{Binding Tag.Name, 
-                                  FallbackValue='Все тесты',
-                                  TargetNullValue='Все тесты'}" />
-
-                            <DataGridTextColumn Header="Предмет"
-                        Binding="{Binding Tag.Topic.Name, 
-                                  FallbackValue='Нажмите для просмотра всех тестов',
-                                  TargetNullValue='Нажмите для просмотра всех тестов'}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </Grid>
-        </Grid>
-    </Border>
+        </StackPanel>-->
+    </Grid>
 </Page>

@@ -50,5 +50,7 @@ namespace CozyTest.ViewModels
             get => _isVisible;
             set => SetProperty(ref _isVisible, value);
         }
+
+        public ObservableObject Content { get; set; }
     }
 }

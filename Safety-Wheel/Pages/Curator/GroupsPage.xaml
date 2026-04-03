@@ -6,26 +6,47 @@
       xmlns:local="clr-namespace:CozyTest.Pages.Curator"
       mc:Ignorable="d" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-      d:DesignHeight="915" d:DesignWidth="1815">
+      d:DesignHeight="915" d:DesignWidth="1815"         
+      xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM">
 
     <Grid>
-        <StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="15" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBox Width="270" Height="42" Margin="0 10" mah:TextBoxHelper.Watermark="Поиск по названию" Text="{Binding SearchTextGroup, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
-            <StackPanel>
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="1" Style="{StaticResource PaleButton}" Click="Button_AddGroup">
-                            <Image  Source="pack://application:,,,/Images/plus_icon.png"/>
+            <Expander Header="Группы" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Button Style="{StaticResource PaleButton}" Command="{Binding AddGroupCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/plus_icon.png"/>
+                                <TextBlock Text="Создать новую группу" VerticalAlignment="Center" Margin="10 0" FontSize="20"/>
+                            </StackPanel>
                         </Button>
                     </Grid>
 
-                    <DataGrid BorderThickness="3" ItemsSource="{Binding GroupsList}" SelectedItem="{Binding SelectedGroup}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid Grid.Row="1"
+                      BorderThickness="3" 
+                      BorderBrush="{StaticResource MainSwamp}"
+                      ItemsSource="{Binding GroupsList}" 
+                      SelectedItem="{Binding SelectedGroup}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HeadersVisibility="Column" Background="White">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                             <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
@@ -37,11 +58,11 @@
                             <ContextMenu>
                                 <ContextMenu.ToolTip>
                                     <TextBlock>
-                                <TextBlock Text="Удаление доступно только если в группе нет участников"/>
-                            </TextBlock>
+                                        <TextBlock Text="Удаление доступно только если в группе нет участников"/>
+                                    </TextBlock>
                                 </ContextMenu.ToolTip>
-                                <MenuItem Header="Редактировать"/>
-                                <MenuItem Header="Удалить" Command="{Binding DeleteGroupCommand}">
+                                <MenuItem Command="{Binding EditGroupCommand}" Header="Редактировать"/>
+                                <MenuItem Command="{Binding DeleteGroupCommand}" Header="Удалить">
                                     <MenuItem.IsEnabled>
                                         <MultiBinding Converter="{StaticResource EnabledConverter}">
                                             <Binding Path="SelectedGroup"/>
@@ -51,8 +72,67 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
+                </Grid>
+            </Expander>
+        </DockPanel>
+
+        <Grid Grid.Column="2" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="62"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+               Style="{StaticResource MainText}" 
+               Text="{Binding SelectedGroup.Name, StringFormat='Данные, связанные с группой {0}'}"/>
+
+            <Expander Grid.Row="1" 
+                      Header="Привязанные тестируемые" 
+                      IsExpanded="True" 
+                      Background="{StaticResource MainSwamp}" 
+                      Foreground="White" 
+                      FontWeight="Bold">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Button Style="{StaticResource PaleButton}" Command="{Binding BindUserForGroupCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/search_icon.png"/>
+                                <TextBlock Text="Привязать тестируемых к группе" VerticalAlignment="Center" Margin="10 0" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <DataGrid Grid.Row="1"
+                      BorderThickness="3" 
+                      BorderBrush="{StaticResource MainSwamp}"
+                      ItemsSource="{Binding ParticipantsForGroupList}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HeadersVisibility="Column" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                            <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
+                            <DataGridTextColumn Binding="{Binding CuratorCreateId}" Header="ID создателя" />
+                            <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
+                            <DataGridTemplateColumn Header="В архиве">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay}" IsEnabled="False"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Expander>
+        </Grid>
     </Grid>
 </UserControl>

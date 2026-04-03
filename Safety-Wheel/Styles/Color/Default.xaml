@@ -12,11 +12,11 @@
     <SolidColorBrush x:Key="White" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="Black" Color="#FF000000"/>
 
-    <SolidColorBrush x:Key="lightTurquoise" Color="#E0FEFF"/>
+    <SolidColorBrush x:Key="lightTurquoise" Color="#F9E9FF"/>
     
     <SolidColorBrush x:Key="Green" Color="#10A91A"/>
     <SolidColorBrush x:Key="HoverGreen" Color="#007908"/>
-    <SolidColorBrush x:Key="LightGreen" Color="#D5FFD8"/>
+    <SolidColorBrush x:Key="LightGreen" Color="#DFFFE1"/>
     <SolidColorBrush x:Key="BrightGreen" Color="#00FF11"/>
     
     <SolidColorBrush x:Key="Red" Color="#D31A1A"/>

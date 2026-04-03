@@ -19,49 +19,12 @@ namespace CozyTest.Pages.Curator
     /// <summary>
     /// Логика взаимодействия для CuratorWelcomePage.xaml
     /// </summary>
-    public partial class CuratorWelcomePage : Page
+    public partial class CuratorWelcomePage : UserControl
     {
         bool _isAttemts = false;
         public CuratorWelcomePage()
         {
             InitializeComponent();
-        }
-        
-        public CuratorWelcomePage(bool isAttemts)
-        {
-            _isAttemts = isAttemts;
-            InitializeComponent();
-            if (isAttemts == true)
-            {
-                GeneralWelcome.Visibility = Visibility.Collapsed;
-                AttemptsWelcome.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_isAttemts == false)
-            {
-                var vm = DataContext as MainViewModel;
-                vm?.ResetApplicationState();
-            }
-        }
-
-        private void GoTest_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Test");
-        }
-        private void GoResult_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Res");
-        }
-        private void GoStatistic_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Stat");
-        }
-        private void GoSetting_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Sett");
         }
     }
 }

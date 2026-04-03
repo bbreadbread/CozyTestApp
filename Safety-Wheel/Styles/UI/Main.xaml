@@ -52,12 +52,10 @@
     
     <Style TargetType="Border" x:Key="CardBorderStyle">
 
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Margin" Value="25"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="CornerRadius" Value="6"/>
-        <Setter Property="Width" Value="400"/>
         <Setter Property="Height" Value="300"/>
 
         <Setter Property="Effect">
@@ -165,6 +163,125 @@
         <Setter Property="CornerRadius" Value="50"/>
         <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
         <Setter Property="Height" Value="100"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="WelcomeButtonStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="50" 
+                        Background="{StaticResource MainSwamp}" 
+                        Height="100">
+                        <ContentPresenter HorizontalAlignment="Left"
+                                          Margin="40 0 0 0"
+                                      VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect
+         BlurRadius="6"
+         ShadowDepth="2"
+         Opacity="0.1"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                     To="1.01"
+                     Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                     To="1.02"
+                     Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                     To="1"
+                     Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                     To="1"
+                     Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="WelcomeBorderStyle">
+        <Setter Property="CornerRadius" Value="55"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+        <Setter Property="BorderThickness" Value="5"/>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.1"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <!-- Триггер на свойство IsMouseOver, но будет срабатывать только когда мышь над Border -->
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1.01"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1.02"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Border" x:Key="GeneralWelcome50r">
@@ -1022,7 +1139,7 @@
      <Setter Property="Foreground" Value="{StaticResource White}"/>
      <Setter Property="PaneBackground" Value="{StaticResource DarkSwamp}"/>
      <Setter Property="CompactPaneLength" Value="80"/>
-     <Setter Property="OpenPaneLength" Value="210"/>
+     <Setter Property="OpenPaneLength" Value="280"/>
      <Setter Property="ShowSelectionIndicator" Value="True"/>
  </Style>
 
@@ -1052,9 +1169,9 @@
 
     <Style TargetType="CheckBox" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
         <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="mah:CheckBoxHelper.CheckSize" Value="30"/>
+        <Setter Property="mah:CheckBoxHelper.CheckSize" Value="25"/>
+        <Setter Property="FontSize" Value="16"/>
 
-        <!-- Цвета -->
         <Setter Property="mah:CheckBoxHelper.ForegroundChecked" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="mah:CheckBoxHelper.BackgroundChecked" Value="{StaticResource LightSwamp}"/>
         <Setter Property="mah:CheckBoxHelper.BorderBrushChecked" Value="{StaticResource DarkSwamp}"/>
@@ -1069,30 +1186,76 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Квадрат чекбокса с толщиной рамки -->
                         <Border x:Name="CheckBorder"
-                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
-                            Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="3"
-                            CornerRadius="3">
+                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                        Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="3"
+                        CornerRadius="3">
 
                             <Border.BorderBrush>
                                 <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(mah:CheckBoxHelper.BorderBrushUnchecked)"/>
                             </Border.BorderBrush>
 
-                            <!-- Галочка -->
-                            <mah:FontIcon x:Name="CheckMark"
-                                      Glyph="&#xE001;"
-                                      FontFamily="Segoe UI Symbol"
-                                      FontSize="{TemplateBinding FontSize}"
-                                      Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.ForegroundChecked)}"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      Opacity="0"/>
+                            <Grid>
+                                <TextBlock x:Name="CheckMark"
+                                       Text="✓"
+                                       FontFamily="Segoe UI Symbol"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.ForegroundChecked)}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0"/>
+                            </Grid>
                         </Border>
 
-                        <!-- Текст -->
+                        <ContentPresenter Grid.Column="1" 
+                                  Margin="20 0 0 0"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Opacity" Value="1"/>
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" 
+                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BorderBrushChecked)}"/>
+                            <Setter TargetName="CheckBorder" Property="Background" 
+                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BackgroundChecked)}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="RadioButton">
+        <Setter Property="Foreground" Value="Black"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Width="25" Height="25">
+                            <Ellipse x:Name="RadioBorder"
+                                 Fill="Transparent"
+                                 Stroke="{StaticResource MainSwamp}"
+                                 StrokeThickness="3"/>
+
+                            <Ellipse x:Name="RadioInner"
+                                 Width="16"
+                                 Height="16"
+                                 Fill="{StaticResource DarkSwamp}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Opacity="0"/>
+                        </Grid>
+
                         <ContentPresenter Grid.Column="1" 
                                       Margin="20 0 0 0"
                                       VerticalAlignment="Center"/>
@@ -1100,11 +1263,9 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="CheckMark" Property="Opacity" Value="1"/>
-                            <Setter TargetName="CheckBorder" Property="BorderBrush" 
-                                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BorderBrushChecked)}"/>
-                            <Setter TargetName="CheckBorder" Property="Background" 
-                                Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BackgroundChecked)}"/>
+                            <Setter TargetName="RadioInner" Property="Opacity" Value="1"/>
+                            <Setter TargetName="RadioBorder" Property="Stroke" Value="{StaticResource DarkSwamp}"/>
+                            <Setter TargetName="RadioBorder" Property="Fill" Value="{StaticResource LightSwamp}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -1130,8 +1291,9 @@
     <Style TargetType="TextBlock" x:Key="ShellTitle"  BasedOn="{StaticResource GENERALTXT}">
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="5 0 0 15"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="MaxWidth" Value="800"/>
@@ -1160,16 +1322,16 @@
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
-        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
     <Style TargetType="PasswordBox" x:Key="ShellPasswordBox" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
-        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
-        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>

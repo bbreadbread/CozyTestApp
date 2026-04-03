@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 
 namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
-    public class BindUserForGroupViewModel : ObservableObject
+    public class BindUserForGroupViewModel : BaseViewModel
     {
+        private GroupsViewModel _groupsViewModel;
+
         public ParticipantService _participantService = new();
         public CuratorService _curatorService = new();
         public GroupService _groupService = new();
@@ -112,9 +114,10 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
-        public BindUserForGroupViewModel(Group group)
+        public BindUserForGroupViewModel(IDialogService dialogService, INavigationService navigationService, GroupsViewModel groupsViewModel) : base(navigationService,dialogService )
         {
-            CurrentGroup = group; 
+            _groupsViewModel = groupsViewModel;
+            CurrentGroup = _groupsViewModel.SelectedGroup; 
             LoadData();       
             CuratorsList = new ObservableCollection<Curator>(_curatorService.Curators);
         }
@@ -128,6 +131,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 var boundParticipants = _participantService.GetAllParticipantForGroup(CurrentGroup.Id);
                 ParticipantsCurrentList = new ObservableCollection<Participant>(boundParticipants);
+
+                _groupsViewModel.ParticipantsForGroupList = ParticipantsCurrentList;
             }
         }
 

@@ -22,10 +22,9 @@ namespace CozyTest.ForShellWindow
     /// </summary>
     public partial class CreateEditGroup : UserControl
     {
-        public CreateEditGroup(AdminPanelViewModel viewModel)
+        public CreateEditGroup()
         {
             InitializeComponent();
-            DataContext = new CreateEditGroupViewModel(viewModel);
         }
     }
 }

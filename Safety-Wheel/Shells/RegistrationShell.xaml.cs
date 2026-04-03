@@ -32,7 +32,7 @@ namespace CozyTest.ForShellWindow
         { 
             passwordBox = PasswordB.Password;
             rePasswordBox = RePasswordB.Password;
-            if (DataContext is RequestViewModel vm && passwordBox != null && rePasswordBox != null)
+            if (DataContext is RegistrationViewModel vm && passwordBox != null && rePasswordBox != null)
             {
                 vm.Password = passwordBox;
                 vm.RePassword = rePasswordBox;

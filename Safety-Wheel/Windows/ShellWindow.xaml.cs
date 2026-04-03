@@ -18,12 +18,18 @@ namespace CozyTest
     /// <summary>
     /// Логика взаимодействия для ShellWindow.xaml
     /// </summary>
-    public partial class ShellWindow : MetroWindow  
+    public partial class ShellWindow : MetroWindow
     {
-        public ShellWindow(UserControl shows)
+        // Конструктор принимает ViewModel, а не UserControl
+        public ShellWindow(object viewModel)
         {
             InitializeComponent();
-            ShellGlobalFrame.Navigate(shows);
+            DataContext = viewModel; // ContentPresenter сам найдёт DataTemplate
+        }
+
+        public ShellWindow()
+        {
+            InitializeComponent();
         }
     }
 }

@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using CozyTest.Models;
 using WPFCustomMessageBox;
 using CozyTest.ForShellWindow;
+using CozyTest.ViewModels;
 
 namespace CozyTest.Pages.Participant
 {
@@ -25,71 +26,9 @@ namespace CozyTest.Pages.Participant
     /// </summary>
     public partial class AuthorizationPage : Page
     {
-        private ParticipantService _participantService = new();
-        private CuratorService _teacherService = new();
-
         public AuthorizationPage()
         {
             InitializeComponent();
-        }
-
-        private void ButtonAuth_Click(object sender, RoutedEventArgs e)
-        { 
-            _teacherService.GetAll();
-            string login = TbLogin.Text.Trim();
-            string password = TbPassword.Password.Trim();
-
-            _participantService.GetAllParticipants();
-            var participant = _participantService.Participants.FirstOrDefault(s =>
-                            s.Login == login && s.Password == password);
-            if (participant != null)
-            {
-                CurrentUser.ClassUser = participant;
-                CurrentUser.TypeUser = 3;
-                CurrentUser.Id = participant.Id;
-                CurrentUser.Name = participant.Name ?? string.Empty;
-
-                if (Application.Current.MainWindow is MainWindow mainWindow)
-                {
-                    mainWindow.VM.InitAfterLogin();
-                    mainWindow.UpdateUserName(CurrentUser.Name);
-                }
-
-                NavigationService.Navigate(new MainNavigation());
-                return;
-            }
-
-            var curator = _teacherService.Curators.FirstOrDefault(t => t.Login == login && t.Password == password);
-            if (curator != null)
-            {
-                CurrentUser.ClassUser = _teacherService.GetCuratorById(curator.Id);
-                if (curator.IsAdmin == true)
-                    CurrentUser.TypeUser = 1;
-                else CurrentUser.TypeUser = 2;
-                CurrentUser.Id = curator.Id;
-                CurrentUser.Name = curator.Name ?? string.Empty;
-                CurrentUser.Login = _teacherService.GetCuratorById(curator.Id).Login;
-
-                if (Application.Current.MainWindow is MainWindow mainWindow)
-                {
-                    mainWindow.VM.InitAfterLogin();
-                    mainWindow.UpdateUserName(CurrentUser.Name);
-                }
-                
-                NavigationService.Navigate(new MainNavigation());
-                return;
-            }
-
-            CustomMessageBox.Show("Неверный логин или пароль.",
-                            "Ошибка",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-        }
-
-        private void RequestAccount_Click(object sender, MouseButtonEventArgs e)
-        {
-            var window = new ShellWindow(new RegistrationShell());
-            window.Show();
         }
     }
 }
