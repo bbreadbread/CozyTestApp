@@ -4,10 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CozyTest.Pages.Curator"
-      
+      Background="Green"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
            mc:Ignorable="d" 
-           d:DesignHeight="915" d:DesignWidth="1815"
              xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM">
 
     <Grid>
@@ -18,10 +17,10 @@
         </Grid.ColumnDefinitions>
         <DockPanel Margin="15" LastChildFill="True">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <ToggleButton Width="110" Height="40" Margin="10" Content="Привязаны ко мне" IsChecked="{Binding BindIsChecked}"/>
-                <ToggleButton Width="90" Height="40" Margin="10" Content="Созданы мной" IsChecked="{Binding CreateIsChecked}"/>
-                <ToggleButton Width="90" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsChecked}"/>
-                <ToggleButton Width="90" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Привязаны ко мне" IsChecked="{Binding BindIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Созданы мной" IsChecked="{Binding CreateIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsChecked}"/>
                 <TextBox Width="270" Height="42" Margin="20 10" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 

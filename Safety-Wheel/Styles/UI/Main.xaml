@@ -478,7 +478,6 @@
     </Style>
 
     <Style TargetType="Button" x:Key="MiniHomeButton" BasedOn="{StaticResource HomeButton}">
-        <Setter Property="Margin" Value="15"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="150"/>
         <Setter Property="FontSize" Value="15"/>
@@ -1139,7 +1138,7 @@
      <Setter Property="Foreground" Value="{StaticResource White}"/>
      <Setter Property="PaneBackground" Value="{StaticResource DarkSwamp}"/>
      <Setter Property="CompactPaneLength" Value="80"/>
-     <Setter Property="OpenPaneLength" Value="280"/>
+     <Setter Property="OpenPaneLength" Value="290"/>
      <Setter Property="ShowSelectionIndicator" Value="True"/>
  </Style>
 
@@ -1273,7 +1272,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ToggleButton" BasedOn="{StaticResource MahApps.Styles.Button.Chromeless}">
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource MahApps.Styles.ToggleButton.Flat}">
+        <Setter Property="TextElement.FontSize" Value="15"/>
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
@@ -1281,7 +1281,22 @@
             </Trigger>
             <Trigger Property="IsChecked" Value="False">
                 <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
-                <Setter Property="Foreground" Value="{StaticResource Black}"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="RadioButton" x:Key="RadioButtonAllTest" BasedOn="{StaticResource MahApps.Styles.ToggleButton.Flat}">
+        <Setter Property="TextElement.FontSize" Value="15"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource White}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

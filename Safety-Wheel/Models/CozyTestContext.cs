@@ -86,6 +86,10 @@ public partial class CozyTestContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
 
+
+
+            entity.Property(e => e.ParticipantProfileId).HasColumnName("ParticipantProfile_ID");
+
             entity.HasMany(d => d.Participants).WithMany(p => p.Curators)
                 .UsingEntity<Dictionary<string, object>>(
                     "CuratorsParticipant",

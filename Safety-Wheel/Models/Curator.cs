@@ -11,6 +11,7 @@ public partial class Curator : ObservableObject
     private string? _password;
     private bool? _isAdmin;
     private bool? _isArchive;
+    private int? _participantProfileId;
 
     public int Id
     {
@@ -47,7 +48,11 @@ public partial class Curator : ObservableObject
         get => _isArchive;
         set => SetProperty(ref _isArchive, value);
     }
-
+    public int? ParticipantProfileId
+    {
+        get => _participantProfileId;
+        set => SetProperty(ref _participantProfileId, value);
+    }
     public virtual ICollection<Requests> Requests { get; set; } = new List<Requests>();
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
     public virtual ICollection<Participant> ParticipantsNavigation { get; set; } = new List<Participant>();

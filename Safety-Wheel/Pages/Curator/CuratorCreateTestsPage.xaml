@@ -4,8 +4,7 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
              xmlns:conv="clr-namespace:CozyTest.Converters"
-             Style="{StaticResource CreateEditTest}"
-             Width="Auto">
+             Background="Green">
 
     <UserControl.Resources>
         <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>

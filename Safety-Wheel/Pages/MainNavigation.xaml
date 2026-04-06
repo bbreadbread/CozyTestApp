@@ -7,6 +7,7 @@
       xmlns:viewModelStat="clr-namespace:CozyTest.ViewModels.StatisticsVM" 
       xmlns:core="clr-namespace:CozyTest.Converters"
       xmlns:views="clr-namespace:CozyTest.Pages.Curator"
+      xmlns:viewsP="clr-namespace:CozyTest.Pages.Participant"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       Loaded="Page_Loaded"
        xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
@@ -100,8 +101,9 @@
                 <views:CuratorWelcomePage DataContext="{Binding}" />
             </DataTemplate>
 
-           
-
+            <DataTemplate DataType="{x:Type vm:AuthorizationViewModel}">
+                <viewsP:AuthorizationPage DataContext="{Binding}" />
+            </DataTemplate>
         </Grid.Resources>
 
         <!-- Контент -->
@@ -127,84 +129,6 @@
                 HorizontalAlignment="Stretch" 
                 VerticalAlignment="Stretch"/>
                 
-                <!--Попытки для прохождений-->
-                <DataGrid Grid.Row="1" Grid.Column="0"
-                              Height="200"
-                              ItemsSource="{Binding MenuAttemptsItems}"
-                              SelectedItem="{Binding SelectedAttempt}"
-                              SelectionUnit="FullRow"
-                              SelectionMode="Single"
-                              AutoGenerateColumns="False"
-                              HeadersVisibility="Column"
-                              IsReadOnly="True"
-                              Visibility="{Binding AttemptsTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <EventSetter Event="PreviewMouseLeftButtonDown"
-                                             Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#334A90E2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Время"
-                                         Binding="{Binding Tag.StartedAt, StringFormat=HH:mm}" />
-
-                        <DataGridTextColumn Header="Результат"
-                                            Binding="{Binding Tag.Score}" />
-
-                        <DataGridTextColumn Header="Тест"
-                                            Binding="{Binding Tag.Test.Name}" />
-
-                        <DataGridTextColumn Header="Предмет"
-                                            Binding="{Binding Tag.Test.Topic.Name}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <!--Тесты для статистики-->
-                <DataGrid Grid.Row="1" Grid.Column="0"
-                              IsReadOnly="True"
-                              Height="200"
-                              ItemsSource="{Binding MenuItems}"
-                              SelectedItem="{Binding SelectedTest}"
-                              SelectionUnit="FullRow"
-                              SelectionMode="Single"
-                              AutoGenerateColumns="False"
-                              HeadersVisibility="Column"
-                              Visibility="{Binding StatisticTableVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <EventSetter Event="PreviewMouseLeftButtonDown"
-                         Handler="DataGridRow_PreviewMouseLeftButtonDown"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#334A90E2"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Название теста"
-                        Binding="{Binding Tag.Name, 
-                                  FallbackValue='Все тесты',
-                                  TargetNullValue='Все тесты'}" />
-
-                        <DataGridTextColumn Header="Предмет"
-                        Binding="{Binding Tag.Topic.Name, 
-                                  FallbackValue='Нажмите для просмотра всех тестов',
-                                  TargetNullValue='Нажмите для просмотра всех тестов'}" />
-                    </DataGrid.Columns>
-                </DataGrid>
             </Grid>
         </Grid>
 

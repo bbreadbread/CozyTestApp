@@ -123,7 +123,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 };
 
                 _participantService.Add(newP);
-                _participantService.UpdateParticipantBindForCurator(_participantService.GetLast().Id, (int)curatorId, true);
+                //_participantService.UpdateParticipantBindForCurator(_participantService.GetLast().Id, null, true);
 
                 _participantsViewModel.ReloadParticipants();
             }

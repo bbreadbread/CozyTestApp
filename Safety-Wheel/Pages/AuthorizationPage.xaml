@@ -6,12 +6,23 @@
       xmlns:local="clr-namespace:CozyTest.Pages.Participant"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"        
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1000">
+      d:DesignHeight="700" d:DesignWidth="1000"
+      Title="MainNavigation">
 
-    <Viewbox MaxWidth="700" MaxHeight="400" MinWidth="300" MinHeight="100">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Viewbox MaxWidth="700"
+             MaxHeight="400"
+             MinWidth="300"
+             MinHeight="100">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+
+            <Grid HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+
                 <Grid Style="{StaticResource MainGrid}">
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="200"/>
                         <RowDefinition Height="100"/>
@@ -25,56 +36,84 @@
                         <ColumnDefinition Width="700"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Style="{StaticResource MainTitle}" 
-                               Grid.Row="0" 
-                               Grid.ColumnSpan="2" 
-                               Text="Авторизация" 
-                               Foreground="{StaticResource DarkSwamp}"/>
+                    <TextBlock Style="{StaticResource MainTitle}" Grid.Row="0" Grid.ColumnSpan="2" Text="Авторизация" Foreground="{StaticResource DarkSwamp}"/>
 
                     <TextBlock Style="{StaticResource AuthTitle}" Grid.Row="1" Grid.Column="0" Text="Логин"/>
-                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="10" BorderThickness="5" 
-                            Background="White" BorderBrush="{StaticResource Gray}" Margin="0 5">
+                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="10" BorderThickness="5" Background="White" BorderBrush="{StaticResource Gray}"  Margin="0 5">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
                         </Border.Effect>
-                        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
-                                 BorderThickness="0"
-                                 Background="Transparent" 
-                                 VerticalAlignment="Center"
-                                 FontWeight="Medium" 
-                                 FontSize="30"
-                                 mah:TextBoxHelper.ClearTextButton="True"/>
+                        <TextBox 
+                            x:Name="TbLogin"
+                            Text="123"
+                            AutomationProperties.Name="Login"
+                            BorderThickness="0"
+                            Background="Transparent" 
+                            VerticalAlignment="Center"
+                            FontWeight="Medium" 
+                            FontSize="30"
+                            mah:TextBoxHelper.ClearTextButton="True">
+                            <TextBox.Template>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border x:Name="border" Background="Transparent">
+                                        <ScrollViewer x:Name="PART_ContentHost" Margin="8,0"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
                     </Border>
 
                     <TextBlock Style="{StaticResource AuthTitle}" Grid.Row="2" Grid.Column="0" Text="Пароль"/>
-                    <Border Grid.Row="2" Grid.Column="1" CornerRadius="10" BorderThickness="5" 
-                            Background="White" BorderBrush="{StaticResource Gray}" Margin="0 5">
+                    <Border  Grid.Row="2" Grid.Column="1" CornerRadius="10" BorderThickness="5" Background="White" BorderBrush="{StaticResource Gray}" Margin="0 5">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
                         </Border.Effect>
-                        <!-- PasswordBox не поддерживает привязку, используем Behavior или code-behind -->
-                        <PasswordBox x:Name="PasswordBox"
-                                     BorderThickness="0"
-                                     Background="Transparent"
-                                     VerticalAlignment="Center"
-                                     FontWeight="Medium"
-                                     FontSize="30"/>
+                        <PasswordBox 
+                            AutomationProperties.Name="Password" 
+                            Password="123" 
+                            x:Name="TbPassword"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            VerticalAlignment="Center"
+                            FontWeight="Medium"
+                            FontSize="30">
+                            <PasswordBox.Template>
+                                <ControlTemplate TargetType="PasswordBox">
+                                    <Border x:Name="border" Background="Transparent">
+                                        <ScrollViewer x:Name="PART_ContentHost" Margin="8,0"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </PasswordBox.Template>
+                        </PasswordBox>
                     </Border>
 
-                    <Button Style="{StaticResource HomeButton}" 
-                            Grid.Row="3" 
-                            Grid.ColumnSpan="2" 
-                            Content="Войти" 
-                            Command="{Binding AuthCommand}"/>
-
-                    <Button  Style="{StaticResource MaterialDesignFlatLightButton}"
-                             Grid.Row="4" 
-                             Grid.ColumnSpan="2" 
-                             Content="Отправить заявку на создание аккаунта"
-                             Command="{Binding RequestAccountCommand}">
-                    </Button>
+                    <Button Style="{StaticResource HomeButton}" x:Name="BtnEnter" Grid.Row="3" Grid.ColumnSpan="2" Content="Войти" Click="ButtonAuth_Click"/>
+                    <TextBlock Style="{StaticResource Hint}" Grid.Row="4" Grid.ColumnSpan="2" Text="Отправить заявку на создание аккаунта"
+                           MouseLeftButtonDown="RequestAccount_Click">
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="25" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="20" Duration="0:0:1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
                 </Grid>
             </Grid>
         </ScrollViewer>
     </Viewbox>
+
 </Page>

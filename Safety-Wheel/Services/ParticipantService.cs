@@ -99,11 +99,11 @@ namespace CozyTest.Services
             }
         }
 
-        public Participant? GetCurrentParticipant(int? participantId = null)
+        public Participant GetById(int? participantId = null)
         {
             if (!participantId.HasValue) return null;
 
-            return Participants
+            return _db.Participants
                       .FirstOrDefault(s => s.Id == participantId.Value);
         }
 

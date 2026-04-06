@@ -36,6 +36,19 @@ namespace CozyTest.ViewModels.CreateTestsVM
             set { _isMyAuthorshipWith = value; OnPropertyChanged(); ApplyFilters(); }
         }
 
+        private bool _isSelectedArchive;
+        public bool IsSelectedArchive
+        {
+            get => _isSelectedArchive;
+            set { _isSelectedArchive = value; OnPropertyChanged(); ApplyFilters(); }
+        }
+        private bool _isSelectedActive = true;
+        public bool IsSelectedActive
+        {
+            get => _isSelectedActive;
+            set { _isSelectedActive = value; OnPropertyChanged(); ApplyFilters(); }
+        }
+
         private Curator? _selectedCoauthor;
         public Curator? SelectedCoauthor
         {
@@ -158,6 +171,13 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 filtered = filtered.Where(t =>
                     (t.CuratorCreateId == SelectedCoauthor.Id));
 
+            ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (IsSelectedArchive)
+                filtered = filtered.Where(t=>t.IsArchive == true);
+            if (IsSelectedActive)
+                filtered = filtered.Where(t=>t.IsArchive == false);
+            ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             if (SelectedTopic != null)
                 filtered = filtered.Where(t => t.TopicId == SelectedTopic.Id);
 
@@ -188,6 +208,8 @@ namespace CozyTest.ViewModels.CreateTestsVM
             SelectedDate = null;
             TestNameFilter = "";
             SelectedCoauthorFilter = null;
+            IsSelectedActive = false;
+            IsSelectedArchive = false;
             ApplyFilters();
         }
 
@@ -232,17 +254,30 @@ namespace CozyTest.ViewModels.CreateTestsVM
         {
             if (test == null) return;
 
-            var confirmed = _dialogService.ShowConfirmation(
-                $"Отправить тест «{test.Name}» в архив?",
-                "Подтверждение");
+            if (test.IsArchive == true)
+            {
+                var confirmed = _dialogService.ShowConfirmation(
+               $"Убрать «{test.Name}» из архива?",
+               "Подтверждение");
 
-            if (!confirmed) return;
+                if (!confirmed) return;
+                test.IsArchive = !test.IsArchive;
 
-            test.IsArchive = true;
+            }
+            else
+            {
+                var confirmed = _dialogService.ShowConfirmation(
+               $"Отправить «{test.Name}» в архив?",
+               "Подтверждение");
+
+                if (!confirmed) return;
+                test.IsArchive = true;
+            }
+
             _testService.Update(test);
 
             LoadTests();
-            _dialogService.ShowMessage("Тест отправлен в архив", "Готово");
+            _dialogService.ShowMessage("Выполнено", "Готово");
         }
 
         private bool _isLoading;

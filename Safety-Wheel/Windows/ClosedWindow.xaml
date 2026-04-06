@@ -11,31 +11,26 @@
         GlowBrush="{StaticResource DarkSwamp}"
         BorderBrush="{StaticResource DarkSwamp}"
         ResizeMode="NoResize">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="24*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Style="{StaticResource Hint}" HorizontalAlignment="Center"  Grid.ColumnSpan="2">
+        <TextBlock Style="{StaticResource Hint}" HorizontalAlignment="Left"  Grid.ColumnSpan="2" >
             <Run Text="{Binding WarningText1}"/>
         </TextBlock>
 
-        <TextBlock Grid.Row="1" Style="{StaticResource Hint}" HorizontalAlignment="Center"  Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="1" Style="{StaticResource Hint}" HorizontalAlignment="Left"  Grid.ColumnSpan="2">
             <Run Text="{Binding WarningText2}"/>
         </TextBlock>
 
         <StackPanel Grid.Row="2" 
                     Orientation="Horizontal" 
-                    HorizontalAlignment="Left"
-                    Margin="20,10,0,0">
-            <Button Style="{StaticResource MiniHomeButton}" x:Name="BtnExit" Grid.Row="3" Grid.ColumnSpan="2" Content="Выход" Click="ButtonExit_Click" />
-            <Button Style="{StaticResource MiniHomeButton}" x:Name="BtnCancel" Grid.Row="3" Grid.ColumnSpan="2" Content="Отмена" Click="ButtonCancel_Click" />
+                    HorizontalAlignment="Center">
+            <Button Style="{StaticResource MiniHomeButton}" Margin="0 0 15 0" VerticalAlignment="Bottom" x:Name="BtnExit" Grid.Row="3" Grid.ColumnSpan="2" Content="Выход" Click="ButtonExit_Click" />
+            <Button Style="{StaticResource MiniHomeButton}" Margin="15 0 0 0" VerticalAlignment="Bottom" x:Name="BtnCancel" Grid.Row="3" Grid.ColumnSpan="2" Content="Отмена" Click="ButtonCancel_Click" />
         </StackPanel>
     </Grid>
 </Controls:MetroWindow>

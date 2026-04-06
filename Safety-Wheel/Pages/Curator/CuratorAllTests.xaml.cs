@@ -36,5 +36,10 @@ namespace CozyTest.Pages.Curator
                 vm.OnArchiveTest(test);
             }
         }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

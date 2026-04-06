@@ -21,7 +21,7 @@ namespace CozyTest.ValidationRules
             if (!string.IsNullOrEmpty(OriginalLogin) && string.Equals(login, OriginalLogin, StringComparison.OrdinalIgnoreCase))
                 return ValidationResult.ValidResult;
 
-            if(CuratorService.GetCuratorById(CurrentUser.Id).Login != login)
+            if(CuratorService.GetById(CurrentUser.Id).Login != login)
             if (CuratorService.UserExistsByLogin(login))
                 return new ValidationResult(false, "Пользователь с таким логином уже существует.");
 

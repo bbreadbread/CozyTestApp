@@ -20,15 +20,18 @@ namespace CozyTest.Services
             GetAll();
         }
 
-        public void Add(Curator teacher)
+        public void Add(Curator cur)
         {
-            var _teacher = new Curator
+            var _cur = new Curator
             {
-                Login = teacher.Login,
-                Password = teacher.Password,
-                Name = teacher.Name
+                Login = cur.Login,
+                Password = cur.Password,
+                Name = cur.Name,
+                IsAdmin = cur.IsAdmin,
+                IsArchive = cur.IsArchive,
+
             };
-            _db.Add(_teacher);
+            _db.Add(_cur);
             Commit();
         }
 
@@ -61,8 +64,15 @@ namespace CozyTest.Services
                 Curators.Add(teacher);
             }
         }
+        public Curator GetLast()
+        {
+            var query = _db.Curators
+                .OrderByDescending(a => a.Id)
+                      .FirstOrDefault();
 
-        public Curator GetCuratorById(int id)
+            return query;
+        }
+        public Curator GetById(int id)
         {
             var tea = Curators.Where(q=> q.Id == id).FirstOrDefault();
             return tea;
@@ -104,6 +114,7 @@ namespace CozyTest.Services
                 if (user != null)
                 {
                     user.IsArchive = !user.IsArchive;
+                    if (user.IsArchive == null) user.IsArchive = true;
                     _db.SaveChanges();
                 }
             }
@@ -122,6 +133,8 @@ namespace CozyTest.Services
                 if (user != null)
                 {
                     user.IsAdmin = !user.IsAdmin;
+                    if (user.IsAdmin == null) user.IsAdmin = true;
+
                     _db.SaveChanges();
                 }
             }

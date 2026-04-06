@@ -10,7 +10,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
     public class CuratorsViewModel : BaseAdminViewModel
     {
-        // Коллекции...
         private ObservableCollection<Curator> _curatorsList;
         public ObservableCollection<Curator> CuratorsList
         {
@@ -43,7 +42,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             set => SetProperty(ref _testsForCuratorList, value);
         }
 
-        // Выбранные элементы...
         private Curator _selectedCurator;
         public Curator SelectedCurator
         {
@@ -72,7 +70,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             set => SetProperty(ref _curatorsVisibility, value);
         }
 
-        // Команды навигации и действий
         public ICommand AddCuratorCommand { get; }
         public ICommand EditCuratorCommand { get; }
         public ICommand ArchiveCuratorCommand { get; }
@@ -94,24 +91,18 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             PublishTestCommand = new RelayCommand(_ => PublishTest(), _ => SelectedTest != null);
         }
 
-        // Навигация
         private void AddCurator()
         {
-            // Здесь создаём VM для добавления куратора
-            // var vm = new CreateEditCuratorViewModel(this, 0);
-            // _dialogService.ShowWindow<ShellWindow>(vm);
-
-            _dialogService.ShowMessage("Функция добавления куратора в разработке");
+            var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this);
+            _dialogService.ShowWindow<ShellWindow>(vm);
         }
 
         private void EditCurator()
         {
             if (SelectedCurator == null) return;
 
-            // var vm = new CreateEditCuratorViewModel(this, SelectedCurator.Id);
-            // _dialogService.ShowWindow<ShellWindow>(vm);
-
-            _dialogService.ShowMessage($"Редактирование куратора: {SelectedCurator.Name}");
+            var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this);
+            _dialogService.ShowWindow<ShellWindow>(vm);
         }
 
         private void PublishTest()
@@ -125,7 +116,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             _dialogService.ShowMessage($"Настройки публикации теста: {SelectedTest.Name}");
         }
 
-        // Остальные методы...
         private void LoadForCurrentCurator()
         {
             if (SelectedCurator != null)
@@ -158,6 +148,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         {
             if (SelectedCurator == null) return;
 
+            if (SelectedCurator.IsAdmin == null) SelectedCurator.IsAdmin = false;
             bool newStatus = (bool)!SelectedCurator.IsAdmin;
             string action = newStatus ? "назначить администратором" : "снять с роли администратора";
 
@@ -179,7 +170,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 "Подтверждение"))
             {
                 _testService.ArchiveTest(SelectedTest.Id);
-                LoadForCurrentCurator(); // Обновляем список
+                LoadForCurrentCurator();
             }
         }
 
@@ -204,6 +195,13 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 CuratorsList.Add(curator);
             }
+        }
+
+        public void ReloadCurators()
+        {
+            _curatorService.GetAll();
+
+            ApplyFilters();
         }
     }
 }

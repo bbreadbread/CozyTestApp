@@ -6,7 +6,7 @@ using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CozyTest.ViewModels
+namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
     public class AuthorizationViewModel : BaseViewModel
     {
@@ -63,7 +63,7 @@ namespace CozyTest.ViewModels
 
             if (curator != null)
             {
-                var fullCurator = _curatorService.GetCuratorById(curator.Id);
+                var fullCurator = _curatorService.GetById(curator.Id);
                 int userType = curator.IsAdmin == true ? 1 : 2;
                 SetCurrentUser(fullCurator, userType);
                 NavigateToMain();

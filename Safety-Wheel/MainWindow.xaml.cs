@@ -7,6 +7,8 @@ using CozyTest.Pages.Curator;
 using CozyTest.Pages.Participant;
 using CozyTest.Services;
 using CozyTest.ViewModels;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CozyTest
 {
@@ -14,9 +16,7 @@ namespace CozyTest
     {
         private readonly AttemptService _attemptService = new();
 
-        public MainViewModel VM { get; set; }
-
-        public MainWindow(MainViewModel viewModel) 
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
             VM = viewModel;
@@ -26,6 +26,8 @@ namespace CozyTest
             VM.ExitRequested += OnExitRequested;
             VM.ClearRequested += OnClearRequested;
         }
+
+        public MainViewModel VM { get; set; }
 
         public void UpdateUserName(string userName)
         {
@@ -47,7 +49,7 @@ namespace CozyTest
                                "Тест будет считаться завершенным.",
                                () => {
                                    PartTest._isTestActivated = false;
-                                   MainFrame.Content = (new PartHomePage());
+                                   VM.CurrentContent = App.Services.GetRequiredService<AuthorizationViewModel>();
                                });
                     break;
 
@@ -56,16 +58,17 @@ namespace CozyTest
                                () => {
                                    PartTest._isTestActivated = false;
                                    VM.RequestClear();
-                                   MainFrame.Content = (new AuthorizationPage());
+                                   VM.CurrentContent = App.Services.GetRequiredService<AuthorizationViewModel>();
                                });
                     break;
 
                 case PartHomePage:
                     PartTest._isTestActivated = false;
-                    MainFrame.Content = (new PartHomePage());
+                    MainFrame.Navigate(new PartHomePage());
                     break;
 
                 default:
+                    if (MainFrame.CanGoBack) MainFrame.GoBack();
                     break;
             }
         }
@@ -76,7 +79,7 @@ namespace CozyTest
                        () => {
                            PartTest._isTestActivated = false;
                            VM.RequestClear();
-                           MainFrame.Content = (new AuthorizationPage());
+                           MainFrame.Navigate(new AuthorizationPage());
                        });
         }
 

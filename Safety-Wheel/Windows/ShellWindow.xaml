@@ -29,7 +29,6 @@
         <DataTemplate DataType="{x:Type vm:PublicDetailsViewModel}">
             <views:PublicationDetails/>
         </DataTemplate>
-        
         <DataTemplate DataType="{x:Type vm:CreateEditGroupViewModel}">
             <views:CreateEditGroup/>
         </DataTemplate>
@@ -42,7 +41,10 @@
         <DataTemplate DataType="{x:Type vm:SearchParticipantViewModel}">
             <views:SearchParticipantShell/>
         </DataTemplate>
-        
+        <DataTemplate DataType="{x:Type vm:CreateEditCuratorAdminViewModel}">
+            <views:CreateEditCuratorAdminShell/>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type vmC:ImportExcelViewModel}">
             <views:ImportExcelShell/>
         </DataTemplate>

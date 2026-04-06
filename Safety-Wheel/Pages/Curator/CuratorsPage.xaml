@@ -18,8 +18,8 @@
 
         <DockPanel Margin="15" LastChildFill="True">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <ToggleButton Width="90" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsChecked}"/>
-                <ToggleButton Width="90" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsChecked}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsChecked}"/>
                 <TextBox Width="270" Height="42" Margin="20 10" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 

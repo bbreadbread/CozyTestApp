@@ -6,14 +6,15 @@
              xmlns:conv="clr-namespace:CozyTest.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d"
-             Width="Auto"
-             Style="{StaticResource CreateEditTest}">
+             mc:Ignorable="d">
     <UserControl.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
         <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibility"/>
         <conv:CardWidthConverter x:Key="CardWidthConverter"/>
         <conv:CardMarginConverter x:Key="CardMarginConverter"/>
+        <conv:BoolToTextConverter x:Key="ArchiveTextConverter" 
+                           TrueText="В АРХИВЕ" 
+                           FalseText=" "/>
     </UserControl.Resources>
 
     <Grid>
@@ -22,17 +23,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid MinWidth="1300" Grid.Row="0" Margin="0 20 0 0">
+        <Grid Grid.Row="0" MaxWidth="1450" Margin="0 20 0 0" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <RadioButton Grid.Row="0" Grid.Column="0" 
@@ -67,6 +68,7 @@
                       Style="{StaticResource UpMenuTestComboBox}"
                       ItemsSource="{Binding Topics}"
                       DisplayMemberPath="Name"
+                      
                       SelectedItem="{Binding SelectedTopic}"/>
 
             <Button Grid.Row="0" 
@@ -80,12 +82,12 @@
                     HorizontalAlignment="Center"
                     Command="{Binding ClearFiltersCommand}">
                 <StackPanel Orientation="Horizontal">
-                     <Image Source="pack://application:,,,/Images/plus_icon.png"
+                    <Image Source="pack://application:,,,/Images/plus_icon.png"
                        Width="40"
                        Height="40"/>
                     <TextBlock Text="Создать тему" TextWrapping="Wrap" Width="80" Margin="10 0 0 0" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
                 </StackPanel>
-               
+
             </Button>
 
             <Button Grid.Row="0" 
@@ -116,13 +118,25 @@
             <TextBox Height="45" 
                      Grid.Row="1" 
                      Grid.Column="1" 
-                     Grid.ColumnSpan="2" 
                      mah:TextBoxHelper.Watermark="Введите название теста" 
                      Background="{StaticResource LightSwamp}" 
                      BorderBrush="{StaticResource MainSwamp}"
                      BorderThickness="3" 
                      Margin="20 0 20 0"
                      Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <ToggleButton Content="Архивные" 
+                  TextElement.FontSize="20" 
+                  IsChecked="{Binding IsSelectedArchive}" 
+                  TextElement.FontWeight="Bold" 
+                  Margin="0 0 0 5"/>
+
+                <ToggleButton Content="Активные"
+                  TextElement.FontSize="20" 
+                  IsChecked="{Binding IsSelectedActive}" 
+                  TextElement.FontWeight="Bold"/>
+            </StackPanel>
 
             <ComboBox Height="45" 
                       Grid.Row="1" 
@@ -132,9 +146,10 @@
                       Style="{StaticResource UpMenuTestComboBox}"
                       ItemsSource="{Binding Curators}"
                       DisplayMemberPath="Name"
+                      Margin="20 0 0 0"
                       SelectedItem="{Binding SelectedCoauthor}"/>
-    </Grid>
-    <Grid Grid.Row="1">
+        </Grid>
+        <Grid Grid.Row="1">
             <ScrollViewer Grid.Row="0" 
                VerticalScrollBarVisibility="Hidden"
               HorizontalScrollBarVisibility="Disabled" MaxHeight="1000" MaxWidth="1400">
@@ -202,14 +217,25 @@
                                                     <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 25 0" Grid.Row="0" Grid.Column="0">
+                                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 25 0" Grid.Row="0" Grid.Column="0">
                                                     <TextBlock Text="{Binding Test.TestType.Name}" FontSize="20" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Test.IsArchive, Converter={StaticResource ArchiveTextConverter}}" FontSize="11" FontWeight="Bold"/>
                                                 </StackPanel>
 
                                                 <Border BorderBrush="Black" BorderThickness="2" Margin="0 10" Grid.Column="1"/>
 
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 25 0" Grid.Row="0" Grid.Column="2">
                                                     <TextBlock Text="{Binding Test.Topic.Name}" FontSize="20" FontWeight="Bold"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                                                        <TextBlock FontSize="13" Foreground="#666">
+                                                            <Run Text="{Binding Test.PenaltyMax}"/>
+                                                            <Run Text=" вопр. · "/>
+                                                            <Run Text="{Binding Test.TimeLimitSecond}"/>
+                                                            <Run Text=" сек. · "/>
+                                                            <Run Text="{Binding Test.MaxNumPassing}"/>
+                                                            <Run Text=" макс. попыток"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                 </StackPanel>
 
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3">
@@ -259,7 +285,8 @@
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <CheckBox Grid.Column="0"  Grid.RowSpan="2"
-                                                           Content="Опубликовать" VerticalAlignment="Center" FontSize="20" Grid.ColumnSpan="2" Margin="10 0 0 0"/> <!--IsChecked="{Binding IsPublic}"-->
+                                                           Content="Опубликовать" VerticalAlignment="Center" FontSize="20" Grid.ColumnSpan="2" Margin="10 0 0 0"/>
+                                                    <!--IsChecked="{Binding IsPublic}"-->
 
 
                                                     <Menu Grid.Column="1"
@@ -277,7 +304,7 @@
                                                             </MenuItem.Header>
                                                             <MenuItem Header="Детализация публикации"/>
                                                             <MenuItem Header="Посмотреть прохождения"/>
-                                                            <MenuItem Header="В архив" 
+                                                            <MenuItem Header="Архив" 
                                                                       Command="{Binding DataContext.ArchiveTestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                                                       CommandParameter="{Binding Test}"/>
                                                         </MenuItem>

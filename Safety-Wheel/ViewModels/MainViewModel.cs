@@ -13,12 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using CozyTest.ViewModels.CreateTestsVM;
 using Microsoft.Extensions.DependencyInjection;
+using WPFCustomMessageBox;
+using CozyTest.ViewModels.CuratorVM;
 
 namespace CozyTest.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public class MainViewModel : BaseViewModel
     {
-        private readonly IDialogService _dialogService;    
+        private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
 
         private ObservableCollection<MenuItemViewModel> _mainMenuItems;
@@ -26,11 +28,11 @@ namespace CozyTest.ViewModels
         private ObservableCollection<MenuItemViewModel> _menuOptionDateItems;
 
         private ObservableCollection<MenuItemViewModel> _menuItems;
-        private ObservableCollection<MenuItemViewModel> _menuDatesItems;
         private ObservableCollection<MenuItemViewModel> _menuAttemptsItems;
         private ObservableCollection<MenuItemViewModel> _menuTestsItems;
 
         private ParticipantService _participantService = new();
+        private CuratorService _curatorService = new();
         private AttemptService _attemptService = new();
         private TopicService _subjectService = new();
         private TestService _testService = new();
@@ -61,16 +63,15 @@ namespace CozyTest.ViewModels
             Groups,
         }
 
-        public MainViewModel(IDialogService dialogService, INavigationService navigationService)
+        public MainViewModel(IDialogService dialogService,INavigationService navigationService ):base(navigationService,dialogService)
         {
             _dialogService = dialogService;
             _navigationService = navigationService;
 
             GoBackCommand = new RelayCommand(_ => ExecuteGoBack());
             ExitCommand = new RelayCommand(_ => ExecuteExit());
-
+            IsAuthenticated = false;
             CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
-
         }
 
         public void CreateMainMenuItems()
@@ -174,7 +175,7 @@ namespace CozyTest.ViewModels
                             ToolTip = "Заявки",
                             Tag = MainMenuType.Requests
                         }
-                        
+
                     };
                     break;
 
@@ -262,7 +263,7 @@ namespace CozyTest.ViewModels
                             ToolTip = "Пользователи",
                             Tag = MainMenuType.Curators
                         }
-                        
+
                     };
                     break;
 
@@ -309,7 +310,6 @@ namespace CozyTest.ViewModels
         public void CreateMenuItems()
         {
             MenuItems = new ObservableCollection<MenuItemViewModel> { };
-            MenuDatesItems = new ObservableCollection<MenuItemViewModel> { };
             MenuAttemptsItems = new ObservableCollection<MenuItemViewModel> { };
             MenuTestsItems = new ObservableCollection<MenuItemViewModel> { };
             MenuOptionDateItems = new ObservableCollection<MenuItemViewModel> { };
@@ -317,40 +317,31 @@ namespace CozyTest.ViewModels
 
         public void InitAfterLogin()
         {
-            switch (CurrentUser.TypeUser)
+            IsAuthenticated = true;
+            ListRoleCurrentUser.Clear();
+
+            if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 2)
             {
-                case 1:
+                var curator = _curatorService.GetById(CurrentUser.Id);
+                if (curator != null)
+                {
+                    ListRoleCurrentUser.Add(curator);
 
-                    CreateMainMenuItems();
-                    CreateMenuItems();
-
-                    _participantService.GetAllParticipants(CurrentUser.Id);
-                    CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
-
-
-                    break;
-
-                case 2:
-
-                    CreateMainMenuItems();
-                    CreateMenuItems();
-
-                    _participantService.GetAllParticipants(CurrentUser.Id);
-
-                    CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
-
-                    break;
-
-                case 3:
-
-                    CreateMainMenuItems();
-                    CreateMenuItems();
-
-                    break;
-
-                default:
-                    break;
+                    var participant = _participantService.GetById(curator.ParticipantProfileId);
+                    if (participant != null)
+                        ListRoleCurrentUser.Add(participant);
+                }
             }
+            else if (CurrentUser.TypeUser == 3)
+            {
+                var participant = _participantService.GetById(CurrentUser.Id);
+                if (participant != null)
+                    ListRoleCurrentUser.Add(participant);
+            }
+
+            SelectedRoleCurrentUser = ListRoleCurrentUser.FirstOrDefault();
+
+            ReinitializeAfterRoleSwitch();
         }
 
         public void ReloadParticipants()
@@ -366,12 +357,11 @@ namespace CozyTest.ViewModels
 
         public void ResetApplicationState()
         {
+            IsAuthenticated = false;
+
             SelectedParticipant = null;
             SelectedMainMenuItem = null;
 
-            MenuDatesItems.Clear();
-            MenuAttemptsItems.Clear();
-            MenuOptionDateItems.Clear();
 
             CurrentContent = null;
 
@@ -695,7 +685,6 @@ namespace CozyTest.ViewModels
             try
             {
                 MenuItems.Clear();
-                MenuDatesItems.Clear();
                 MenuAttemptsItems.Clear();
                 CurrentContent = null;
                 SelectedParticipant = null;
@@ -727,7 +716,7 @@ namespace CozyTest.ViewModels
                             StatisticTableVisible = false;
                             SecondMenuVisible = true;
                             await LoadTopicForEditAsync();
-                            CurrentContent = App.Services.GetRequiredService<CuratorAllTestViewModel>(); 
+                            CurrentContent = App.Services.GetRequiredService<CuratorAllTestViewModel>();
                             break;
 
                         case MainMenuType.Participants:
@@ -764,7 +753,7 @@ namespace CozyTest.ViewModels
                             AttemptsTableVisible = false;
                             StatisticTableVisible = false;
                             SecondMenuVisible = false;
-                            CurrentContent = null; 
+                            CurrentContent = null;
                             break;
 
                         case MainMenuType.Profile:
@@ -899,11 +888,6 @@ namespace CozyTest.ViewModels
             set => SetProperty(ref _menuItems, value);
         }
 
-        public ObservableCollection<MenuItemViewModel> MenuDatesItems
-        {
-            get => _menuDatesItems;
-            set => SetProperty(ref _menuDatesItems, value);
-        }
 
         public ObservableCollection<MenuItemViewModel> MenuAttemptsItems
         {
@@ -925,12 +909,35 @@ namespace CozyTest.ViewModels
                 SetProperty(ref _currentContent, value);
             }
         }
+        private ObservableCollection<object> _listRoleCurrentUser = new();
+
+        public ObservableCollection<object> ListRoleCurrentUser
+        {
+            get => _listRoleCurrentUser;
+            set
+            {
+                SetProperty(ref _listRoleCurrentUser, value);
+            }
+        }
+        
+
+        private object _SelectedRoleCurrentUser;
+        public object SelectedRoleCurrentUser
+        {
+            get => _SelectedRoleCurrentUser;
+            set
+            {
+                if (SetProperty(ref _SelectedRoleCurrentUser, value))
+                {
+                    SwitchRole();
+                }
+            }
+        }
         public Participant CurrentParticipant
         {
             get => _currentParticipant;
             set => SetProperty(ref _currentParticipant, value);
         }
-
         public DateTime? SelectedDateValue
         {
             get => _selectedDateValue;
@@ -1026,6 +1033,60 @@ namespace CozyTest.ViewModels
         {
             get => _teacherPassword;
             set { _teacherPassword = value; OnPropertyChanged(); }
+        }
+        private bool _isAuthenticated = false;
+
+        public bool IsAuthenticated
+        {
+            get => _isAuthenticated;
+            set => SetProperty(ref _isAuthenticated, value);
+        }
+        public void SwitchRole()
+        {
+            if (SelectedRoleCurrentUser == null) return;
+
+            _curatorService.GetAll();
+            _participantService.GetAllParticipants();
+
+            if (SelectedRoleCurrentUser is Curator curator)
+            {
+                CurrentUser.ClassUser = _curatorService.GetById(curator.Id);
+                CurrentUser.TypeUser = (byte)(curator.IsAdmin == true ? 1 : 2);
+                CurrentUser.Id = curator.Id;
+                CurrentUser.Name = curator.Name ?? string.Empty;
+                CurrentUser.Login = _curatorService.GetById(curator.Id).Login;
+
+                ReinitializeAfterRoleSwitch();
+            }
+            else if (SelectedRoleCurrentUser is Participant participant)
+            {
+                CurrentUser.ClassUser = participant;
+                CurrentUser.TypeUser = 3;
+                CurrentUser.Id = participant.Id;
+                CurrentUser.Name = participant.Name ?? string.Empty;
+
+                ReinitializeAfterRoleSwitch();
+            }
+        }
+
+        private void ReinitializeAfterRoleSwitch()
+        {
+            ResetApplicationState();
+            IsAuthenticated = true;
+            CreateMainMenuItems();
+            CreateMenuItems();
+
+            if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 2)
+            {
+                _participantService.GetAllParticipants(CurrentUser.Id);
+                CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
+            }
+
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.UpdateUserName(CurrentUser.Name);
+            }
+            SelectedMainMenuItem = null;
         }
     }
     public class DateInfo
