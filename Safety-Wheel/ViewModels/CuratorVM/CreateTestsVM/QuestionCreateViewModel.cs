@@ -1,54 +1,29 @@
 ﻿using CozyTest.Models;
-using System;
+using CozyTest.Services;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Windows.Input;
 
 namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class QuestionCreateViewModel : ObservableObject
     {
         public Question NewQuestion { get; set; }
-
-        public ObservableCollection<OptionCreateViewModel> Options { get; }
-            = new();
-
-        private bool _isGhost;
-        public bool IsGhost
-        {
-            get => _isGhost;
-            private set => SetProperty(ref _isGhost, value);
-        }
-
-        private readonly Action _onActivated;
+        public ObservableCollection<OptionCreateViewModel> Options { get; } = new();
 
         private string? _previewImagePath;
         public string? PreviewImagePath
         {
             get => _previewImagePath;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    _previewImagePath = null;
-                    OnPropertyChanged();
-                    return;
-                }
-
-                // Если путь уже содержит "Images/", делаем полный путь для отображения
-                if (value.StartsWith("Images/", StringComparison.OrdinalIgnoreCase))
-                {
-                    var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, value);
-                    _previewImagePath = fullPath;
-                }
-                else
-                {
-                    _previewImagePath = value;
-                }
-
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _previewImagePath, value);
         }
 
+        public ICommand AddTextOptionCommand { get; }
+        public ICommand AddImageOptionCommand { get; }
+        public ICommand SetQuestionImageCommand { get; }
+        public ICommand ShowFullScreenImageCommand { get; }
         public string PicturePath
         {
             get => NewQuestion.PicturePath;
@@ -56,21 +31,13 @@ namespace CozyTest.ViewModels.CreateTestsVM
             {
                 NewQuestion.PicturePath = value;
                 OnPropertyChanged();
-
-                // При изменении PicturePath обновляем PreviewImagePath для отображения
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (value.StartsWith("Images/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, value);
-                        _previewImagePath = fullPath;
-                        OnPropertyChanged(nameof(PreviewImagePath));
-                    }
+                    var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, value);
+                    PreviewImagePath = fullPath;
                 }
             }
         }
-
-
 
         public string Text
         {
@@ -79,8 +46,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
             {
                 NewQuestion.TestQuest = value;
                 OnPropertyChanged();
-                RecalculateGhostState();
-                _onActivated?.Invoke();
             }
         }
 
@@ -91,126 +56,119 @@ namespace CozyTest.ViewModels.CreateTestsVM
             {
                 NewQuestion.Comments = value;
                 OnPropertyChanged();
-                _onActivated?.Invoke();
             }
         }
 
-        public bool IsMultiImage
+        public QuestionCreateViewModel(Question? question = null)
         {
-            get => NewQuestion.QuestionTypeId == 2;
-            set
+            NewQuestion = question ?? new Question();
+            if (!string.IsNullOrEmpty(NewQuestion.PicturePath))
             {
-                NewQuestion.QuestionTypeId = value ? 2 : 1;
-
-                if (!value && string.IsNullOrEmpty(PreviewImagePath))
-                    PreviewImagePath = PicturePath;
-
-                ResetOptions();
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsSingleImage));
+                var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, NewQuestion.PicturePath);
+                PreviewImagePath = File.Exists(fullPath) ? fullPath : null;
             }
+            AddTextOptionCommand = new RelayCommand(_ => AddTextOption());
+            AddImageOptionCommand = new RelayCommand(_ => AddImageOption());
+            SetQuestionImageCommand = new RelayCommand(_ => SetQuestionImage());
+            ShowFullScreenImageCommand = new RelayCommand(_ => ShowFullScreenImage());
         }
 
-        public bool IsSingleImage => !IsMultiImage;
-
-
-
-        public QuestionCreateViewModel(Question question, bool isGhost, Action onActivated)
+        public void AddTextOption()
         {
-            NewQuestion = question;
-            IsGhost = isGhost;
-            _onActivated = onActivated;
+            Options.Add(new OptionCreateViewModel(false, this));
+        }
 
-            if (!string.IsNullOrEmpty(question.PicturePath))
+        public void AddImageOption()
+        {
+            var dialog = new OpenFileDialog
             {
-                if (question.PicturePath.StartsWith("Images/", StringComparison.OrdinalIgnoreCase))
+                Filter = "Изображения|*.jpg;*.jpeg;*.png;*.gif",
+                Title = "Выберите изображение для варианта ответа"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                string imagesPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+                string relativePath;
+
+                if (dialog.FileName.StartsWith(imagesPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, question.PicturePath);
-                    _previewImagePath = File.Exists(fullPath) ? fullPath : null;
+                    relativePath = dialog.FileName.Substring(imagesPath.Length + 1);
                 }
+                else
+                {
+                    string fileName = $"{Guid.NewGuid()}{System.IO.Path.GetExtension(dialog.FileName)}";
+                    string destPath = System.IO.Path.Combine(imagesPath, fileName);
+                    Directory.CreateDirectory(imagesPath);
+                    File.Copy(dialog.FileName, destPath, true);
+                    relativePath = fileName;
+                }
+
+                relativePath = relativePath.Replace('\\', '/');
+
+                Options.Add(new OptionCreateViewModel(true, this));
+
+                var newOption = Options.Last();
+                newOption.SetImagePath("Images/" + relativePath);
             }
-            else
-            {
-                _previewImagePath = null;
-            }
-
-            SyncGhostOptions();
-        }
-
-        private void RecalculateGhostState()
-        {
-            IsGhost = string.IsNullOrWhiteSpace(Text);
-        }
-
-        private void ResetOptions()
-        {
-            Options.Clear();
-            SyncGhostOptions();
         }
 
         public void RemoveOption(OptionCreateViewModel option)
         {
-            if (option.IsGhost)
-                return;
-
             Options.Remove(option);
-            SyncGhostOptions();
             RecalculateQuestionType();
-        }
-
-        public void SyncGhostOptions()
-        {
-            var realOptions = Options.Where(o => !o.IsGhost).ToList();
-            var ghostOptions = Options.Where(o => o.IsGhost).ToList();
-
-            if (!realOptions.Any())
-            {
-                Options.Clear();
-                Options.Add(CreateGhostOption());
-                return;
-            }
-
-            if (ghostOptions.Count == 0)
-                Options.Add(CreateGhostOption());
-
-            if (ghostOptions.Count > 1)
-            {
-                foreach (var extra in ghostOptions.Skip(1).ToList())
-                    Options.Remove(extra);
-            }
-        }
-
-        private OptionCreateViewModel CreateGhostOption()
-        {
-            return new OptionCreateViewModel(true, IsMultiImage, this);
         }
 
         public void RecalculateQuestionType()
         {
-            if (IsMultiImage)
-            {
-                NewQuestion.QuestionTypeId = 2;
-                return;
-            }
-
-            int correctCount = Options
-                .Where(o => !o.IsGhost)
-                .Count(o => o.IsCorrect == true);
-
+            int correctCount = Options.Count(o => o.IsCorrect == true);
             NewQuestion.QuestionTypeId = correctCount <= 1 ? 1 : 3;
         }
 
-        public void SetQuestionImage(string path)
+        public void SetQuestionImage()
         {
-            PicturePath = path;
-
-            if (path.StartsWith("Images/", StringComparison.OrdinalIgnoreCase))
+            OpenFileDialog dlg = new OpenFileDialog
             {
-                var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-                _previewImagePath = fullPath;
-                OnPropertyChanged(nameof(PreviewImagePath));
+                Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp",
+                InitialDirectory = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images")
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                string imagesPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+                string relativePath;
+
+                if (dlg.FileName.StartsWith(imagesPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    relativePath = dlg.FileName.Substring(imagesPath.Length + 1);
+                }
+                else
+                {
+                    string fileName = $"{Guid.NewGuid()}{System.IO.Path.GetExtension(dlg.FileName)}";
+                    string destPath = System.IO.Path.Combine(imagesPath, fileName);
+                    Directory.CreateDirectory(imagesPath);
+                    File.Copy(dlg.FileName, destPath, true);
+                    relativePath = fileName;
+                }
+
+                relativePath = relativePath.Replace('\\', '/');
+
+                PicturePath = "Images/" + relativePath;
             }
         }
 
+        public void SetOptionImage(OptionCreateViewModel option, string path)
+        {
+            option.SetImagePath(path);
+        }
+
+        public void ShowFullScreenImage()
+        {
+            var imagePath = PreviewImagePath ?? PicturePath;
+            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+            {
+                FullScreenImageService.ShowImage(imagePath);
+            }
+        }
     }
 }

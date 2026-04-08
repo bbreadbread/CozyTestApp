@@ -45,7 +45,7 @@ namespace CozyTest.ViewModels
 
         private Participant _currentParticipant;
         private DateTime? _selectedDateValue;
-        private object _currentContent;
+        private BaseViewModel _currentContent;
         public enum MainMenuType
         {
             TestResults,
@@ -708,7 +708,6 @@ namespace CozyTest.ViewModels
                             StatisticTableVisible = true;
                             SecondMenuVisible = true;
                             await LoadParticipantsForStatisticsAsync();
-                            CurrentContent = new StatisticsViewModel(null);
                             break;
 
                         case MainMenuType.EditCreateTests:
@@ -785,8 +784,6 @@ namespace CozyTest.ViewModels
                 if (menuType == MainMenuType.Statistics && value?.Tag == null)
                 {
                     CurrentParticipant = null;
-                    CurrentContent = new StatisticsViewModel(null);
-
 
                     CuratorStatisticsPage.DataPageCurator?.LoadStatistics(null, SelectedTest?.Tag as Test);
                     return;
@@ -901,7 +898,7 @@ namespace CozyTest.ViewModels
         }
 
 
-        public object CurrentContent
+        public BaseViewModel CurrentContent
         {
             get => _currentContent;
             set
@@ -975,7 +972,7 @@ namespace CozyTest.ViewModels
         public ICommand ExitCommand { get; }
         private void ExecuteGoBack()
         {
-            NavigationRequested?.Invoke(this, new NavigationRequestEventArgs(NavigationAction.GoBack));
+            _navigationService.GoBack();
         }
 
         private void ExecuteExit()

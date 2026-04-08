@@ -32,7 +32,6 @@
     </Style>
 
     <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}" x:Key="TBoxStyle">
-        <Setter Property="Height" Value="66"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
@@ -40,7 +39,6 @@
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="8"/>
     </Style>
 
     <Style TargetType="CheckBox" x:Key="CheckBStyle">
@@ -50,12 +48,20 @@
         <Setter Property="FontSize" Value="24"/>
     </Style>
     
-    <Style TargetType="Border" x:Key="CardBorderStyle">
+    <Style TargetType="Border" x:Key="CardQuestsBorderStyle">
 
         <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="CornerRadius" Value="6"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="CardBorderStyle">
+
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Height" Value="300"/>
 
         <Setter Property="Effect">
@@ -589,6 +595,31 @@
                 <Setter Property="Background" Value="#106EBE"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="CuratorCreateTestsButton">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            CornerRadius="5"
+                            BorderThickness="2"
+                            Margin="2"
+                            Background="{StaticResource DarkSwamp}">
+
+                        <ContentPresenter x:Name="content"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="Button" x:Key="ConfirmButton">
@@ -1354,7 +1385,7 @@
     <Style TargetType="Border" x:Key="UpMenuTest">
         <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
         <Setter Property="Height" Value="45"/>
-        <Setter Property="Margin" Value="6"/>
+        <Setter Property="Margin" Value="2"/>
 
         <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
         <Setter Property="BorderThickness" Value="3"/>
@@ -1436,6 +1467,13 @@
         <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
     </Style>
 
+    <Style x:Key="UpMenuTestNumericUpDown" TargetType="mah:NumericUpDown">
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
 
     <Style TargetType="Button" x:Key="SelectFileButton">
         <Setter Property="Height" Value="45"/>
