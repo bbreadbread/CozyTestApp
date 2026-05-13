@@ -1,0 +1,171 @@
+﻿using CozyTest.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
+
+namespace CozyTest.Services
+{
+    public class GroupService
+    {
+        private readonly IDbContextFactory<CozyTestContext> _factory;
+        public ObservableCollection<Group> Groups { get; } = new();
+
+        public GroupService(IDbContextFactory<CozyTestContext> factory)
+        {
+            _factory = factory;
+        }
+
+        public async Task InitializeAsync() => await GetAllGroupsForUserAsync();
+
+        public async Task AddAsync(Group group)
+        {
+            using var db = _factory.CreateDbContext();
+            var entity = new Group
+            {
+                Name = group.Name,
+                Description = group.Description,
+                CuratorId = group.CuratorId
+            };
+            await db.Groups.AddAsync(entity);
+            await db.SaveChangesAsync();
+
+            await App.Current.Dispatcher.InvokeAsync(() =>
+            {
+                entity.Id = entity.Id;
+                Groups.Add(entity);
+            });
+        }
+
+        public async Task DeleteAsync(Group group)
+        {
+            using var db = _factory.CreateDbContext();
+            db.Groups.Remove(group);
+            if (await db.SaveChangesAsync() > 0)
+                await App.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    if (Groups.Contains(group))
+                        Groups.Remove(group);
+                });
+        }
+
+        public async Task UpdateAsync(Group group)
+        {
+            using var db = _factory.CreateDbContext();
+            var existing = await db.Groups.FindAsync(group.Id);
+            if (existing != null)
+            {
+                existing.Name = group.Name;
+                existing.Description = group.Description;
+                existing.CuratorId = group.CuratorId;
+                await db.SaveChangesAsync();
+
+                await App.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    var localGroup = Groups.FirstOrDefault(g => g.Id == group.Id);
+                    if (localGroup != null)
+                    {
+                        localGroup.Name = group.Name;
+                        localGroup.Description = group.Description;
+                        localGroup.CuratorId = group.CuratorId;
+                    }
+                });
+            }
+        }
+
+        public async Task GetAllGroupsForUserAsync()
+        {
+            using var db = _factory.CreateDbContext();
+            var userGroups = await db.Groups.ToListAsync();
+
+            await App.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Groups.Clear();
+                foreach (var userGroup in userGroups)
+                {
+                    Groups.Add(userGroup);
+                }
+                    
+            });
+        }
+
+        public async Task GetAllGroupsForUserAsync(int userId)
+        {
+            using var db = _factory.CreateDbContext();
+            var groups = await db.Groups
+                .Include(ug => ug.Participants)
+                .Where(u => u.Participants.Any(p => p.Id == userId))
+                .ToListAsync();
+
+            await App.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Groups.Clear();
+                foreach (var userGroup in groups)
+                    Groups.Add(userGroup);
+            });
+        }
+
+        public async Task GetAllGroupsForCuratorAsync(int userId)
+        {
+            using var db = _factory.CreateDbContext();
+            var groups = await db.Groups
+                .Where(p => p.CuratorId == userId)
+                .ToListAsync();
+
+            await App.Current.Dispatcher.InvokeAsync(() =>
+            {
+                Groups.Clear();
+                foreach (var userGroup in groups)
+                    Groups.Add(userGroup);
+            });
+        }
+
+        public async Task<ObservableCollection<Group>> GetAllGroupsForCuratorAsync(int curatorId, int testId)
+        {
+            using var db = _factory.CreateDbContext();
+            var groups = await db.Groups
+                .Include(ug => ug.Curator)
+                .Include(ug => ug.Participants)
+                .Where(u => u.CuratorId == curatorId)
+                .ToListAsync();
+
+            await App.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                Groups.Clear();
+                foreach (var userGroup in groups)
+                {
+                    userGroup.IsPublished = await IsTestPublishedForAllParticipants(userGroup.Id, testId);
+                    Groups.Add(userGroup);
+                }
+            });
+
+            return Groups;
+        }
+
+        private async Task <bool> IsTestPublishedForAllParticipants(int groupId, int testId)
+        {
+            using var db = _factory.CreateDbContext();
+            var participants = await GetAllParticipantForGroup(groupId);
+
+            if (!participants.Any())
+                return false;
+
+            foreach (var participant in participants)
+            {
+                var isPublished = db.ParticipantsPublicTests
+                    .Any(ppt => ppt.ParticipantId == participant.Id && ppt.TestId == testId);
+
+                if (!isPublished)
+                    return false;
+            }
+            return true;
+        }
+
+        public async Task <List<Participant>> GetAllParticipantForGroup(int groupId)
+        {
+            using var db = _factory.CreateDbContext();
+            return db.Participants
+                .Include(p => p.Groups)
+                .Where(u => u.Groups.Any(p => p.Id == groupId))
+                .ToList();
+        }
+    }
+}

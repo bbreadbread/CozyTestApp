@@ -1,0 +1,70 @@
+﻿<mah:MetroWindow x:Class="CozyTest.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:CozyTest"
+        xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+        xmlns:vmC="clr-namespace:CozyTest.ViewModels.CuratorVM.CreateTestsVM"
+        xmlns:vmShow="clr-namespace:CozyTest.ViewModels.CuratorVM.ShowPassingVM"
+        xmlns:views="clr-namespace:CozyTest.ForShellWindow"
+        mc:Ignorable="d"
+        Height="Auto" Width="Auto"
+        WindowTitleBrush="{StaticResource DarkSwamp}"
+        GlowBrush="{StaticResource DarkSwamp}"
+        BorderBrush="{StaticResource DarkSwamp}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="{Binding WindowTitle}">
+
+    <mah:MetroWindow.Resources>
+        <DataTemplate DataType="{x:Type vmShow:CuratorShowPassingCurrentTestViewModel}">
+            <views:CuratorShowPassingCurrentTestShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CreateEditParticipantViewModel}">
+            <views:CreateEditParticipantAdmin/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegistrationViewModel}">
+            <views:RegistrationShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PublicDetailsViewModel}">
+            <views:PublicationDetails/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:AssignedDetailsViewModel}">
+            <views:AssignedDetails/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:CreateEditGroupViewModel}">
+            <views:CreateEditGroup/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BindGroupForUserViewModel}">
+            <views:BindGroupForUser/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BindUserForGroupViewModel}">
+            <views:BindUserForGroup/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SearchParticipantViewModel}">
+            <views:SearchParticipantShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CreateEditCuratorAdminViewModel}">
+            <views:CreateEditCuratorAdminShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmC:CreateEditTopicViewModel}">
+            <views:CreateEditTopic/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmC:ImportExcelViewModel}">
+            <views:ImportExcelShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmC:GradingSystemViewModel}">
+            <views:ShellGradingSystem/>
+        </DataTemplate>
+    </mah:MetroWindow.Resources>
+
+    <Grid>
+        <Viewbox Margin="15">
+            <ContentPresenter Content="{Binding}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Viewbox>
+    </Grid>
+</mah:MetroWindow>

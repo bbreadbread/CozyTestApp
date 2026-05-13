@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="MainBlue" Color="#FF104BA9"/>
+    <SolidColorBrush x:Key="DarkBlue" Color="#FF052D6E"/>
+    <SolidColorBrush x:Key="LightGray" Color="#FFD9D9D9"/>
+    <SolidColorBrush x:Key="Gray" Color="#D9D9D9"/>
+    <SolidColorBrush x:Key="White" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="Black" Color="#FF000000"/>
+    <SolidColorBrush x:Key="LightBlue" Color="#F3F8FF"/>
+    <SolidColorBrush x:Key="HoverBlue" Color="#FF052D6E"/>
+
+    <SolidColorBrush x:Key="Green" Color="#10A91A"/>
+    <SolidColorBrush x:Key="HoverGreen" Color="#007908"/>
+    <SolidColorBrush x:Key="LightGreen" Color="#D5FFD8"/>
+    <SolidColorBrush x:Key="BrightGreen" Color="#00FF11"/>
+    
+    <SolidColorBrush x:Key="Red" Color="#D31A1A"/>
+    <SolidColorBrush x:Key="HoverRed" Color="#A13535"/>
+    <SolidColorBrush x:Key="LightRed" Color="#FFE6E6"/>
+    <SolidColorBrush x:Key="BrightRed" Color="#FF0000"/>
+
+    <SolidColorBrush x:Key="Gold" Color="#FFAE00"/>
+    <SolidColorBrush x:Key="HoverGold" Color="#D39000"/>
+    <SolidColorBrush x:Key="LightGold" Color="#FFF5DE"/>
+
+</ResourceDictionary>

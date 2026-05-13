@@ -1,0 +1,80 @@
+﻿<Page x:Class="Safety_Wheel.Pages.Student.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Safety_Wheel.Pages.Student"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"        
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="1000"
+      Title="MainPage">
+
+    <Viewbox MaxWidth="900"
+             MaxHeight="500"
+             MinWidth="500"
+             MinHeight="300">
+        
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+
+        <Grid HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+            <Grid Style="{StaticResource MainGrid}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="130"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="700"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Style="{StaticResource MainTitle}" Grid.Row="0" Grid.ColumnSpan="2" Text="Авторизация" Foreground="{StaticResource MainBlue}"/>
+
+                <TextBlock Style="{StaticResource AuthTitle}" Grid.Row="1" Grid.Column="0" Text="Логин"/>
+                <Border Grid.Row="1" Grid.Column="1" CornerRadius="10" BorderThickness="5" Background="White" BorderBrush="{StaticResource Gray}"  Margin="0 5">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
+                    </Border.Effect>
+                    <TextBox x:Name="TbLogin" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontWeight="Medium" FontSize="30" mah:TextBoxHelper.ClearTextButton="True">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border x:Name="border" Background="Transparent">
+                                    <ScrollViewer x:Name="PART_ContentHost" Margin="8,0"/>
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
+                </Border>
+
+                <TextBlock Style="{StaticResource AuthTitle}" Grid.Row="2" Grid.Column="0" Text="Пароль"/>
+                <Border  Grid.Row="2" Grid.Column="1" CornerRadius="10" BorderThickness="5" Background="White" BorderBrush="{StaticResource Gray}" Margin="0 5">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.3" Color="Black"/>
+                    </Border.Effect>
+                    <PasswordBox x:Name="TbPassword" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontWeight="Medium"  FontSize="30">
+                        <PasswordBox.Template>
+                            <ControlTemplate TargetType="PasswordBox">
+                                <Border x:Name="border" Background="Transparent">
+                                    <ScrollViewer x:Name="PART_ContentHost" Margin="8,0"/>
+                                </Border>
+                            </ControlTemplate>
+                        </PasswordBox.Template>
+                    </PasswordBox>
+                </Border>
+
+                <Button Style="{StaticResource HomeButton}" x:Name="BtnEnter" Grid.Row="3" Grid.ColumnSpan="2" Content="Войти" Click="ButtonAuth_Click"/>
+                <TextBlock Style="{StaticResource Hint}" Grid.Row="4" Grid.ColumnSpan="2" Text="Логин и пароль получается и уточняется у преподавателя"/>
+
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+    </Viewbox>
+    
+</Page>

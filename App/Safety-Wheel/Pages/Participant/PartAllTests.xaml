@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="CozyTest.Pages.Participant.PartAllTests"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:CozyTest.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>
+        <conv:InverseBoolToOpacityConverter x:Key="InverseBoolToOpacityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" MaxWidth="1450" Margin="0 20 0 20" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Height="45" 
+                     Grid.Column="0"
+                     Width="300"
+                     Margin="20 0 0 0"
+                     mah:TextBoxHelper.Watermark="Поиск по названию теста" 
+                     Background="{StaticResource LightSwamp}" 
+                     BorderBrush="{StaticResource MainSwamp}"
+                     BorderThickness="3"
+                     Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <ToggleButton Content="Назначенные мне" 
+                              IsChecked="{Binding IsAssignedToMe}"
+                              Margin="10 0"
+                              Padding="15 10"
+                              FontSize="16"
+                              FontWeight="Bold"/>
+                <ToggleButton Content="Опубликованные" 
+                              IsChecked="{Binding IsPublic}"
+                              Margin="10 0"
+                              Padding="15 10"
+                              FontSize="16"
+                              FontWeight="Bold"/>
+                <ToggleButton Content="Пройденные" 
+                              IsChecked="{Binding IsCompleted}"
+                              Margin="10 0"
+                              Padding="15 10"
+                              FontSize="16"
+                              FontWeight="Bold"/>
+            </StackPanel>
+
+            <Button Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Command="{Binding ClearFiltersCommand}">
+                <Image Source="pack://application:,,,/Images/clear_icon.png"
+                       Width="40"
+                       Height="40"/>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled" 
+                          MaxHeight="1000" 
+                          MaxWidth="1400">
+                <ItemsControl ItemsSource="{Binding Tests}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="15 30 15 15">
+                                <StackPanel Width="20">
+                                    <Image Source="pack://application:,,,/Images/favorite.png"
+                                        Width="20"
+                                        Height="20"
+                                       VerticalAlignment="Top"
+                                        Stretch="Uniform" Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"/>
+                                </StackPanel>
+
+                                <Border Style="{StaticResource CardBorderStyle}"
+                                    Width="400"
+                                    Cursor="Hand"
+                                    Opacity="{Binding CanStart, Converter={StaticResource InverseBoolToOpacityConverter}}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CardClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                               CommandParameter="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+
+                                    <Border BorderThickness="2" 
+                                        CornerRadius="6">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height="2"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="2*"/>
+                                                    <RowDefinition Height="2*"/>
+                                                    <RowDefinition Height="2*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="1"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 25 0" Grid.Row="0" Grid.Column="0">
+                                                    <TextBlock Text="{Binding TestTypeName}" FontSize="20" FontWeight="Bold"/>
+                                                </StackPanel>
+
+                                                <Border BorderBrush="{StaticResource MainSwamp}" BorderThickness="2" Margin="0 10" Grid.Column="1"/>
+
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 25 0" Grid.Row="0" Grid.Column="2">
+                                                    <TextBlock Text="{Binding TopicName}" FontSize="20" FontWeight="Bold"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                                                        <TextBlock FontSize="13" Foreground="#666">
+                                                        <Run Text="{Binding QuestionsCount}"/>
+                                                        <Run Text=" вопр. · "/>
+                                                        <Run Text="{Binding TimeLimit}"/>
+                                                        <Run Text=" сек. · "/>
+                                                        <Run Text="{Binding MaxAttempts}"/>
+                                                        <Run Text=" макс. попыток"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3">
+                                                    <TextBlock Text="{Binding TestName}" FontSize="23" TextWrapping="Wrap" TextAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
+                                                    <TextBlock Text="{Binding TestDescription}" FontSize="15" TextWrapping="Wrap" MaxWidth="360" TextAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="3">
+                                                    <TextBlock Foreground="Gold" 
+                                                           Text="{Binding AssignmentInfo}" 
+                                                           FontSize="12" 
+                                                           Margin="5" 
+                                                           TextWrapping="Wrap" 
+                                                           MaxWidth="360"
+                                                           Visibility="{Binding IsAssigned, Converter={StaticResource BoolToVisibility}}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <Border BorderBrush="{StaticResource MainSwamp}" BorderThickness="2" Grid.Row="1"/>
+
+
+                                            <Grid Grid.Row="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0"
+                                                           Text="{Binding DateOfCreating, StringFormat={}{0:dd.MM.yyyy}}"
+                                                           VerticalAlignment="Bottom"   
+                                                           FontSize="20" 
+                                                           Margin="10 5 0 0"/>
+
+                                                    <TextBlock Grid.Column="1"
+                                                           Text="{Binding CreatorName}"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Bottom"  
+                                                           FontSize="20" 
+                                                           Margin="0 5 10 0"
+                                                           TextWrapping="Wrap"/>
+                                                </Grid>
+
+                                                <Grid Grid.Row="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="2*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0" Grid.RowSpan="2"
+                                                           Text="{Binding StatusInfo}"
+                                                           VerticalAlignment="Center" 
+                                                           FontSize="12" 
+                                                           Margin="10 0 0 0" 
+                                                           TextWrapping="Wrap"/>
+
+                                                    <Menu Grid.Column="1"
+                                                      Width="50"
+                                                      Height="50"
+                                                      HorizontalAlignment="Right"
+                                                      VerticalAlignment="Center"
+                                                      Background="Transparent" 
+                                                      Margin="5">
+                                                        <MenuItem Width="50" Height="50" Padding="-10">
+                                                            <MenuItem.Header>
+                                                                <Image Source="pack://application:,,,/Images/menu_icon.png"
+                                                                   Width="50"
+                                                                   Height="50"
+                                                                   Stretch="Uniform"/>
+                                                            </MenuItem.Header>
+                                                            <MenuItem Header="В избранное" 
+                                                                  Command="{Binding DataContext.AddToFavoriteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                  CommandParameter="{Binding}"
+                                                                  Visibility="{Binding IsFavorite, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                                                            <MenuItem Header="Убрать из избранного" 
+                                                                  Command="{Binding DataContext.RemoveFromFavoriteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                  CommandParameter="{Binding}"
+                                                                  Visibility="{Binding IsFavorite, Converter={StaticResource BoolToVisibility}}"/>
+                                                            <MenuItem Header="История прохождений" 
+                                                                  Command="{Binding DataContext.ViewHistoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                  CommandParameter="{Binding}"/>
+                                                        </MenuItem>
+                                                    </Menu>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <Border Grid.RowSpan="2"
+                Background="#2000685A" 
+                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"  
+                            IsIndeterminate="True" 
+                            Foreground="{StaticResource MainSwamp}"
+                            Width="50" 
+                            Height="50"/>
+                <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

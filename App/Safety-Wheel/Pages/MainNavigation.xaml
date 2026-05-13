@@ -1,0 +1,163 @@
+﻿<UserControl  x:Class="CozyTest.Pages.Curator.MainNavigation"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:viewModels="clr-namespace:CozyTest.ViewModels" 
+      xmlns:viewModelStat="clr-namespace:CozyTest.ViewModels.StatisticsVM" 
+      xmlns:core="clr-namespace:CozyTest.Converters"
+      xmlns:views="clr-namespace:CozyTest.Pages.Curator"
+      xmlns:viewsP="clr-namespace:CozyTest.Pages.Participant"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+       xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+       xmlns:vmC="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
+       xmlns:vmP="clr-namespace:CozyTest.ViewModels.ParticipantVM"
+       xmlns:vmShow="clr-namespace:CozyTest.ViewModels.CuratorVM.ShowPassingVM"
+       xmlns:vmS="clr-namespace:CozyTest.ViewModels.StatisticsVM">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <!-- this is the template for the items (options too) -->
+            <core:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type viewModels:MenuItemViewModel}">
+                <Grid x:Name="RootGrid" Height="80">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
+                    <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="16" Text="{Binding Label}" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                        <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
+                        <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+
+            <DataTemplate x:Key="MenuItemTemplateLittle" DataType="{x:Type viewModels:MenuItemViewModel}">
+                <Grid x:Name="RootGrid" Height="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Icon}" Focusable="False" />
+                    <TextBlock x:Name="LabelText" Grid.Column="1" VerticalAlignment="Center" FontSize="14" Text="{Binding Label}" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                        <Setter TargetName="LabelText" Property="Foreground" Value="{StaticResource White}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                        <Setter TargetName="RootGrid" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
+                        <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmS:StatisticsViewModel}">
+                <views:CuratorStatisticsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmShow:ShowPassingNavigationViewModel}">
+                <views:ShowPassingNavigation DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmC:CuratorAllTestViewModel}">
+                <views:CuratorAllTests DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmC:CuratorCreateTestViewModel}">
+                <views:CuratorCreateTestsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:ParticipantsViewModel}">
+                <views:ParticipantsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:CuratorsViewModel}">
+                <views:CuratorsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:RequestsViewModel}">
+                <views:RequestsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:GroupsViewModel}">
+                <views:GroupsPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:CuratorWelcomePageViewModel}">
+                <views:CuratorWelcomePage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:AuthorizationViewModel}">
+                <viewsP:AuthorizationPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmP:PartAllTestViewModel}">
+                <viewsP:PartAllTests DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmP:PassingTestViewModel}">
+                <viewsP:PartPassingTestPage DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmP:PartProfileViewModel}">
+                <viewsP:PartProfilePage DataContext="{Binding}" />
+            </DataTemplate>
+
+        </Grid.Resources>
+
+        <Grid Grid.Column="0" Margin="80 0 0 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ContentControl Grid.Column="1" Grid.Row="0"
+                Content="{Binding CurrentContent}"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"/>
+
+            </Grid>
+        </Grid>
+
+        <mah:HamburgerMenu Grid.Column="0"
+                               x:Name="MainMenuControl" 
+                               DisplayMode="CompactOverlay" 
+                               IsPaneOpen="False" 
+                               
+                               ItemsSource="{Binding MainMenuItems}"
+                               ItemTemplate="{StaticResource MenuItemTemplate}"                                
+                               OptionsItemsSource="{Binding MenuOptionItems}"
+                               OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                               
+                               SelectedItem="{Binding SelectedMainMenuItem, Mode=TwoWay}" 
+                               SelectedOptionsItem="{Binding SelectedMainMenuItem, Mode=TwoWay}" 
+                               SelectedIndex="0"
+                               Style="{StaticResource MainMenuStyle}" 
+                                
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Stretch"
+                           Panel.ZIndex="1000"/>
+    </Grid>
+</UserControl>

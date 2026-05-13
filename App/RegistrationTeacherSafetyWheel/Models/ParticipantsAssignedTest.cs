@@ -1,0 +1,18 @@
+﻿namespace RegistrationCuratorCozyTest.Models
+{
+    public partial class ParticipantsAssignedTest : ObservableObject
+    {
+        public int ParticipantId { get; set; }
+
+        public int TestId { get; set; }
+        public int ResponsibleId { get; set; }
+
+        public DateTime? DateTimeAssigned { get; set; }
+
+        public virtual Participant Participant { get; set; } = null!;
+        public virtual Curator Curator { get; set; } = null!;
+
+        public virtual Test Test { get; set; } = null!;
+    }
+}
+

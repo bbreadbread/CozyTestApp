@@ -1,0 +1,1398 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"                    
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF">
+     <Style TargetType="UserControl" x:Key="CreateEditTest">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="920"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="GENERALTXT">
+        <Setter Property="FontFamily" Value="Ubuntu"/>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="MainGrid">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="TestGrid">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="1500"/>
+    </Style>
+
+    <!--////Редактирование и создание тестов////-->
+
+    <Style TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
+        <Setter Property="GridLinesVisibility" Value="All"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource PaleSwamp}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource PaleSwamp}"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+    </Style>
+    
+    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="CBStyle">
+        <Setter Property="Height" Value="66"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="mah:TextBoxHelper.Watermark" Value="Выберите дисциплину"/>
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+    </Style>
+
+    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}" x:Key="TBoxStyle">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="CheckBox" x:Key="CheckBStyle">
+        <Setter Property="AllowDrop" Value="False"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="24"/>
+    </Style>
+    
+    <Style TargetType="Border" x:Key="CardQuestsBorderStyle">
+
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="6"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="CardBorderStyle">
+
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Height" Value="300"/>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect
+                BlurRadius="6"
+                ShadowDepth="2"
+                Opacity="0.25"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1.02"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1.02"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="CardBorderSimpleStyle">
+        <Setter Property="Background" Value="{StaticResource White}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Height" Value="300"/>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect
+                BlurRadius="6"
+                ShadowDepth="2"
+                Opacity="0.25"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ExpandToggleStyle"
+       TargetType="ToggleButton">
+
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}"
+                        CornerRadius="12.5">
+
+                        <Grid Width="15" Height="15">
+                            <Ellipse x:Name="Dot" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+                            <TextBlock Text="^"
+                                       FontSize="10"
+                                       FontWeight="Bold"
+                                       Foreground="Black"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Dot"
+                                Property="Margin"
+                                Value="0,2,0,0"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="False">
+                            <Setter TargetName="Dot"
+                                Property="Margin"
+                                Value="0"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--////////-->
+
+    <!--////<welcome////-->
+    <Style TargetType="Border" x:Key="Welcome30r">
+        <Setter Property="CornerRadius" Value="50"/>
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="Height" Value="100"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="WelcomeButtonStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="50" 
+                        Background="{StaticResource MainSwamp}" 
+                        Height="100">
+                        <ContentPresenter HorizontalAlignment="Left"
+                                          Margin="40 0 0 0"
+                                      VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect
+         BlurRadius="6"
+         ShadowDepth="2"
+         Opacity="0.1"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                     To="1.01"
+                     Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                     To="1.02"
+                     Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                     To="1"
+                     Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                     Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                     To="1"
+                     Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="WelcomeBorderStyle">
+        <Setter Property="CornerRadius" Value="55"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+        <Setter Property="BorderThickness" Value="5"/>
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.1"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <!-- Триггер на свойство IsMouseOver, но будет срабатывать только когда мышь над Border -->
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1.01"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1.02"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                            <DoubleAnimation
+                            Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                            To="1"
+                            Duration="0:0:0.12"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Border" x:Key="GeneralWelcome50r">
+        <Setter Property="CornerRadius" Value="50"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Height" Value="400"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="Margin" Value="20"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="MainWelcomeTB"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="35"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="1200"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="UpMenuButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{StaticResource LightSwamp}">
+                        <ContentPresenter x:Name="content"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Selected">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightRed}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Red}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Unselected">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightGreen}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Green}"/>
+                        </DataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="PaleButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        Background="{StaticResource PaleSwamp}"
+                            BorderBrush="{StaticResource MainSwamp}"
+                            BorderThickness="0.5">
+                        <ContentPresenter x:Name="content"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Label" x:Key="WelcomeLabel">
+        <Setter Property="FontFamily" Value="Ubuntu"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="40"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="WelcomeTxt" BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="18"/>
+    </Style>
+    <!--////welcome/>/////-->
+
+    <Style TargetType="TextBlock" x:Key="MainText" BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="MainTitle" BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="FontSize" Value="55"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="55"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="AuthTitle" BasedOn="{StaticResource MainTitle}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Hint" BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="{StaticResource Black}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="Hint2" BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="HomeButton">
+        <Setter Property="Margin" Value="0 15"/>
+        <Setter Property="Height" Value="100"/>
+        <Setter Property="BorderBrush" Value="{StaticResource White}"/>
+        <Setter Property="Background" Value="{StaticResource LightGray}"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="FontSize" Value="48"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            CornerRadius="2"
+                            BorderThickness="10"
+                            Background="{StaticResource Gray}"
+                            BorderBrush="{StaticResource Gray}">
+
+                        <Border.Effect>
+                            <DropShadowEffect 
+                            ShadowDepth="0"
+                            BlurRadius="3"
+                            Opacity="0.3"
+                            Color="Black"/>
+                        </Border.Effect>
+                        <ContentPresenter x:Name="content"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource GENERALTXT}">
+                                    <Setter Property="TextWrapping"  Value="Wrap"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource DarkSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DarkSwamp}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="MiniHomeButton" BasedOn="{StaticResource HomeButton}">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="MiniMiniHomeButton" BasedOn="{StaticResource MiniHomeButton}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="110"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="MainButton">
+        <Setter Property="Height" Value="130"/>
+        <Setter Property="Width" Value="500"/>
+        <Setter Property="Margin" Value="10 0"/>
+        <Setter Property="Foreground" Value="{StaticResource Black}"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="7"
+                        BorderThickness="5"
+                        Margin="10 10 10 10"
+                        Background="{StaticResource White}"
+                        BorderBrush="{StaticResource White}">
+
+                        <Border.Effect>
+                            <DropShadowEffect 
+                            ShadowDepth="3"
+                            BlurRadius="100"
+                            Opacity="0.3"
+                            Color="Black"/>
+                        </Border.Effect>
+                        <ContentPresenter x:Name="content"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#005A9E"/>
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#106EBE"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="DownButton"  BasedOn="{StaticResource MainButton}">
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            CornerRadius="7"
+                            BorderThickness="5"
+                            Margin="10 10 10 10"
+                            Background="{StaticResource HoverSwamp}"
+                            BorderBrush="{StaticResource White}">
+
+                        <Border.Effect>
+                            <DropShadowEffect 
+                            ShadowDepth="3"
+                            BlurRadius="10"
+                            Opacity="0.3"
+                            Color="Black"/>
+                        </Border.Effect>
+
+
+                        <ContentPresenter x:Name="content"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#005A9E"/>
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#106EBE"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="CuratorCreateTestsButton">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            CornerRadius="5"
+                            BorderThickness="2"
+                            Margin="2"
+                            Background="{StaticResource DarkSwamp}">
+
+                        <ContentPresenter x:Name="content"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ConfirmButton">
+        <Setter Property="IsEnabled" Value="True"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ConfirmButtonDisenabled">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Background" Value="{StaticResource LightGray}"/>
+        <Setter Property="Foreground" Value="{StaticResource HoverSwamp}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="MainStackPanel">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="BackgroundDarkSwamp">
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="BorderTime">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Gray}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="ButtonTests">
+        <Setter Property="Height" Value="170"/>
+        <Setter Property="BorderBrush"  Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Background" Value="{StaticResource White}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Foreground" Value="{StaticResource Black}"/>
+        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            CornerRadius="7"
+                            BorderThickness="5"
+                            Margin="10 10 10 10"
+                            Background="{StaticResource White}"
+                            BorderBrush="{StaticResource Gray}">
+
+                        <!--<Border.Effect>
+                            <DropShadowEffect 
+                            ShadowDepth="3"
+                            BlurRadius="10"
+                            Opacity="0.3"
+                            Color="Black"/>
+                        </Border.Effect>-->
+
+
+                        <ContentPresenter x:Name="content"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                        </ContentPresenter>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource HoverSwamp}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource LightSwamp}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource LightSwamp}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="ButtonOptionsStackPanel">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+
+    <Style TargetType="WrapPanel" x:Key="ButtonOptionsStackPanelCenter">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="ButtonOptions">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!--///////////////////////////////-->
+    <Style TargetType="Button" x:Key="QuestItemButton">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Width" Value="45"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource White}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                    CornerRadius="2"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Background="{TemplateBinding Background}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Style.Triggers>
+            <!-- Тест НЕ завершён -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource White}"/>
+                <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
+            </MultiDataTrigger>
+            
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource LightSwamp}"/>
+            </MultiDataTrigger>
+            
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource White}"/>
+            </MultiDataTrigger>
+            
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource MainSwamp}"/>
+            </MultiDataTrigger>
+            
+            <!--ПОКАЗЫВАТЬ НЕ СРАЗУ-->
+
+            <!-- Тест ЗАВЕРШЁН + правильно -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Green}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGreen}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Green}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGreen}"/>
+            </MultiDataTrigger>
+
+            <!-- Тест ЗАВЕРШЁН + неправильно -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Red}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightRed}"/>
+            </MultiDataTrigger>
+
+            <!-- Тест ЗАВЕРШЁН + не отвечено -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Gold}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="True"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGold}"/>
+            </MultiDataTrigger>
+            
+            <!--ПОКАЗЫВАТЬ СРАЗУ-->
+            <!-- Тест НЕ ЗАВЕРШЁН + правильно -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Green}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGreen}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Green}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="True"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGreen}"/>
+            </MultiDataTrigger>
+
+            <!-- Тест НЕ ЗАВЕРШЁН + неправильно -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Red}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="True"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightRed}"/>
+            </MultiDataTrigger>
+
+            <!-- Тест НЕ ЗАВЕРШЁН + не отвечено -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="False"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource Gold}"/>
+            </MultiDataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DataContext.IsTestFinished, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="False"/>
+                    <Condition Binding="{Binding IsCorrect}" Value="False"/>
+                    <Condition Binding="{Binding IsAnswered}" Value="False"/>
+                    <Condition Binding="{Binding IsSelected}" Value="True"/>
+                    <Condition Binding="{Binding CanShow}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource LightGold}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--///////////////////////////////-->
+
+    <Style TargetType="StackPanel" x:Key="LeftGravityStackPanel">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="PlayButtonOptions">
+        <Setter Property="Width" Value="90"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        Background="Transparent"
+                        CornerRadius="4">
+                        <Path x:Name="triangle"
+                          Fill="#FF104BA9"
+                          Data="M 0,0 L 70,50 L 0,100 Z"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                            <Path.RenderTransform>
+                                <TranslateTransform X="10" Y="0"/>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="triangle" Property="Fill" Value="#FF052D6E"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="triangle" Property="Fill" Value="#FF0A1F4D"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="triangle" Property="Fill" Value="#FFD9D9D9"/>
+                            <Setter TargetName="triangle" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style TargetType="TextBox">
+        <Setter Property="BorderBrush" Value="{StaticResource LightGray}"/>
+        <Setter Property="BorderThickness" Value="4"/>
+        <Setter Property="Foreground" Value="{StaticResource Black}"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="FontSize" Value="32"/>
+    </Style>-->
+    <!--//////////////////////////////////////////////////////////////-->
+
+    <Style x:Key="MainMenuStyle" TargetType="{x:Type mah:HamburgerMenu}">
+        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="PaneBackground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="CompactPaneLength" Value="80"/>
+        <Setter Property="OpenPaneLength" Value="290"/>
+        <Setter Property="ShowSelectionIndicator" Value="True"/>
+    </Style>
+
+    <Style x:Key="SecondMenu" TargetType="{x:Type mah:HamburgerMenu}" BasedOn="{StaticResource MainMenuStyle}">
+        <Setter Property="PaneBackground" Value="{StaticResource HoverSwamp}"/>
+    </Style>
+    <!--//////////////////////////////////////////////////////////////-->
+    <Style TargetType="ScottPlot:WpfPlot">
+        <Setter Property="Width" Value="500"/>
+        <Setter Property="Height" Value="500"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="#FF555555"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="2" Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="CheckBox" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="mah:CheckBoxHelper.CheckSize" Value="25"/>
+        <Setter Property="FontSize" Value="16"/>
+
+        <Setter Property="mah:CheckBoxHelper.ForegroundChecked" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BackgroundChecked" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushChecked" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="mah:CheckBoxHelper.BorderBrushUnchecked" Value="{StaticResource MainSwamp}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border x:Name="CheckBorder"
+                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                        Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.CheckSize)}"
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="3"
+                        CornerRadius="3">
+
+                            <Border.BorderBrush>
+                                <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(mah:CheckBoxHelper.BorderBrushUnchecked)"/>
+                            </Border.BorderBrush>
+
+                            <Grid>
+                                <TextBlock x:Name="CheckMark"
+                                       Text="✓"
+                                       FontFamily="Segoe UI Symbol"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.ForegroundChecked)}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Opacity="0"/>
+                            </Grid>
+                        </Border>
+
+                        <ContentPresenter Grid.Column="1" 
+                                  Margin="5 0 0 0"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="CheckMark" Property="Opacity" Value="1"/>
+                            <Setter TargetName="CheckBorder" Property="BorderBrush" 
+                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BorderBrushChecked)}"/>
+                            <Setter TargetName="CheckBorder" Property="Background" 
+                            Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:CheckBoxHelper.BackgroundChecked)}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="RadioButton">
+        <Setter Property="Foreground" Value="Black"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Width="25" Height="25">
+                            <Ellipse x:Name="RadioBorder"
+                                 Fill="Transparent"
+                                 Stroke="{StaticResource MainSwamp}"
+                                 StrokeThickness="3"/>
+
+                            <Ellipse x:Name="RadioInner"
+                                 Width="16"
+                                 Height="16"
+                                 Fill="{StaticResource DarkSwamp}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Opacity="0"/>
+                        </Grid>
+
+                        <ContentPresenter Grid.Column="1" 
+                                      Margin="20 0 0 0"
+                                      VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="RadioInner" Property="Opacity" Value="1"/>
+                            <Setter TargetName="RadioBorder" Property="Stroke" Value="{StaticResource DarkSwamp}"/>
+                            <Setter TargetName="RadioBorder" Property="Fill" Value="{StaticResource LightSwamp}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource MahApps.Styles.ToggleButton.Flat}">
+        <Setter Property="TextElement.FontSize" Value="15"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource White}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="RadioButton" x:Key="RadioButtonAllTest" BasedOn="{StaticResource MahApps.Styles.ToggleButton.Flat}">
+        <Setter Property="TextElement.FontSize" Value="15"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource White}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--////////////////////////////  SHELL  ////////////////////////////////-->
+
+    <Style TargetType="TextBlock" x:Key="ShellTitle"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="5 0 0 15"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="800"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="ShellMainText"  BasedOn="{StaticResource GENERALTXT}">
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="MaxWidth" Value="800"/>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="ShellButton">
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="Foreground" Value="{StaticResource White}"/>
+        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="ShellTextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="PasswordBox" x:Key="ShellPasswordBox" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="UpMenuTest">
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="2"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="2"/>
+
+        <Setter Property="TextBlock.Foreground" Value="{StaticResource DarkSwamp}"/>
+        <Setter Property="TextBlock.FontSize" Value="24"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ShellDarkSwampButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="2"
+                        BorderBrush="{StaticResource DarkSwamp}"
+                        BorderThickness="3"
+                        Background="{StaticResource DarkSwamp}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{StaticResource White}"
+                                          TextElement.FontSize="24"
+                                          TextElement.FontWeight="SemiBold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="Button" x:Key="ShellPaleSwampButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="2"
+                        BorderBrush="{StaticResource PaleSwamp}"
+                        BorderThickness="3"
+                        Background="{StaticResource PaleSwamp}">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          TextElement.Foreground="{StaticResource White}"
+                                          TextElement.FontSize="24"
+                                          TextElement.FontWeight="SemiBold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ComboBox"  BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="UpMenuTestComboBox">
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="25"/>
+
+        <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
+    </Style>
+
+    <Style TargetType="mah:DateTimePicker" x:Key="UpMenuTestDateTimePicker">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="24"/>
+
+        <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
+    </Style>
+
+    <Style x:Key="UpMenuTestNumericUpDown" TargetType="mah:NumericUpDown">
+        <Setter Property="Background" Value="{StaticResource LightSwamp}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource MainSwamp}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="SelectFileButton">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Margin" Value="5"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                     CornerRadius="0"
+                     BorderBrush="Transparent"
+                     BorderThickness="0"
+                     Background="Transparent">
+                        <ContentPresenter x:Name="contentPresenter"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   TextElement.Foreground="{StaticResource Black}"
+                                   TextElement.FontSize="24"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--/////////////////////////////////////////////////////////////////////-->
+</ResourceDictionary>

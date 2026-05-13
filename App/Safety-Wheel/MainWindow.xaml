@@ -1,0 +1,107 @@
+﻿<Controls:MetroWindow x:Class="CozyTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="clr-namespace:CozyTest.Converters"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:pages="clr-namespace:CozyTest.Pages.Curator"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:auth="clr-namespace:CozyTest.Pages.Participant"
+        xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+        xmlns:viewc="clr-namespace:CozyTest.ViewModels"
+        xmlns:vm="clr-namespace:CozyTest.ViewModels"
+        mc:Ignorable="d"
+        Title="Cozy Test" 
+        WindowState="Maximized"
+        WindowTitleBrush="{StaticResource DarkSwamp}"
+        GlowBrush="{StaticResource DarkSwamp}"
+        BorderBrush="{StaticResource DarkSwamp}"
+        Closing="MainWindow_Closing"
+        MinHeight="800" MinWidth="1450">
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <DataTemplate DataType="{x:Type view:AuthorizationViewModel}">
+            <auth:AuthorizationPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewc:MainViewModel}">
+            <pages:MainNavigation />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource Gray}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="30 0 0 0" Orientation="Horizontal" >
+                    <TextBlock Foreground="{StaticResource MainSwamp}"
+                   FontSize="35"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Text="{Binding UserFullName}"/>
+                    
+                    <ComboBox x:Name="RoleComboBox" 
+                              ItemsSource="{Binding ListRoleCurrentUser}" 
+                              SelectedItem="{Binding SelectedRoleCurrentUser, TargetNullValue={x:Static sys:String.Empty}}"
+                              Width="250" 
+                              Margin="20 0 0 0"
+                              Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=AllCurators}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource RoleDisplayConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"  x:Name="NavPanel" 
+                    Height="50"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Background="{StaticResource DarkSwamp}" Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=All}">
+
+                    <Image Source="pack://application:,,,/Images/back_logo.png"
+                   Width="45" 
+                   Height="50"
+                   Margin="30 0 15 0"
+                   Cursor="Hand">
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding GoBackCommand}"/>
+                        </Image.InputBindings>
+                    </Image>
+
+                    <Image Source="pack://application:,,,/Images/exit_logo.png"
+                   Width="45" 
+                   Height="50"
+                   Cursor="Hand"
+                   Margin="15,0,30,0">
+                        <Image.InputBindings>
+                            <MouseBinding Gesture="LeftClick" Command="{Binding LogoutCommand}"/>
+                        </Image.InputBindings>
+                    </Image>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ContentControl x:Name="MainContent"
+                        Grid.Row="1"
+                        Content="{Binding CurrentPage}"
+                        Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Controls:MetroWindow>

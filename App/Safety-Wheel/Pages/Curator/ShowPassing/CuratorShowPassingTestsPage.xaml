@@ -1,0 +1,196 @@
+﻿<UserControl x:Class="CozyTest.Pages.Curator.CuratorShowPassingTestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CozyTest.Pages.Curator"
+      mc:Ignorable="d" 
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      d:DesignHeight="450" d:DesignWidth="1200">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" MaxWidth="1450" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBox Height="45"
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="10"
+                     Style="{StaticResource TBoxStyle}"
+                mah:TextBoxHelper.Watermark="Тестируемый"
+                Background="{StaticResource LightSwamp}"
+                BorderBrush="{StaticResource MainSwamp}"
+                BorderThickness="3"
+                Text="{Binding ParticipantNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox Height="45"
+                Grid.Row="0"
+                Grid.Column="1"
+                Width="300"
+                Margin="10"
+                     Style="{StaticResource TBoxStyle}"
+                mah:TextBoxHelper.Watermark="Название теста"
+                Background="{StaticResource LightSwamp}"
+                BorderBrush="{StaticResource MainSwamp}"
+                BorderThickness="3"
+                Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox Height="45"
+                Grid.Row="0"
+                Margin="10"
+                Grid.Column="2"
+                mah:TextBoxHelper.Watermark="Тема"
+                Style="{StaticResource UpMenuTestComboBox}"
+                ItemsSource="{Binding Topics}"
+                DisplayMemberPath="Name"
+                SelectedItem="{Binding SelectedTopic}"/>
+
+            <ComboBox Height="45"
+                Grid.Row="0"
+                Margin="10"
+                Grid.Column="3"
+                mah:TextBoxHelper.Watermark="Автор теста"
+                Style="{StaticResource UpMenuTestComboBox}"
+                ItemsSource="{Binding Curators}"
+                DisplayMemberPath="Name"
+                SelectedItem="{Binding SelectedAuthor}"/>
+
+            <Button Grid.Row="0"
+                Grid.Column="4"
+                Width="130"
+                Height="50"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0"
+                Margin="3"
+                HorizontalAlignment="Center"
+                Command="{Binding ClearFiltersCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="pack://application:,,,/Images/clear_icon.png"
+                        Width="40"
+                        Height="40"/>
+                    <TextBlock Text="Очистить" TextWrapping="Wrap" Width="80" Margin="10 0 0 0"
+                        TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
+                </StackPanel>
+            </Button>
+
+            <DatePicker Height="45"
+                Grid.Row="1"
+                Grid.Column="0"                Margin="10"
+
+                SelectedDate="{Binding SelectedDate}"
+                mah:TextBoxHelper.Watermark="Дата прохождения"/>
+
+            <ComboBox Height="45"
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="300"                Margin="10"
+
+                mah:TextBoxHelper.Watermark="Статус"
+                Style="{StaticResource UpMenuTestComboBox}"
+                ItemsSource="{Binding Statuses}"
+                SelectedItem="{Binding SelectedStatus}"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="2"                Margin="10"
+>
+                <ToggleButton Content="Архивные"
+                    TextElement.FontSize="20"
+                    IsChecked="{Binding IsSelectedArchive}"
+                    TextElement.FontWeight="Bold"
+                    Margin="0 0 0 5"/>
+
+                <ToggleButton Content="Активные"
+                    TextElement.FontSize="20"
+                    IsChecked="{Binding IsSelectedActive}"
+                    TextElement.FontWeight="Bold"/>
+            </StackPanel>
+
+            <ComboBox Height="45"
+                Grid.Row="1"
+                Margin="10"
+                Grid.Column="3"
+                mah:TextBoxHelper.Watermark="Соавтор"
+                Style="{StaticResource UpMenuTestComboBox}"
+                ItemsSource="{Binding Curators}"
+                DisplayMemberPath="Name"
+                SelectedItem="{Binding SelectedCoauthor}"/>
+        </Grid>
+
+        <DockPanel Margin="5" LastChildFill="True" Grid.Row="1">
+            <Expander Header="Прохождения тестов" IsExpanded="True"
+                Background="{StaticResource MainSwamp}"
+                Foreground="White"
+                FontWeight="Bold">
+                <Grid>
+                    <DataGrid
+                        BorderThickness="3"
+                        BorderBrush="{StaticResource MainSwamp}"
+                        ItemsSource="{Binding AttemptsList}"
+                        SelectedItem="{Binding SelectedAttempt}"
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                        HeadersVisibility="Column"
+                        Background="White"
+                       >
+
+                        <DataGrid.InputBindings>
+                            <MouseBinding MouseAction="LeftDoubleClick"
+                                          Command="{Binding GoCurrentAttemptCommand}"/>
+                        </DataGrid.InputBindings>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding ParticipantName}" Header="Тестируемый" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding TestName}" Header="Название теста" Width="250"/>
+                            <DataGridTextColumn Binding="{Binding TopicName}" Header="Тема" Width="120"/>
+                            <DataGridTextColumn Binding="{Binding TestAuthor}" Header="Автор теста" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding StartedAt, StringFormat=dd.MM.yyyy HH:mm}" Header="Начало" Width="145"/>
+                            <DataGridTextColumn Binding="{Binding FinishedAt, StringFormat=dd.MM.yyyy HH:mm}" Header="Завершение" Width="145"/>
+                            <DataGridTextColumn Binding="{Binding Duration}" Header="Длительность" Width="130"/>
+                            <DataGridTextColumn Binding="{Binding ScoreDisplay}" Header="Баллы" Width="80"/>
+                            <DataGridTextColumn Binding="{Binding MarkLvlName}" Header="Оценка" Width="130"/>
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Статус" Width="120"/>
+                            <DataGridTextColumn Binding="{Binding AttemptNumber}" Header="Попытка №" Width="130"/>
+                            <DataGridTemplateColumn Header="Тест в архиве">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsTestArchive, Mode=OneWay}" IsEnabled="False" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{Binding MarkLvl, Converter={StaticResource MarkLvlToColorConverter}}"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+            </Expander>
+        </DockPanel>
+
+        <Border Grid.RowSpan="2" 
+          Background="#2000685A" 
+          Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Загрузка вопросов..." Margin="0 10 0 0" FontSize="16"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

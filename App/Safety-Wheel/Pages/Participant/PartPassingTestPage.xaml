@@ -1,0 +1,309 @@
+﻿<UserControl x:Class="CozyTest.Pages.Participant.PartPassingTestPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CozyTest.Pages.Participant"
+      xmlns:conv="clr-namespace:CozyTest.Converters"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="1500">
+
+    <UserControl.Resources>
+        <conv:IndexPlusOneConverter x:Key="IndexPlusOneConverter"/>
+        <conv:NullImageConverter x:Key="NullImageConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        <conv:QuestionTypeVisibilityConverter x:Key="QuestionTypeVisibilityConverter"/>
+        <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Row="0" Grid.ColumnSpan="2" 
+                          HorizontalScrollBarVisibility="Auto" 
+                          VerticalScrollBarVisibility="Disabled" 
+                          Margin="0 10">
+                <ItemsControl ItemsSource="{Binding Questions}" HorizontalAlignment="Center" AlternationCount="500">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter},
+                                          Path=(ItemsControl.AlternationIndex),
+                                          Converter={StaticResource IndexPlusOneConverter}}"
+                                    Command="{Binding DataContext.SelectQuestionCommand, 
+                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Style="{StaticResource QuestItemButton}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Border Style="{DynamicResource BorderTime}" Grid.Column="2" Margin="10" Padding="15">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding TimeLimit, Mode=OneWay}"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource DarkSwamp}"/>
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0 0 0 10">
+                        <TextBlock Text="{Binding SelectedQuestion.Question.NumberActual}"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DarkSwamp}"/>
+                    </StackPanel>
+
+                    <TextBox Grid.Row="1" Grid.ColumnSpan="2"
+                                 Height="40"
+                                 Text="{Binding SelectedQuestion.QuestionText, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{DynamicResource TBoxStyle}"
+                                 mah:TextBoxHelper.Watermark="Текст вопроса"
+                                 IsReadOnly="True"
+                                 Background="{StaticResource LightSwamp}"
+                                 Margin="0 0 0 15"/>
+
+                    <Image Grid.Row="2" Grid.Column="1" Source="{Binding SelectedQuestion.AbsoluteImagePath, Converter={StaticResource NullImageConverter}}"
+       Visibility="{Binding SelectedQuestion.ImagePath, Converter={StaticResource StringToVisibilityConverter}}"
+       MaxHeight="300"
+       MaxWidth="300"
+       Stretch="Uniform"/>
+
+                    <Grid Grid.Row="2" HorizontalAlignment="Center" Visibility="{Binding SelectedQuestion.IsQuestionType,  Converter={StaticResource QuestionTypeVisibilityConverter}, ConverterParameter=Options}">
+                        <ItemsControl ItemsSource="{Binding SelectedQuestion.Options}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource CardQuestsBorderStyle}"
+                                                Margin="15"
+                                                Width="230"
+                                                Height="230">
+                                        <Grid>
+                                            <Grid Visibility="{Binding IsImage, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="4*"/>
+                                                    <RowDefinition Height="2"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Text="{Binding DisplayText}"
+                                                               Margin="5" 
+                                                               FontSize="16"
+                                                               TextAlignment="Left"
+                                                               TextWrapping="Wrap"
+                                                               VerticalAlignment="Top"/>
+
+                                                <Border Grid.Row="1" BorderBrush="{StaticResource DarkSwamp}" BorderThickness="2"/>
+
+                                                <Grid Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox Content="Правильный" 
+                                                                  IsChecked="{Binding IsSelected}"
+                                                                  Margin="4 0"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid Visibility="{Binding IsImage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="4*"/>
+                                                    <RowDefinition Height="2"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid>
+                                                    <Image Source="{Binding AbsoluteImagePath, Converter={StaticResource NullImageConverter}}"
+                                                               VerticalAlignment="Stretch"
+                                                               HorizontalAlignment="Stretch"
+                                                               Stretch="UniformToFill"/>
+                                                </Grid>
+
+                                                <Border Grid.Row="1" BorderBrush="{StaticResource DarkSwamp}" BorderThickness="2"/>
+
+                                                <Grid Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox Content="Правильный" 
+                                                                  IsChecked="{Binding IsSelected}"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"
+                                                                  Margin="4 0"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center"
+                                    Visibility="{Binding SelectedQuestion.IsQuestionType, Converter={StaticResource QuestionTypeVisibilityConverter}, ConverterParameter=Text}">
+                        <Border Background="{StaticResource LightSwamp}"
+                                    BorderBrush="{StaticResource MainSwamp}"
+                                    Width="450"
+                                    Height="150"
+                                    BorderThickness="2"
+                                    CornerRadius="8"
+                                    Padding="10" 
+                                    Margin="20">
+                            <TextBlock Text="Вопрос с текстовым ответом&#x0a;(введите ответ в поле ниже)"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           Foreground="{StaticResource DarkSwamp}"/>
+                        </Border>
+
+                        <Border Background="{StaticResource LightSwamp}"
+                                    BorderBrush="{StaticResource MainSwamp}"
+                                    Width="450"
+                                    Height="150"
+                                    BorderThickness="2"
+                                    CornerRadius="8"
+                                    Padding="5" 
+                                    Margin="20">
+                            <TextBox Text="{Binding SelectedQuestion.TextAnswer, UpdateSourceTrigger=PropertyChanged}"
+                                         mah:TextBoxHelper.Watermark="Введите ваш ответ..."
+                                         Style="{StaticResource TBoxStyle}"
+                                         BorderThickness="0"
+                                         TextAlignment="Left"
+                                         VerticalContentAlignment="Top"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         FontSize="16"/>
+                        </Border>
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center"
+                              Visibility="{Binding SelectedQuestion.IsQuestionType, Converter={StaticResource QuestionTypeVisibilityConverter}, ConverterParameter=Compliance}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="5">
+                            <TextBlock Text="Элементы для сопоставления:" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <ItemsControl ItemsSource="{Binding SelectedQuestion.ConstantOptions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2">
+                                            <TextBlock Text="{Binding Option.TextAnswer}" 
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,10,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Text="—" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0"/>
+
+                        <StackPanel Grid.Column="2" Grid.Row="0" Margin="5">
+                            <TextBlock Text="Выберите соответствия:" FontWeight="Bold" Margin="0 0 0 10"/>
+                            <ItemsControl ItemsSource="{Binding SelectedQuestion.MatchingPairs}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2">
+                                            <TextBlock Text="{Binding ConstantOption.Option.TextAnswer}" 
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,10,0"
+                                                           Width="150"/>
+                                            <TextBlock Text="→" Margin="10,0" VerticalAlignment="Center"/>
+                                            <ComboBox Width="150" 
+                                                          ItemsSource="{Binding AvailableMatches}"
+                                                          SelectedItem="{Binding SelectedMatch}"
+                                                          DisplayMemberPath="Option.TextAnswer"
+                                                          Margin="10,0,0,0"
+                                                          VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Expander Grid.Row="3" Grid.ColumnSpan="2" Margin="0 15 0 0" 
+                                  Visibility="{Binding SelectedQuestion.Comments, Converter={StaticResource StringToVisibilityConverter}}">
+                        <Expander.Header>
+                            <TextBlock Text="Комментарий к вопросу" FontWeight="SemiBold"/>
+                        </Expander.Header>
+                        <TextBlock Text="{Binding SelectedQuestion.Comments}" TextWrapping="Wrap" Margin="10"/>
+                    </Expander>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Button Content="Принять ответ" 
+                Grid.Row="1" Grid.Column="1" Width="200" Height="40"
+                HorizontalAlignment="Center" Command="{Binding SubmitAnswerCommand}"/>
+
+        <!--<Border Grid.RowSpan="2" Grid.ColumnSpan="5" Background="#2000685A" 
+                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"  
+                             IsIndeterminate="True" 
+                             Foreground="{StaticResource MainSwamp}"
+                             Width="50" Height="50"/>
+                <TextBlock Text="Загрузка теста..." Margin="0 10 0 0" FontSize="16"/>
+            </StackPanel>
+        </Border>-->
+    </Grid>
+</UserControl>

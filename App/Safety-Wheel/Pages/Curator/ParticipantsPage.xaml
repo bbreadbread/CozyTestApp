@@ -1,0 +1,230 @@
+﻿<UserControl x:Class="CozyTest.Pages.Curator.ParticipantsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CozyTest.Pages.Curator"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+           mc:Ignorable="d" 
+             xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Margin="15" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Админство" IsChecked="{Binding AdminModeOn}"  Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                <Border Height="25" Width="2" Background="{StaticResource DarkSwamp}" Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}"/>
+                
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Привязаны ко мне" IsChecked="{Binding BindIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Созданы мной" IsChecked="{Binding CreateIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
+
+                <Border Height="25" Width="2" Background="{StaticResource DarkSwamp}" />
+                
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Активные" IsChecked="{Binding ActiveIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
+                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Архивные" IsChecked="{Binding ArchiveIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
+                <TextBox Width="270" Height="42" Margin="20 10" mah:TextBoxHelper.Watermark="Поиск по имени" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <Expander Header="Тестируемые" IsExpanded="True" Background="{StaticResource MainSwamp}" Foreground="White" FontWeight="Bold">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Style="{StaticResource PaleButton}" Command="{Binding SearchParticipantCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/search_icon.png"/>
+                                <TextBlock Text="Привязать к себе" VerticalAlignment="Center" Margin="10 0" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="1" Style="{StaticResource PaleButton}" Command="{Binding AddParticipantCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/plus_icon.png"/>
+                                <TextBlock Text="Создать нового" VerticalAlignment="Center" Margin="10 0" FontSize="20"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <DataGrid Grid.Row="1"
+                      BorderThickness="3" 
+                               BorderBrush="{StaticResource MainSwamp}"
+                      ItemsSource="{Binding ParticipantsList}" 
+                      SelectedItem="{Binding SelectedParticipant}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      HeadersVisibility="Column" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                            <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                            <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
+                            <DataGridTextColumn Binding="{Binding CuratorCreateId}" Header="ID создателя" />
+                            <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
+                            <DataGridTemplateColumn Header="В архиве">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay}" IsEnabled="False"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu Height="Auto">
+                                <MenuItem Command="{Binding EditParticipantCommand}" 
+                                  Header="Редактировать"/>
+                                <MenuItem Command="{Binding ArchiveParticipantCommand}" 
+                                  Header="В архив"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </Grid>
+            </Expander>
+        </DockPanel>
+
+        <Grid Grid.Column="2" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="62"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+               Style="{StaticResource MainText}" 
+               Text="{Binding SelectedParticipant.Name, StringFormat='Данные, связанные с пользователем {0}'}"/>
+
+            <TabControl Grid.Row="1">
+                <TabItem Header="Состоит в группах">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Grid.Row="0"
+                          BorderThickness="3"                                       
+                          ItemsSource="{Binding GroupsListCurrent}"  
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          BorderBrush="{StaticResource MainSwamp}"
+                                 Background="White" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                <DataGridTextColumn Binding="{Binding CuratorId}" Header="Создатель ID" />
+                                <DataGridTextColumn Binding="{Binding Description}" Header="Описание" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Привязан к экзаменаторам">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Grid.Row="0"
+                          BorderThickness="3" 
+                          ItemsSource="{Binding CuratorsListCurrent}"  
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True"
+                          BorderBrush="{StaticResource MainSwamp}" Background="White">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="ФИО" />
+                                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" />
+                                <DataGridTemplateColumn Header="Админ">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsAdmin, Mode=OneWay}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="В архиве">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding ArchiveCuratorCommand}" Header="В архив"/>
+                                    <MenuItem Command="{Binding AdminStatusCuratorCommand}" Header="Изменить статус админа"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Опубликованные тесты">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="297*"/>
+                            <ColumnDefinition Width="424*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Grid.Row="0"
+                                   BorderThickness="3" 
+                                   ItemsSource="{Binding PublishTestListCurrent}"  
+                                   AutoGenerateColumns="False" 
+                                   IsReadOnly="True"
+                                   BorderBrush="{StaticResource MainSwamp}"  Background="White" Grid.ColumnSpan="2">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding Topic.Name}" Header="Тема" />
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                <DataGridTextColumn Binding="{Binding Description}" Header="Описание" />
+                                <DataGridTextColumn Binding="{Binding DateOfCreating}" Header="Дата создания" />
+                                <DataGridTextColumn Binding="{Binding CuratorCreate.Name}" Header="Создатель" />
+                                <DataGridTextColumn Binding="{Binding MaxNumPassing}" Header="Макс. попыток" />
+                                <DataGridTemplateColumn Header="В архиве">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsArchive, Mode=OneWay}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding NonePublishTestCommand}" Header="Снять публикацию для пользователя"/>
+                                    <Separator/>
+                                    <MenuItem Command="{Binding PublishTestCommand}" Header="Настройки публикации"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Border Grid.ColumnSpan="3" 
+Background="#2000685A" 
+Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"  Value="0" 
+                            IsIndeterminate="True" 
+                            Foreground="{StaticResource MainSwamp}"
+                            Width="50" 
+                            Height="50"/>
+                <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

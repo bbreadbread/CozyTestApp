@@ -1,0 +1,30 @@
+﻿using CozyTest.ViewModels.CuratorVM;
+using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace CozyTest.ForShellWindow
+{
+    /// <summary>
+    /// Логика взаимодействия для CreateEditGroup.xaml
+    /// </summary>
+    public partial class CreateEditGroup : UserControl
+    {
+        public CreateEditGroup()
+        {
+            InitializeComponent();
+        }
+    }
+}

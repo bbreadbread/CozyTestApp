@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="CozyTest.ForShellWindow.RegistrationShell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CozyTest.ForShellWindow"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
+             mc:Ignorable="d" 
+             Height="Auto" 
+             Width="850" 
+             Margin="100"
+             Background="{StaticResource LightSwamp}">
+
+    <Border Background="White"
+            CornerRadius="10"
+            BorderBrush="{StaticResource PaleSwamp}"
+            BorderThickness="2"
+            Padding="50 40"
+            Margin="20">
+
+        <StackPanel Orientation="Vertical">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
+                    <Setter Property="Height" Value="60"/>
+                    <Setter Property="Margin" Value="0,12"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Padding" Value="15,0"/>
+                    <Setter Property="Margin" Value="5,0"/>
+                    
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+                    <Setter Property="CaretBrush" Value="{StaticResource MainSwamp}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource PaleSwamp}"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="mah:TextBoxHelper.WatermarkAlignment" Value="Left"/>
+                </Style>
+
+                <Style TargetType="PasswordBox" BasedOn="{StaticResource ShellPasswordBox}">
+                    <Setter Property="Height" Value="60"/>
+                    <Setter Property="Margin" Value="0,12"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Padding" Value="15,0"/>
+                    <Setter Property="Margin" Value="5,0"/>
+
+                    
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
+                    <Setter Property="CaretBrush" Value="{StaticResource MainSwamp}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource PaleSwamp}"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBlock Text="Регистрация"
+                       FontSize="36"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource DarkSwamp}"
+                       HorizontalAlignment="Center"
+                       Margin="10 20"/>
+            
+            <Border CornerRadius="5"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource PaleSwamp}"
+                    Background="White"
+                    Margin="0,8">
+                <TextBox mah:TextBoxHelper.Watermark="Имя Фамилия" 
+                         Text="{Binding Name}"
+                         BorderThickness="0"/>
+            </Border>
+
+            <Border CornerRadius="5"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource PaleSwamp}"
+                    Background="White"
+                    Margin="0,8">
+                <TextBox mah:TextBoxHelper.Watermark="Логин" 
+                         Text="{Binding Login}"
+                         BorderThickness="0"/>
+            </Border>
+
+            <Border CornerRadius="5"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource PaleSwamp}"
+                    Background="White"
+                    Margin="0,8">
+                <PasswordBox mah:TextBoxHelper.Watermark="Пароль" 
+                             x:Name="PasswordB"
+                             BorderThickness="0"/>
+            </Border>
+
+            <Border CornerRadius="5"
+                    BorderThickness="2"
+                    BorderBrush="{StaticResource PaleSwamp}"
+                    Background="White"
+                    Margin="0,8">
+                <PasswordBox mah:TextBoxHelper.Watermark="Повтор пароля" 
+                             x:Name="RePasswordB"
+                             BorderThickness="0"/>
+            </Border>
+
+            <Button Command="{Binding SendRequestCommand}" 
+                    Click="Button_Click" 
+                    Margin="0 20 0 15" 
+                    Height="65"
+                    Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource ShellButton}">
+                        <Setter Property="Background" Value="{StaticResource MainSwamp}"/>
+                        <Setter Property="Foreground" Value="{StaticResource LightSwamp}"/>
+                        <Setter Property="FontSize" Value="22"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="5"
+                                            BorderThickness="0">
+                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverSwamp}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <TextBlock Text="Отправить заявку"/>
+            </Button>
+        </StackPanel>
+    </Border>
+</UserControl>
