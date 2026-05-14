@@ -82,7 +82,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 var newP = new Participant()
                 {
-                    Name = NameCurator,
+                    Name = NameCurator + "(Т)",
                     Login = LoginCurator + "_p",
                     Password = PasswordCurator,
                     CuratorCreateId = CurrentUser.Id,

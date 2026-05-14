@@ -81,9 +81,9 @@ namespace CozyTest.Services
                 Groups.Clear();
                 foreach (var userGroup in userGroups)
                 {
+                    userGroup.CountPart = userGroup.Participants.Count;
                     Groups.Add(userGroup);
-                }
-                    
+                } 
             });
         }
 
@@ -99,7 +99,10 @@ namespace CozyTest.Services
             {
                 Groups.Clear();
                 foreach (var userGroup in groups)
+                {
+                    userGroup.CountPart = userGroup.Participants.Count;
                     Groups.Add(userGroup);
+                }
             });
         }
 
@@ -114,7 +117,10 @@ namespace CozyTest.Services
             {
                 Groups.Clear();
                 foreach (var userGroup in groups)
+                {
+                    userGroup.CountPart = userGroup.Participants.Count;
                     Groups.Add(userGroup);
+                }
             });
         }
 
@@ -132,6 +138,7 @@ namespace CozyTest.Services
                 Groups.Clear();
                 foreach (var userGroup in groups)
                 {
+                    userGroup.CountPart = userGroup.Participants.Count;
                     userGroup.IsPublished = await IsTestPublishedForAllParticipants(userGroup.Id, testId);
                     Groups.Add(userGroup);
                 }

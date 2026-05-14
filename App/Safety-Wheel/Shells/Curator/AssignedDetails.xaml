@@ -24,21 +24,21 @@
         <TabControl Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex}" Margin="10">
             <TabItem Header="Календарь назначений">
                 <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Calendar
-Name="AssignmentCalendar"
-SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
-DisplayDate="{Binding SelectedDate, Mode=TwoWay}"
-SelectionMode="SingleDate"
-HorizontalAlignment="Center"
-VerticalAlignment="Center"
-Width="210"
-Height="310">
+                    
+                    <Calendar Grid.Column="0"
+                  Name="AssignmentCalendar"
+                  SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                  DisplayDate="{Binding SelectedDate, Mode=TwoWay}"
+                  SelectionMode="SingleDate"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  Width="210"
+                  Height="Auto">
                         <Calendar.CalendarDayButtonStyle>
                             <Style TargetType="CalendarDayButton">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -62,39 +62,42 @@ Height="310">
                         </Calendar.CalendarDayButtonStyle>
                     </Calendar>
 
-                    <GroupBox Grid.Row="1" Header="Назначенные тесты на выбранную дату" Margin="0 0 0 10">
-                        <ListView ItemsSource="{Binding TestsOnSelectedDate}"
-                                  SelectedItem="{Binding SelectedAssignedTest}"
-                                  Height="150"
-                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding TestId}" Width="50"/>
-                                    <GridViewColumn Header="Название теста" DisplayMemberBinding="{Binding Test.Name}" Width="250"/>
-                                    <GridViewColumn Header="Тестируемый" DisplayMemberBinding="{Binding Participant.Name}" Width="200"/>
-                                    <GridViewColumn Header="Назначил" DisplayMemberBinding="{Binding Curator.Name}" Width="150"/>
-                                    <GridViewColumn Header="Дата назначения" DisplayMemberBinding="{Binding DateTimeAssigned, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                    </GroupBox>
+                    
+                    <StackPanel Grid.Column="1" VerticalAlignment="Stretch">
+                        <GroupBox Header="Назначенные тесты на выбранную дату" Margin="10 0 0 10">
+                            <ListView ItemsSource="{Binding TestsOnSelectedDate}"
+                          SelectedItem="{Binding SelectedAssignedTest}"
+                          Height="150"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"  MinHeight="450">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="ID" DisplayMemberBinding="{Binding TestId}" Width="50"/>
+                                        <GridViewColumn Header="Название теста" DisplayMemberBinding="{Binding Test.Name}" Width="250"/>
+                                        <GridViewColumn Header="Тестируемый" DisplayMemberBinding="{Binding Participant.Name}" Width="200"/>
+                                        <GridViewColumn Header="Назначил" DisplayMemberBinding="{Binding Curator.Name}" Width="150"/>
+                                        <GridViewColumn Header="Дата назначения" DisplayMemberBinding="{Binding DateTimeAssigned, StringFormat={}{0:dd.MM.yyyy}}" Width="120"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="Назначить тест" 
-                                Command="{Binding AssignTestCommand}"
-                                IsEnabled="{Binding CanAssign}"
-                                Width="150" Height="40"
-                                Margin="5"/>
-                        <Button Content="Редактировать назначение" 
-                                Command="{Binding EditAssignmentCommand}"
-                                IsEnabled="{Binding CanEdit}"
-                                Width="180" Height="40"
-                                Margin="5"/>
-                        <Button Content="Удалить назначение" 
-                                Command="{Binding DeleteAssignmentCommand}"
-                                IsEnabled="{Binding CanDelete}"
-                                Width="150" Height="40"
-                                Margin="5"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Назначить тест" 
+                        Command="{Binding AssignTestCommand}"
+                        IsEnabled="{Binding CanAssign}"
+                        Width="150" Height="40"
+                        Margin="5"/>
+                            <Button Content="Редактировать назначение" 
+                        Command="{Binding EditAssignmentCommand}"
+                        IsEnabled="{Binding CanEdit}"
+                        Width="180" Height="40"
+                        Margin="5"/>
+                            <Button Content="Удалить назначение" 
+                        Command="{Binding DeleteAssignmentCommand}"
+                        IsEnabled="{Binding CanDelete}"
+                        Width="150" Height="40"
+                        Margin="5"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </TabItem>

@@ -84,12 +84,12 @@ namespace CozyTest.Services
             }
         }
 
-        public async Task AddAsync(Participant participant)
+        public async Task AddAsync(Participant participant, bool? istea = null)
         {
             using var db = _factory.CreateDbContext();
             var entity = new Participant
             {
-                Name = participant.Name + "(Т)",
+                Name = participant.Name,
                 Login = participant.Login,
                 Password = participant.Password,
                 CuratorCreateId = participant.CuratorCreateId,

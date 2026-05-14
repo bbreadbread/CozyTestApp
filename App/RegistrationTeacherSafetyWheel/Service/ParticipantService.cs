@@ -17,13 +17,13 @@ namespace RegistrationCuratorCozyTest.Service
         {
         }
         public int Commit() => _db.SaveChanges();
-        public void Add(Participant teacher)
+        public void Add(Participant part)
         {
             var _participant = new Participant
             {
-                Login = teacher.Login,
-                Password = teacher.Password,
-                Name = teacher.Name + "(Т)",
+                Login = part.Login,
+                Password = part.Password,
+                Name = part.Name + "(Т)",
                 IsArchive = false,
             };
             _db.Add(_participant);

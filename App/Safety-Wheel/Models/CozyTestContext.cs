@@ -52,7 +52,6 @@ public partial class CozyTestContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Server=HOME-PC;Database=cozy-test;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Attempt>(entity =>
