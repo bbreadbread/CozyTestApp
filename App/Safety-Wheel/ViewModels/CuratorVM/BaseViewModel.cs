@@ -15,11 +15,37 @@ namespace CozyTest.ViewModels.CuratorVM
         public virtual string WindowTitle => "CozyTest";
         protected readonly INavigationService _navigationService;
         protected readonly IDialogService _dialogService;
+
+        private bool _adminModeOn;
+        public virtual bool AdminModeOn
+        {
+            get => _adminModeOn;
+            set
+            {
+                if (SetProperty(ref _adminModeOn, value))
+                {
+                    _ = OnAdminModeChangedAsync();
+                }
+            }
+        }
+
+        protected virtual Task OnAdminModeChangedAsync() => Task.CompletedTask;
+
         public ICommand GoBackCommand { get; }
         protected BaseViewModel(INavigationService navigationService, IDialogService dialogService)
         {
             _navigationService = navigationService;
-            _dialogService = dialogService; 
+            _dialogService = dialogService;
+
+            _adminModeOn = CurrentUser.AdminModeOn;
+
+            CurrentUser.AdminModeOnChanged += (_, _) =>
+            {
+                _adminModeOn = CurrentUser.AdminModeOn;
+                OnPropertyChanged(nameof(AdminModeOn));
+                _ = OnAdminModeChangedAsync();
+            };
+
             GoBackCommand = new RelayCommand(_ => ExecuteGoBack(), _ => CanExecuteGoBack());
         }
 

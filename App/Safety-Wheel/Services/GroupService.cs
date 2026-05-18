@@ -1,6 +1,7 @@
 ﻿using CozyTest.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CozyTest.Services
 {
@@ -23,7 +24,8 @@ namespace CozyTest.Services
             {
                 Name = group.Name,
                 Description = group.Description,
-                CuratorId = group.CuratorId
+                CuratorId = group.CuratorId,
+                IsPublic = false,
             };
             await db.Groups.AddAsync(entity);
             await db.SaveChangesAsync();
@@ -56,6 +58,7 @@ namespace CozyTest.Services
                 existing.Name = group.Name;
                 existing.Description = group.Description;
                 existing.CuratorId = group.CuratorId;
+                existing.IsPublic = group.IsPublic;
                 await db.SaveChangesAsync();
 
                 await App.Current.Dispatcher.InvokeAsync(() =>
@@ -66,6 +69,7 @@ namespace CozyTest.Services
                         localGroup.Name = group.Name;
                         localGroup.Description = group.Description;
                         localGroup.CuratorId = group.CuratorId;
+                        localGroup.IsPublic = group.IsPublic;
                     }
                 });
             }
@@ -74,7 +78,9 @@ namespace CozyTest.Services
         public async Task GetAllGroupsForUserAsync()
         {
             using var db = _factory.CreateDbContext();
-            var userGroups = await db.Groups.ToListAsync();
+            var userGroups = await db.Groups
+                .Include(g => g.Curator)
+                .ToListAsync();
 
             await App.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -83,7 +89,7 @@ namespace CozyTest.Services
                 {
                     userGroup.CountPart = userGroup.Participants.Count;
                     Groups.Add(userGroup);
-                } 
+                }
             });
         }
 
@@ -106,12 +112,18 @@ namespace CozyTest.Services
             });
         }
 
-        public async Task GetAllGroupsForCuratorAsync(int userId)
+        public async Task GetAllGroupsForCuratorAsync(bool isAdmin, int userId)
         {
             using var db = _factory.CreateDbContext();
-            var groups = await db.Groups
-                .Where(p => p.CuratorId == userId)
-                .ToListAsync();
+            var query = db.Groups
+                .Include(ug => ug.Curator)
+                .Include(ug => ug.Participants)
+                .AsQueryable();
+
+            if (!isAdmin)
+                query = query.Where(u => u.CuratorId == userId || u.IsPublic == true);
+
+            var groups = await query.ToListAsync();
 
             await App.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -124,14 +136,18 @@ namespace CozyTest.Services
             });
         }
 
-        public async Task<ObservableCollection<Group>> GetAllGroupsForCuratorAsync(int curatorId, int testId)
+        public async Task<ObservableCollection<Group>> GetAllGroupsForCuratorAsync(bool isAdmin, int curatorId, int testId)
         {
             using var db = _factory.CreateDbContext();
-            var groups = await db.Groups
+            var query = db.Groups
                 .Include(ug => ug.Curator)
                 .Include(ug => ug.Participants)
-                .Where(u => u.CuratorId == curatorId)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!isAdmin)
+                query = query.Where(u => u.CuratorId == curatorId || u.IsPublic == true);
+
+            var groups = await query.ToListAsync();
 
             await App.Current.Dispatcher.InvokeAsync(async () =>
             {
@@ -147,7 +163,32 @@ namespace CozyTest.Services
             return Groups;
         }
 
-        private async Task <bool> IsTestPublishedForAllParticipants(int groupId, int testId)
+        public async Task PublicGroupAsync(int groupId)
+        {
+            try
+            {
+                using var db = _factory.CreateDbContext();
+                var test = await db.Groups.FirstOrDefaultAsync(ug => ug.Id == groupId);
+
+                if (test != null)
+                {
+                    test.IsPublic = !test.IsPublic;
+                    await db.SaveChangesAsync();
+
+                    var localTest = Groups.FirstOrDefault(t => t.Id == groupId);
+                    if (localTest != null)
+                    {
+                        localTest.IsPublic = test.IsPublic;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
+        private async Task<bool> IsTestPublishedForAllParticipants(int groupId, int testId)
         {
             using var db = _factory.CreateDbContext();
             var participants = await GetAllParticipantForGroup(groupId);
@@ -166,7 +207,7 @@ namespace CozyTest.Services
             return true;
         }
 
-        public async Task <List<Participant>> GetAllParticipantForGroup(int groupId)
+        public async Task<List<Participant>> GetAllParticipantForGroup(int groupId)
         {
             using var db = _factory.CreateDbContext();
             return db.Participants

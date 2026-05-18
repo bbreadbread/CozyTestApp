@@ -1,8 +1,6 @@
 ﻿using CozyTest.Services;
 using CozyTest.ViewModels.CreateTestsVM;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
-using CozyTest.ViewModels.ParticipantVM;
-using CozyTest.ViewModels.StatisticsVM;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Windows;

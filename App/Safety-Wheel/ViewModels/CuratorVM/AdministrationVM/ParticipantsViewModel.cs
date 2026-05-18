@@ -326,7 +326,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 }
                 else
                 {
-                    await _participantService.GetAllParticipantsAsync(CurrentUser.Id);
+                    await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
                 }
 
                 await ApplyFiltersAsync();

@@ -21,7 +21,7 @@ namespace CozyTest.Services
             if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 0)
                 await GetAllParticipantsForAdminAsync();
             else
-                await GetAllParticipantsAsync(CurrentUser.Id);
+                await GetAllParticipantsAsync(teacherId: CurrentUser.Id);
         }
 
         public async Task InitializeForAdminAsync()
@@ -29,16 +29,17 @@ namespace CozyTest.Services
             await GetAllParticipantsForAdminAsync();
         }
 
-        public async Task GetAllParticipantsAsync(int? teacherId = null)
+        public async Task GetAllParticipantsAsync(bool? isAdmin = null, int? teacherId = null)
         {
             using var db = _factory.CreateDbContext();
             var query = db.Participants
                 .Include(s => s.Curators)
                 .Include(s => s.Attempts)
+                .Where(p => p.IsArchive == false)
                 .AsQueryable();
 
-            if (teacherId != null)
-                query = query.Where(s => s.CuratorCreateId == teacherId);
+            if (isAdmin != true && teacherId != null)
+                query = query.Where(s => s.Curators.Any(c => c.Id == teacherId));
 
             var participants = await query.ToListAsync();
 
@@ -65,6 +66,7 @@ namespace CozyTest.Services
             var participants = await db.Participants
                 .Include(s => s.Curators)
                 .Include(s => s.Attempts)
+                .Where(p => p.IsArchive == false)
                 .ToListAsync();
 
             if (Application.Current?.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
@@ -113,27 +115,35 @@ namespace CozyTest.Services
         public async Task<ObservableCollection<Participant>> GetAllAsync(int? teacherId = null)
         {
             using var db = _factory.CreateDbContext();
-            var query = await db.Participants
+            var query = db.Participants
                 .AsNoTracking()
                 .Include(s => s.Curators)
-                .ToListAsync();
+                .Where(p => p.IsArchive == false)
+                .AsQueryable();
 
-            Participants.Clear();
-            foreach (var participant in query)
-                Participants.Add(participant);
+            if (teacherId != null)
+                query = query.Where(s => s.Curators.Any(c => c.Id == teacherId));
 
-            return new ObservableCollection<Participant>(query);
+            var result = await query.ToListAsync();
+
+
+            return new ObservableCollection<Participant> (result);
         }
 
         public async Task<ObservableCollection<Participant>> GetAllActiveAsync(int? teacherId = null)
         {
             using var db = _factory.CreateDbContext();
-            var query = await db.Participants
+            var query = db.Participants
                 .Include(s => s.Curators)
                 .Where(p => p.IsArchive == false)
-                .ToListAsync();
+                .AsQueryable();
 
-            return new ObservableCollection<Participant>(query);
+            if (teacherId != null)
+                query = query.Where(s => s.Curators.Any(c => c.Id == teacherId));
+
+            var result = await query.ToListAsync();
+
+            return new ObservableCollection<Participant > (result);
         }
 
         public async Task<ObservableCollection<Participant>> GetAllBindAsync(int teacherId)
@@ -142,9 +152,10 @@ namespace CozyTest.Services
             var query = await db.Participants
                 .Include(s => s.Curators)
                 .Where(ug => ug.Curators.Any(ug => ug.Id == teacherId))
+                .Where(p => p.IsArchive == false)
                 .ToListAsync();
 
-            return new ObservableCollection<Participant>(query);
+            return new ObservableCollection<Participant > (query);
         }
 
         public async Task ReloadParticipantsAsync(int teacherId)
@@ -152,6 +163,7 @@ namespace CozyTest.Services
             using var db = _factory.CreateDbContext();
             var stud = await db.Participants
                 .Where(s => s.CuratorCreateId == teacherId)
+                .Where(p => p.IsArchive == false)
                 .ToListAsync();
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -366,6 +378,7 @@ namespace CozyTest.Services
                 .AsNoTracking()
                 .Include(ug => ug.Groups)
                 .Where(u => u.Groups.Any(p => p.Id == groupId))
+                .Where(p => p.IsArchive == false)
                 .ToListAsync();
 
             var result = new ObservableCollection<Participant>();

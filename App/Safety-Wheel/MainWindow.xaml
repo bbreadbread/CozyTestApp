@@ -41,8 +41,9 @@
         <Border Background="{StaticResource Gray}">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Margin="30 0 0 0" Orientation="Horizontal" >
@@ -52,7 +53,7 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
                    Text="{Binding UserFullName}"/>
-                    
+
                     <ComboBox x:Name="RoleComboBox" 
                               ItemsSource="{Binding ListRoleCurrentUser}" 
                               SelectedItem="{Binding SelectedRoleCurrentUser, TargetNullValue={x:Static sys:String.Empty}}"
@@ -67,7 +68,9 @@
                     </ComboBox>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1"  x:Name="NavPanel" 
+                <CheckBox Content="Режим администратора" x:Name="SwitcherAdmin" HorizontalAlignment="Right" Grid.Column="1" Margin="0 0 20 0" IsChecked="{Binding AdminRoleOn}" Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}"/>
+
+                <StackPanel Grid.Column="2"  x:Name="NavPanel" 
                     Height="50"
                     Orientation="Horizontal"
                     VerticalAlignment="Center"

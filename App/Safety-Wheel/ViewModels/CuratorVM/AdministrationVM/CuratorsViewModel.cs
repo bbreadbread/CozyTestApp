@@ -79,6 +79,12 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             set => SetProperty(ref _curatorsVisibility, value);
         }
 
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
+            get => _isAdmin;
+            set => SetProperty(ref _isAdmin, value);
+        }
         private bool _isLoading;
         public bool IsLoading
         {
@@ -193,7 +199,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 var participants = await _participantService.GetAllBindAsync(SelectedCurator.Id);
                 ParticipantsForCuratorList = new ObservableCollection<Participant>(participants);
 
-                await _groupService.GetAllGroupsForCuratorAsync(SelectedCurator.Id);
+                await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, SelectedCurator.Id);
                 GroupsForCuratorList = new ObservableCollection<Group>(_groupService.Groups);
         }
 
@@ -246,7 +252,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 return;
             }
 
-            if (SelectedCurator.IsAdmin == false)
+            if (CurrentUser.TypeUser != 1)
             {
                 MessageBox.Show("Вы не обладаете достаточными правами для смены админства","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -321,7 +327,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 else if (ArchiveIsChecked && !ActiveIsChecked)
                     query = query.Where(o => o.IsArchive == true);
 
-                if (AdminModeOn) query = query.Where(o => o.IsAdmin == true);
+                if (IsAdmin) query = query.Where(o => o.IsAdmin == true);
 
                 if (!string.IsNullOrWhiteSpace(SearchText))
                 {

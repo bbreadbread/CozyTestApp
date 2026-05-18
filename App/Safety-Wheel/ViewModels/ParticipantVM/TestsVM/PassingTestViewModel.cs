@@ -242,6 +242,7 @@ namespace CozyTest.ViewModels.ParticipantVM
                     if (Questions.Any())
                     {
                         SelectedQuestion = Questions.First();
+                        Questions[SelectedQuestion.Question.NumberActual - 1].IsSelected = true;
                     }
 
                     if (_currentTest.TimeLimitSecond > 0)

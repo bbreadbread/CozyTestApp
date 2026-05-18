@@ -82,6 +82,15 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 OnPropertyChanged();
             }
         }
+        public bool? TestIsShowNowAnswer
+        {
+            get => Test.IsShowNowAnswer;
+            set
+            {
+                Test.IsShowNowAnswer = value;
+                OnPropertyChanged();
+            }
+        }
         public int TestTimeLimit
         {
             get => Test?.TimeLimitSecond ?? 0;
@@ -293,6 +302,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 TestTypeId = original.TestTypeId,
                 PenaltyMax = original.PenaltyMax,
                 IsRandom = original.IsRandom,
+                IsShowNowAnswer = original.IsShowNowAnswer,
                 IsArchive = original.IsArchive,
             };
         }
@@ -382,6 +392,8 @@ namespace CozyTest.ViewModels.CreateTestsVM
             try
             {
                 IsLoading = true;
+                Test.IsRandom = TestIsRandom;
+                Test.IsShowNowAnswer = TestIsShowNowAnswer;
 
                 await _testService.AddAsync(Test, Questions.Count);
 
@@ -496,7 +508,8 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 IsLoading = true;
 
                 Test.IsArchive = _originalTest.IsArchive;
-                Test.IsRandom = _originalTest.IsArchive;
+                Test.IsRandom = TestIsRandom;
+                Test.IsShowNowAnswer = TestIsShowNowAnswer;
                 Test.PenaltyMax = Questions.Count;
                 await _testService.UpdateAsync(Test);
 
@@ -699,7 +712,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 {
                     opt.NewOption.QuestionId = savedQuestion.Id;
                     opt.NewOption.Number = oi++;
-                    // Version убран
                     await _optionService.AddAsync(opt.NewOption, (int)opt.NewOption.Number);
                 }
             }
@@ -819,6 +831,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
                     TestMaxNumPassing = Test.MaxNumPassing;
                     TestTimeLimit = Test.TimeLimitSecond;
                     TestIsRandom = Test.IsRandom;
+                    TestIsShowNowAnswer = Test.IsShowNowAnswer;
 
                     Questions.Clear();
                     QuestionNumber = 0;
@@ -836,7 +849,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
                         var qvm = new QuestionCreateViewModel(this, _optionService, CloneQuestion(q));
                         qvm.IsRandom = q.IsRandom;
 
-                        // Опции уже без версий — просто загружаем все
                         var options = q.Options?.OrderBy(o => o.Number).ToList() ?? new List<Option>();
 
                         switch (q.QuestionTypeId)
@@ -861,11 +873,9 @@ namespace CozyTest.ViewModels.CreateTestsVM
                             case 3:
                                 var correspondences = await _correspondenceService.GetByQuestionIdAsync(q.Id);
 
-                                // Константы — те, что в correspondences как ConstantId
                                 var constantIds = correspondences.Select(c => c.ConstantId).Distinct().ToList();
                                 var constants = options.Where(o => constantIds.Contains(o.Id)).ToList();
 
-                                // Соответствующие — остальные
                                 var correspondingIds = correspondences.Select(c => c.СorrespondingId).Distinct().ToList();
                                 var correspondings = options.Where(o => correspondingIds.Contains(o.Id)).ToList();
 
@@ -888,7 +898,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
                                     qvm.Options.Add(ocvm);
                                 }
 
-                                // Восстанавливаем соответствия
                                 for (int i = 0; i < qvm.ConstantOptions.Count; i++)
                                 {
                                     var constantOpt = qvm.ConstantOptions[i];
@@ -945,7 +954,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 PicturePath = original.PicturePath,
                 Comments = original.Comments,
                 QuestionTypeId = original.QuestionTypeId,
-                Version = original.Version, // Копируем версию
+                Version = original.Version, 
                 IsRandom = original.IsRandom,
                 IsArchive = original.IsArchive
             };

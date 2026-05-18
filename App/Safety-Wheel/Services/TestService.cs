@@ -106,6 +106,7 @@ namespace CozyTest.Services
                 TimeLimitSecond = test.TimeLimitSecond,
                 Description = test.Description,
                 IsArchive = false,
+                IsShowNowAnswer = test.IsShowNowAnswer,
                 IsRandom = test.IsRandom,
                 MaxNumPassing = test.MaxNumPassing,
                 Questions = test.Questions
@@ -118,7 +119,7 @@ namespace CozyTest.Services
             _tests.Add(entity);
         }
 
-        public async Task GetAllAsync(int? subjectId = null, int? teacherId = null)
+        public async Task GetAllAsync(int? teacherId = null, bool? setList = false)
         {
             using var db = _factory.CreateDbContext();
             var query = db.Tests
@@ -126,10 +127,9 @@ namespace CozyTest.Services
                 .Include(t => t.CuratorCreate)
                 .Include(t => t.TestType)
                 .Include(t => t.Questions)
+                .ThenInclude(t => t.Options)
                 .AsQueryable();
 
-            if (subjectId != null)
-                query = query.Where(t => t.TopicId == subjectId);
             if (teacherId != null)
                 query = query.Where(t => t.CuratorCreateId == teacherId);
 
@@ -138,6 +138,34 @@ namespace CozyTest.Services
             foreach (var test in tests)
             {
                 test.PenaltyMax = test.Questions?.Count ?? 0;
+                if (setList == true) _tests.Add(test);
+            }
+
+            _tests = tests;
+        }
+
+        public async Task GetAllAssignedAsync(bool isAdmin)
+        {
+            using var db = _factory.CreateDbContext();
+
+            List<Test> tests;
+
+            if (isAdmin)
+            {
+                tests = db.ParticipantsAssignedTests
+                    .Select(t => t.Test)
+                    .GroupBy(t => t.Id)
+                    .Select(g => g.First())
+                    .ToList();
+            }
+            else
+            {
+                tests = db.ParticipantsAssignedTests
+                    .Where(t => t.Test.CuratorCreateId == CurrentUser.Id)
+                    .Select(t => t.Test)
+                    .GroupBy(t => t.Id)
+                    .Select(g => g.First())
+                    .ToList();
             }
 
             _tests = tests;
@@ -211,6 +239,7 @@ namespace CozyTest.Services
                 existing.TimeLimitSecond = test.TimeLimitSecond;
                 existing.IsArchive = test.IsArchive;
                 existing.IsRandom = test.IsRandom;
+                existing.IsShowNowAnswer = test.IsShowNowAnswer;
                 await db.SaveChangesAsync();
 
                 var index = _tests.FindIndex(t => t.Id == test.Id);

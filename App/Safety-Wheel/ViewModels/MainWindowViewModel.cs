@@ -24,6 +24,17 @@ namespace CozyTest.ViewModels
             get => _userFullName;
             set => SetProperty(ref _userFullName, value);
         }
+
+         private bool _adminRoleOn = false;
+        public bool AdminRoleOn
+        {
+            get => _adminRoleOn;
+            set
+            {
+                CurrentUser.AdminModeOn = value;
+                SetProperty(ref _adminRoleOn, value);
+            }
+        }
         public MainWindowViewModel(INavigationService navigationService, IDialogService dialogService,
              ParticipantService participantService,
              CuratorService curatorService) : base(navigationService, dialogService)
@@ -130,6 +141,7 @@ namespace CozyTest.ViewModels
 
             if (SelectedRoleCurrentUser is Curator curator)
             {
+                AdminRoleOn = false;
                 CurrentUser.ClassUser = await _curatorService.GetById(curator.Id);
                 CurrentUser.TypeUser = (byte)(curator.IsAdmin == true ? 1 : 2);
                 CurrentUser.Id = curator.Id;

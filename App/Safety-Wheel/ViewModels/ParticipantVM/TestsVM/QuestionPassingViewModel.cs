@@ -136,23 +136,13 @@ namespace CozyTest.ViewModels.ParticipantVM.TestsVM
                     for (int i = 0; i < ConstantOptions.Count; i++)
                     {
                         var constantOpt = ConstantOptions[i];
-                        var corrData = correspondences.FirstOrDefault(c => c.ConstantId == constantOpt.Option.Id);
 
                         var matchingPair = new MatchingPairViewModel
                         {
                             ConstantOption = constantOpt,
                             AvailableMatches = new ObservableCollection<OptionPassingViewModel>(MatchingOptions),
-                            SelectedMatch = null
+                            SelectedMatch = null 
                         };
-
-                        if (corrData != null)
-                        {
-                            var matchedOption = MatchingOptions.FirstOrDefault(m => m.Option.Id == corrData.СorrespondingId);
-                            if (matchedOption != null)
-                            {
-                                matchingPair.SelectedMatch = matchedOption;
-                            }
-                        }
 
                         MatchingPairs.Add(matchingPair);
                     }

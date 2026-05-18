@@ -24,125 +24,131 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" MaxWidth="1450" Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+                <!-- WrapPanel с фильтрами -->
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="150"/>
+                <!-- StackPanel с кнопками -->
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
 
-            <RadioButton Grid.Row="0" Grid.Column="0" 
-                      Content="Своё авторство" 
-                      VerticalAlignment="Center" 
-                          Margin="5"
-                      IsChecked="{Binding IsOwnAuthorship}" TextElement.FontSize="20" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"
+            <!-- Фильтры в WrapPanel -->
+            <WrapPanel Grid.Column="0" Orientation="Horizontal">
+
+                <RadioButton Content="Своё авторство" 
+                     VerticalAlignment="Center" 
+                     Margin="5"
+                     IsChecked="{Binding IsOwnAuthorship}" 
+                     TextElement.FontSize="20" 
+                     TextElement.Foreground="{StaticResource MainSwamp}" 
+                     TextElement.FontWeight="Bold"
+                     GroupName="123"/>
+
+                <StackPanel Orientation="Horizontal" 
+                    VerticalAlignment="Center"
+                    Margin="5" 
+                    Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}">
+                    <RadioButton Content="Авторство: " 
+                         VerticalAlignment="Center"
+                         IsChecked="{Binding IsNotMyAuthorship}"  
+                         TextElement.FontSize="20" 
+                         TextElement.Foreground="{StaticResource MainSwamp}" 
+                         TextElement.FontWeight="Bold"
                          GroupName="123"/>
-
-            <StackPanel Grid.Row="0" Grid.Column="1" 
-                        Orientation="Horizontal" 
-                        VerticalAlignment="Center"
-                         Margin="5" Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}">
-                <RadioButton Content="Авторство: " 
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding IsNotMyAuthorship}"  TextElement.FontSize="20" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"
-                              GroupName="123"/>
-                <ComboBox Height="45" 
-                          Width="300" 
-                          Style="{StaticResource UpMenuTestComboBox}"
-                          mah:TextBoxHelper.Watermark="Выберите автора" 
-                          ItemsSource="{Binding Curators}"
-                          DisplayMemberPath="Name"
-                          SelectedItem="{Binding SelectedCoauthor}"
-                          IsEnabled="{Binding IsNotMyAuthorship}"/>
-            </StackPanel>
-
-            <ComboBox Height="45" 
-                      Grid.Row="0" 
-                      Grid.Column="2"   Margin="5"
-                      mah:TextBoxHelper.Watermark="Тема" 
+                    <ComboBox Height="45" 
+                      Width="300" 
                       Style="{StaticResource UpMenuTestComboBox}"
-                      ItemsSource="{Binding Topics}"
+                      mah:TextBoxHelper.Watermark="Выберите автора" 
+                      ItemsSource="{Binding Curators}"
                       DisplayMemberPath="Name"
-                      
-                      SelectedItem="{Binding SelectedTopic}"/>
+                      SelectedItem="{Binding SelectedCoauthor}"
+                      IsEnabled="{Binding IsNotMyAuthorship}"/>
+                </StackPanel>
 
-            <Button Grid.Row="0" 
-                    Grid.Column="4"
-                    Width="130"
-                    Height="50"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Padding="0" Margin="5"
-                    HorizontalAlignment="Center"
-                    Command="{Binding CreateAddTopicsCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/Images/plus_icon.png"
+                <ComboBox Height="45" 
+                  Margin="5" 
+                  Width="250"
+                  mah:TextBoxHelper.Watermark="Тема" 
+                  Style="{StaticResource UpMenuTestComboBox}"
+                  ItemsSource="{Binding Topics}"
+                  DisplayMemberPath="Name"
+                  SelectedItem="{Binding SelectedTopic}"/>
+
+                <DatePicker Height="45" 
+                    Width="250"
+                    Margin="5"
+                    SelectedDate="{Binding SelectedDate}"/>
+
+                <TextBox Height="45" 
+                 Width="250"
+                 Style="{StaticResource TBoxStyle}"
+                 mah:TextBoxHelper.Watermark="Название теста"
+                 Background="{StaticResource LightSwamp}" 
+                 BorderBrush="{StaticResource MainSwamp}"
+                 BorderThickness="3"  
+                 Margin="5"
+                 Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <StackPanel Margin="5" 
+                    Width="250">
+                    <ToggleButton Content="Архивные" 
+                          TextElement.FontSize="20"
+                          IsChecked="{Binding IsSelectedArchive}" 
+                          TextElement.FontWeight="Bold" 
+                          Margin="0 0 0 5"/>
+                    <ToggleButton Content="Активные"
+                          TextElement.FontSize="20"
+                          IsChecked="{Binding IsSelectedActive}" 
+                          TextElement.FontWeight="Bold"/>
+                </StackPanel>
+
+            </WrapPanel>
+
+            <!-- Кнопки справа вертикально -->
+            <StackPanel Grid.Column="1" 
+                Orientation="Vertical" 
+                VerticalAlignment="Top"
+                Margin="5">
+
+                <Button Width="120"
+                Height="50"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0" 
+                Margin="0 0 0 5"
+                Command="{Binding ClearFiltersCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/Images/clear_icon.png"
                        Width="40"
                        Height="40"/>
-                    <TextBlock Text="Создать тему" TextWrapping="Wrap" Width="80" Margin="10 0 0 0" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
-                </StackPanel>
+                        <TextBlock Text="Очистить фильтры" 
+                           TextWrapping="Wrap" 
+                           Width="80" 
+                           Margin="10 0 0 0" 
+                           TextElement.Foreground="{StaticResource MainSwamp}" 
+                           TextElement.FontWeight="Bold"/>
+                    </StackPanel>
+                </Button>
 
-            </Button>
+                <Button Width="130"
+                Height="50"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0"
+                Command="{Binding CreateAddTopicsCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/Images/plus_icon.png"
+                       Width="40"
+                       Height="40"/>
+                        <TextBlock Text="Создать тему" 
+                           TextWrapping="Wrap" 
+                           Width="80" 
+                           Margin="10 0 0 0" 
+                           TextElement.Foreground="{StaticResource MainSwamp}" 
+                           TextElement.FontWeight="Bold"/>
+                    </StackPanel>
+                </Button>
 
-            <Button Grid.Row="0" 
-                    Grid.Column="3"
-                    Width="120"
-                    Height="50"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Padding="0" Margin="5"
-                    HorizontalAlignment="Right"
-                    Command="{Binding ClearFiltersCommand}">
-
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="pack://application:,,,/Images/clear_icon.png"
-                           Width="40"
-                           Height="40"/>
-                    <TextBlock Text="Очистить фильтры" TextWrapping="Wrap" Width="80" Margin="10 0 0 0" TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
-                </StackPanel>
-            </Button>
-
-            <DatePicker Height="45" 
-                        Grid.Row="1" 
-                        Grid.Column="0"  Margin="5"
-                        SelectedDate="{Binding SelectedDate}"/>
-
-            <TextBox Height="45" 
-                     Grid.Row="1" 
-                     Grid.Column="1" 
-                     Style="{StaticResource TBoxStyle}"
-                mah:TextBoxHelper.Watermark="Название теста"
-                     Background="{StaticResource LightSwamp}" 
-                     BorderBrush="{StaticResource MainSwamp}"
-                     BorderThickness="3"  Margin="5"
-                     Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <StackPanel Grid.Row="1" Grid.Column="2"  Margin="5">
-                <ToggleButton Content="Архивные" 
-                  TextElement.FontSize="20" 
-                  IsChecked="{Binding IsSelectedArchive}" 
-                  TextElement.FontWeight="Bold" 
-                  Margin="0 0 0 5"/>
-
-                <ToggleButton Content="Активные"
-                  TextElement.FontSize="20" 
-                  IsChecked="{Binding IsSelectedActive}" 
-                  TextElement.FontWeight="Bold"/>
             </StackPanel>
 
-            <ComboBox Height="45" 
-                      Grid.Row="1" 
-                      Grid.Column="3" 
-                      Grid.ColumnSpan="2" 
-                      mah:TextBoxHelper.Watermark="Соавтор" 
-                      Style="{StaticResource UpMenuTestComboBox}"
-                      ItemsSource="{Binding Curators}"
-                      DisplayMemberPath="Name" Margin="5"
-                      SelectedItem="{Binding SelectedCoauthor}"/>
         </Grid>
 
         <Grid Grid.Row="1"  Margin="5">
@@ -300,11 +306,13 @@
                                                             <MenuItem Header="Детализация назначений"
                                                                       Command="{Binding DataContext.AssignedTestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                       CommandParameter="{Binding Test}"/>
+                                                            
                                                             <Separator/>
-                                                            <MenuItem Header="Посмотреть прохождения"
-                                                                      Command="{Binding DataContext.ViewAttemptsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                                      CommandParameter="{Binding Test}"/>
+                                                                <MenuItem Header="Посмотреть прохождения"
+                                                                          Command="{Binding DataContext.ViewAttemptsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                          CommandParameter="{Binding Test}"/>
                                                             <Separator/>
+                                                            
                                                             <MenuItem Header="Экспорт в Excel" 
                                                                       Command="{Binding DataContext.ExportExcelTestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                                                       CommandParameter="{Binding Test}"/>

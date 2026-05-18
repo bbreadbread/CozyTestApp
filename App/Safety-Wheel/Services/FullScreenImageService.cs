@@ -17,13 +17,11 @@ namespace CozyTest.Services
             if (string.IsNullOrEmpty(imagePath))
                 return;
 
-            // Преобразуем относительный путь в абсолютный
             string absolutePath = GetAbsolutePath(imagePath);
 
             if (!File.Exists(absolutePath))
                 return;
 
-            // Создаем BitmapImage с правильным Uri
             BitmapImage bitmap;
             try
             {
@@ -39,7 +37,6 @@ namespace CozyTest.Services
                 return;
             }
 
-            // Создаем затемненный оверлей
             var overlay = new Border
             {
                 Background = new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)),
@@ -47,10 +44,8 @@ namespace CozyTest.Services
                 VerticalAlignment = VerticalAlignment.Stretch
             };
 
-            // Создаем контейнер для изображения
             var container = new Grid();
 
-            // Создаем полноэкранное изображение
             var fullScreenImage = new Image
             {
                 Source = bitmap,
@@ -62,15 +57,12 @@ namespace CozyTest.Services
                 MaxHeight = SystemParameters.PrimaryScreenHeight * 0.9
             };
 
-            // Добавляем изображение в контейнер
             container.Children.Add(fullScreenImage);
 
-            // Создаем главный оверлей
             _mainOverlay = new Grid();
             _mainOverlay.Children.Add(overlay);
             _mainOverlay.Children.Add(container);
 
-            // Обработчик клика по оверлею
             _mainOverlay.MouseLeftButtonDown += (s, e) =>
             {
                 if (e.OriginalSource is Image)
@@ -79,14 +71,12 @@ namespace CozyTest.Services
                 CloseImage();
             };
 
-            // Обработчик клавиши Escape
             _mainOverlay.KeyDown += (s, e) =>
             {
                 if (e.Key == Key.Escape)
                     CloseImage();
             };
 
-            // Находим главное окно и добавляем оверлей
             var mainWindow = Application.Current.MainWindow as Window;
             if (mainWindow != null)
             {
@@ -109,18 +99,15 @@ namespace CozyTest.Services
             if (string.IsNullOrEmpty(path))
                 return string.Empty;
 
-            // Если путь уже абсолютный
             if (Path.IsPathRooted(path))
                 return path;
 
-            // Если путь относительный (Images/...)
             if (path.StartsWith("Images/", StringComparison.OrdinalIgnoreCase) ||
                 path.StartsWith("Images\\", StringComparison.OrdinalIgnoreCase))
             {
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
             }
 
-            // Для остальных относительных путей
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
         }
 

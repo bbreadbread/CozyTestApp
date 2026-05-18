@@ -74,12 +74,12 @@ namespace CozyTest.Services
             await db.SaveChangesAsync();
         }
 
-        public async Task GetAllAsync(decimal? participantId = null, decimal? testId = null, DateTime? date = null)
+        public async Task GetAllAsync(decimal? participantId = null, decimal? testId = null, decimal? curatorId = null, DateTime? date = null)
         {
             using var db = _factory.CreateDbContext();
 
             var query = db.Attempts
-                .AsNoTracking() 
+                .AsNoTracking()
                 .Include(a => a.Participant)
                 .Include(a => a.Test)
                     .ThenInclude(t => t.Topic)
@@ -91,6 +91,8 @@ namespace CozyTest.Services
                 query = query.Where(a => a.ParticipantId == participantId);
             if (testId != null)
                 query = query.Where(a => a.TestId == testId);
+            if (curatorId != null)
+                query = query.Where(a => a.Test.CuratorCreateId == curatorId);
             if (date.HasValue)
                 query = query.Where(a => a.StartedAt.Value.Date == date.Value.Date);
 
@@ -191,6 +193,7 @@ namespace CozyTest.Services
         {
             using var db = _factory.CreateDbContext();
             return await db.Attempts
+                .Include(x => x.Participant)
                 .Where(a => a.TestId == testId)
                 .OrderBy(a => a.StartedAt)
                 .ToListAsync();

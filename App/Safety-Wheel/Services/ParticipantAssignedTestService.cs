@@ -56,7 +56,7 @@ public class ParticipantAssignedTestService
 
     public bool IsAssigned(int testId, int participantId)
     {
-        return Assignments.Any(a => a.TestId == testId && a.ParticipantId == participantId);
+        return _assignments.Any(a => a.TestId == testId && a.ParticipantId == participantId);
     }
 
     public async Task AssignTestToParticipantAsync(int participantId, int testId, DateTime? assignedDate)

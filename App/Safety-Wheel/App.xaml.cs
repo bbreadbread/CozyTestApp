@@ -8,8 +8,8 @@ using CozyTest.ViewModels.CuratorVM;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using CozyTest.ViewModels.CuratorVM.CreateTestsVM;
 using CozyTest.ViewModels.CuratorVM.ShowPassingVM;
+using CozyTest.ViewModels.CuratorVM.StatisticsVM;
 using CozyTest.ViewModels.ParticipantVM;
-using CozyTest.ViewModels.StatisticsVM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
@@ -71,6 +71,8 @@ namespace CozyTest
                 services.AddTransient<PublicDetailsViewModel>();
                 services.AddTransient<AssignedDetailsViewModel>();
                 services.AddTransient<CuratorShowAssignedPassingTestViewModel>();
+                services.AddTransient<CuratorShowAssignedPassingCurrentTestViewModel>();
+                services.AddTransient<StatisticsCurrentTestViewModel>();
 
                 services.AddTransient<StatisticsViewModel>();
                 

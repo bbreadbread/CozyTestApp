@@ -94,7 +94,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         {
             try
             {
-                var allParticipantsTask = _participantService.GetAllActiveAsync(CurrentUser.Id);
+                var allParticipantsTask = _participantService.GetAllActiveAsync();
                 var boundParticipantsTask = _participantService.GetAllBindAsync(CurrentUser.Id);
                 var curatorsTask = _curatorService.GetAllAsync();
 

@@ -48,8 +48,9 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
                             <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
-                            <DataGridTextColumn Binding="{Binding CuratorId}" Header="Создатель ID" />
+                            <DataGridTextColumn Binding="{Binding Curator.Name}" Header="Создатель" />
                             <DataGridTextColumn Binding="{Binding Description}" Header="Описание" />
+                            <DataGridTextColumn Binding="{Binding IsPublic}" Header="Публичность" />
                         </DataGrid.Columns>
 
                         <DataGrid.ContextMenu>
@@ -59,7 +60,9 @@
                                         <TextBlock Text="Удаление доступно только если в группе нет участников"/>
                                     </TextBlock>
                                 </ContextMenu.ToolTip>
-                                <MenuItem Command="{Binding EditGroupCommand}" Header="Редактировать"/>
+                                <MenuItem Command="{Binding SwitchPublicCommand}" Header="Поменять публичность" IsEnabled="{Binding CanSwitch}"/>
+                                <Separator/>
+                                <MenuItem Command="{Binding EditGroupCommand}" Header="Редактировать" IsEnabled="{Binding CanSwitch}"/>
                                 <MenuItem Command="{Binding DeleteGroupCommand}" Header="Удалить">
                                     <MenuItem.IsEnabled>
                                         <MultiBinding Converter="{StaticResource EnabledConverter}">
@@ -97,7 +100,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
-                        <Button Style="{StaticResource PaleButton}" Command="{Binding BindUserForGroupCommand}">
+                        <Button Style="{StaticResource PaleButton}" Command="{Binding BindUserForGroupCommand}" IsEnabled="{Binding CanBind}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="pack://application:,,,/Images/search_icon.png"/>
                                 <TextBlock Text="Привязать тестируемых к группе" VerticalAlignment="Center" Margin="10 0" FontSize="20"/>

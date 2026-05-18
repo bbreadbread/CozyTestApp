@@ -13,6 +13,7 @@ public partial class Group : ObservableObject
     private string? _name;
     private string? _description;
     private int _curatorId;
+    private bool? _isPiblic;
 
     public int Id
     {
@@ -24,6 +25,11 @@ public partial class Group : ObservableObject
     {
         get => _name;
         set => SetProperty(ref _name, value);
+    }
+    public bool? IsPublic
+    {
+        get => _isPiblic;
+        set => SetProperty(ref _isPiblic, value);
     }
 
     public int? CuratorId { get; set; }

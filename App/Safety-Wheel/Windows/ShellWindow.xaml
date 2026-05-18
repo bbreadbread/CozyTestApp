@@ -9,8 +9,9 @@
         xmlns:vmC="clr-namespace:CozyTest.ViewModels.CuratorVM.CreateTestsVM"
         xmlns:vmShow="clr-namespace:CozyTest.ViewModels.CuratorVM.ShowPassingVM"
         xmlns:views="clr-namespace:CozyTest.ForShellWindow"
+      xmlns:viewsCur="clr-namespace:CozyTest.Pages.Curator"
+                 
         mc:Ignorable="d"
-        Height="Auto" Width="Auto"
         WindowTitleBrush="{StaticResource DarkSwamp}"
         GlowBrush="{StaticResource DarkSwamp}"
         BorderBrush="{StaticResource DarkSwamp}"
@@ -19,6 +20,15 @@
         Title="{Binding WindowTitle}">
 
     <mah:MetroWindow.Resources>
+        
+        <DataTemplate DataType="{x:Type vmShow:CuratorShowAssignedPassingCurrentTestViewModel}">
+            <views:CuratorShowAssignedPassingCurrentTestShell/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vmShow:CuratorShowPassingTestsViewModel}">
+            <viewsCur:CuratorShowPassingTestsPage/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vmShow:CuratorShowPassingCurrentTestViewModel}">
             <views:CuratorShowPassingCurrentTestShell/>
         </DataTemplate>

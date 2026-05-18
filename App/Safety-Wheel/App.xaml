@@ -24,6 +24,8 @@
             <converters:MenuTypeToSingleVisibilityConverter x:Key="MenuTypeToSingleVisibilityConverter"/>
             <converters:QuestionToTagConverter x:Key="QuestionToTagConverter"/>
             <converters:MarkLvlToColorConverter x:Key="MarkLvlToColorConverter"/>
+            <converters:StringToColorConverter x:Key="StringToColorConverter"/>
+            <converters:PercentageToWidthConverter  x:Key="PercentageToWidthConverter "/>
 
 
             <converters:RoleVisibilityConverter x:Key="RoleVisibilityConverter"/>

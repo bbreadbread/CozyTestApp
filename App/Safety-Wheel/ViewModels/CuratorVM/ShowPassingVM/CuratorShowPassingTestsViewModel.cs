@@ -30,6 +30,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
         private string? _selectedStatus;
         private bool _isSelectedArchive;
         private bool _isSelectedActive = true;
+        private bool _isCurrentTest = false;
         private Curator? _selectedCoauthor;
 
         private ObservableCollection<Curator> _curators = new();
@@ -38,6 +39,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
 
         private ObservableCollection<AttemptDisplayModel> _attemptsList = new();
         private AttemptDisplayModel? _selectedAttempt;
+
 
         public string ParticipantNameFilter
         {
@@ -124,6 +126,11 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 }
             }
         }
+        public bool IsCurrentTest
+        {
+            get => _isCurrentTest;
+            set => SetProperty(ref _isCurrentTest, value);
+        }
 
         public Curator? SelectedCoauthor
         {
@@ -164,6 +171,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             get => _selectedAttempt;
             set => SetProperty(ref _selectedAttempt, value);
         }
+        public Test? _currentTest;
 
         public ICommand ClearFiltersCommand { get; }
         public ICommand GoCurrentAttemptCommand { get; }
@@ -179,6 +187,13 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             CriteriaService criteriaService,
             CuratorService curatorService) : base(navigationService, dialogService)
         {
+            CurrentUser.AdminModeOnChanged += async (_, _) =>
+            {
+                OnPropertyChanged(nameof(AdminModeOn));
+                await LoadListAttemptAsync();    
+                await LoadAttemptsAsync();     
+            };
+
             _attemptService = attemptService;
             _testService = testService;
             _participantService = participantService;
@@ -192,6 +207,45 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
 
             _ = LoadInitialDataAsync();
+        }
+        
+        public CuratorShowPassingTestsViewModel(
+            INavigationService navigationService,
+            IDialogService dialogService,
+            IServiceProvider serviceProvider,
+            AttemptService attemptService,
+            TestService testService,
+            ParticipantService participantService,
+            TopicService topicService,
+            CriteriaService criteriaService,
+            CuratorService curatorService,
+            Test test) : base(navigationService, dialogService)
+        {
+
+            CurrentUser.AdminModeOnChanged += async (_, _) =>
+            {
+                OnPropertyChanged(nameof(AdminModeOn));
+                await LoadListAttemptAsync();    
+                await LoadAttemptsAsync();       
+            };
+
+            IsCurrentTest = true;
+            _currentTest = test;
+
+            _attemptService = attemptService;
+            _testService = testService;
+            _participantService = participantService;
+            _topicService = topicService;
+            _curatorService = curatorService;
+            _serviceProvider = serviceProvider;
+            _criteriaService = criteriaService;
+           
+
+            ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
+            GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
+
+            _ = LoadInitialDataAsync();
+            IsSelectedActive = false;
         }
 
 
@@ -210,8 +264,9 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
 
                 await _curatorService.GetAllAsync();
                 await _topicService.GetAllAsync();
-                await _attemptService.GetAllAsync();
                 await _criteriaService.GetAllAsync();
+
+                await LoadListAttemptAsync();
 
                 IsLoading = true;
 
@@ -234,6 +289,23 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             finally
             {
                 IsLoading = false;
+            }
+        }
+        private async Task LoadListAttemptAsync()
+        {
+            if (CurrentUser.TypeUser == 1 && AdminModeOn == true)
+            {
+                if (_currentTest == null)
+                    await _attemptService.GetAllAsync();
+                else
+                    await _attemptService.GetAllAsync(testId: _currentTest.Id);
+            }
+            else
+            {
+                if (_currentTest == null)
+                    await _attemptService.GetAllAsync(curatorId: CurrentUser.Id);
+                else
+                    await _attemptService.GetAllAsync(testId: _currentTest.Id, curatorId: CurrentUser.Id);
             }
         }
 
@@ -333,6 +405,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             }
         }
 
+
         private void ClearFilters()
         {
             ParticipantNameFilter = string.Empty;
@@ -342,7 +415,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             SelectedDate = null;
             SelectedStatus = null;
             IsSelectedArchive = false;
-            IsSelectedActive = true;
+            if (_currentTest == null) IsSelectedActive = true;
             SelectedCoauthor = null;
         }
 

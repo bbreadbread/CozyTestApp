@@ -399,6 +399,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Background" Value="Gray"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
     <Style TargetType="Label" x:Key="WelcomeLabel">

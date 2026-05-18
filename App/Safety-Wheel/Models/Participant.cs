@@ -72,4 +72,13 @@ public partial class Participant : ObservableObject
         get => _isPublished;
         set => SetProperty(ref _isPublished, value);
     }
+
+    [NotMapped]
+    private bool _isAssigned;
+    [NotMapped]
+    public bool IsAssigned
+    {
+        get => _isAssigned;
+        set => SetProperty(ref _isAssigned, value);
+    }
 }

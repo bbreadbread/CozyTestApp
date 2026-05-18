@@ -221,7 +221,10 @@ namespace CozyTest.Services
 
         public List<ParticipantAnswer> GetAnswersByQuestion(int questionId)
         {
-            return ParticipantAnswers
+            using var db = _factory.CreateDbContext();
+            return db.ParticipantAnswers
+                .Include(q => q.Attempt)
+                    .ThenInclude(q => q.Participant)
                 .Where(sa => sa.QuestionId == questionId)
                 .ToList();
         }

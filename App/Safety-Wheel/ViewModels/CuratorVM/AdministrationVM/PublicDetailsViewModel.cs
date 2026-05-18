@@ -1,8 +1,12 @@
-﻿using CozyTest.Models;
+﻿using CozyTest;
+using CozyTest.Models;
 using CozyTest.Services;
+using CozyTest.ViewModels;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using System.Collections.ObjectModel;
 using System.Windows;
+using static OfficeOpenXml.ExcelErrorValue;
+using System.Windows.Navigation;
 
 namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
@@ -145,11 +149,17 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
         public PublicDetailsViewModel(
             IDialogService dialogService,
-            INavigationService navigationService,
-            ParticipantService participantService,
+        INavigationService navigationService,
+        ParticipantService participantService,
             GroupService groupService,
             ParticipantPublicTestService participantPublicTestService) : base(navigationService, dialogService)
         {
+            CurrentUser.AdminModeOnChanged += async (_, _) =>
+            {
+                OnPropertyChanged(nameof(AdminModeOn));
+                await RefreshDataAsync();
+            };
+
             _groupService = groupService;
             _participantService = participantService;
             _participantPublicTestService = participantPublicTestService;
@@ -170,7 +180,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             IDialogService dialogService,
             INavigationService navigationService,
             ParticipantService participantService,
-            GroupService groupService,
+        GroupService groupService,
             ParticipantPublicTestService participantPublicTestService,
             Test test) : base(navigationService, dialogService)
         {
@@ -197,10 +207,10 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = true);
 
-                await _participantService.GetAllParticipantsAsync(CurrentUser.Id);
+                await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
                 await _participantPublicTestService.GetAllAsync(currentTestId);
 
-                var groups = await _groupService.GetAllGroupsForCuratorAsync(CurrentUser.Id, currentTestId);
+                var groups = await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, CurrentUser.Id, currentTestId);
                 var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
@@ -274,7 +284,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
             if (IsAllPublic == false) await _participantPublicTestService.SwitchParticipantPublicStatusAsync(currentTestId, allParticipants, true);
             else await _participantPublicTestService.SwitchParticipantPublicStatusAsync(currentTestId, allParticipants, false);
-            
+
             IsAllPublic = !IsAllPublic;
             await RefreshDataAsync();
         }
@@ -338,10 +348,10 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
         private async Task RefreshDataAsync()
         {
-            await _participantService.GetAllParticipantsAsync(CurrentUser.Id);
+            await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
             await _participantPublicTestService.GetAllAsync(currentTestId);
 
-            var groups = await _groupService.GetAllGroupsForCuratorAsync(CurrentUser.Id, currentTestId);
+            var groups = await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, CurrentUser.Id, currentTestId);
             var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>

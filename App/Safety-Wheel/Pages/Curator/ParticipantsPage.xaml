@@ -16,9 +16,7 @@
         </Grid.ColumnDefinitions>
         <DockPanel Margin="15" LastChildFill="True">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <ToggleButton Width="Auto" Height="40" Margin="10" Content="Админство" IsChecked="{Binding AdminModeOn}"  Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                <Border Height="25" Width="2" Background="{StaticResource DarkSwamp}" Visibility="{Binding Converter={StaticResource RoleVisibilityConverter}, ConverterParameter=Admin}"/>
-                
+
                 <ToggleButton Width="Auto" Height="40" Margin="10" Content="Привязаны ко мне" IsChecked="{Binding BindIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
                 <ToggleButton Width="Auto" Height="40" Margin="10" Content="Созданы мной" IsChecked="{Binding CreateIsChecked}" Style="{StaticResource MaterialDesignChoiceChipSecondaryOutlineRadioButton}"/>
 

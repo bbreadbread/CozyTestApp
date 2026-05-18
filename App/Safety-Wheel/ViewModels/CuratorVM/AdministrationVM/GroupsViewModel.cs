@@ -43,6 +43,12 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 if (SetProperty(ref _selectedGroup, value) && SelectedGroup != null)
                 {
+                    if (_selectedGroup.CuratorId == CurrentUser.Id || _selectedGroup.IsPublic == true || AdminModeOn == true) CanBind = true;
+                    else CanBind = false;
+
+                    if (_selectedGroup.CuratorId == CurrentUser.Id || AdminModeOn == true) CanSwitch = true;
+                    else CanSwitch = false;
+
                     _ = LoadParticipantsForGroupAsync(SelectedGroup.Id);
                 }
             }
@@ -60,6 +66,19 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
+        private bool _canBind;
+        public bool CanBind
+        {
+            get => _canBind;
+            set => SetProperty(ref _canBind, value);
+        }
+        private bool _canSwitch;
+        public bool CanSwitch
+        {
+            get => _canSwitch;
+            set => SetProperty(ref _canSwitch, value);
+        }
+
         private bool _isLoading;
         public bool IsLoading
         {
@@ -71,6 +90,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         public ICommand EditGroupCommand { get; }
         public ICommand DeleteGroupCommand { get; }
         public ICommand BindUserForGroupCommand { get; }
+        public ICommand SwitchPublicCommand { get; }
 
         public GroupsViewModel(
             IDialogService dialogService,
@@ -89,6 +109,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             EditGroupCommand = new RelayCommand(_ => EditGroup(), _ => SelectedGroup != null);
             DeleteGroupCommand = new RelayCommand(_ => _ = DeleteGroupAsync(), _ => CanDeleteGroup());
             BindUserForGroupCommand = new RelayCommand(_ => BindUserForGroup(), _ => SelectedGroup != null);
+            SwitchPublicCommand = new RelayCommand(_ => SwitchPublic(), _ => SelectedGroup != null);
 
             _ = LoadAsync();
         }
@@ -148,6 +169,33 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             if (SelectedGroup == null) return;
             var vm = ActivatorUtilities.CreateInstance<BindUserForGroupViewModel>(_serviceProvider, this);
             _dialogService.ShowWindow<ShellWindow>(vm);
+        }
+        private async Task SwitchPublic()
+        {
+            if (SelectedGroup == null) return;
+
+            try
+            {
+                IsLoading = true;
+
+                string action = SelectedGroup.IsPublic == true ? "опубликовать" : "сделать приватной";
+                string message = SelectedGroup.IsPublic == true
+                    ? $"Сделать группу '{SelectedGroup.Name}' публичной?"
+                    : $"Сделать группу '{SelectedGroup.Name}' приватной?";
+
+                if (_dialogService.ShowConfirmation(message, "Подтверждение"))
+                {
+                    await _groupService.PublicGroupAsync(SelectedGroup.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowMessage($"Ошибка при изменении публичности группы: {ex.Message}", "Ошибка");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         private bool CanDeleteGroup()

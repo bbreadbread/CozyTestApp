@@ -4,8 +4,8 @@ using CozyTest.ViewModels.CreateTestsVM;
 using CozyTest.ViewModels.CuratorVM;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using CozyTest.ViewModels.CuratorVM.ShowPassingVM;
+using CozyTest.ViewModels.CuratorVM.StatisticsVM;
 using CozyTest.ViewModels.ParticipantVM;
-using CozyTest.ViewModels.StatisticsVM;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -485,7 +485,7 @@ namespace CozyTest.ViewModels
             CurrentContent = null;
 
 
-            await _testService.GetAllAsync(null, CurrentUser.Id);
+            await _testService.GetAllAsync(CurrentUser.Id);
 
 
 
@@ -935,7 +935,7 @@ namespace CozyTest.ViewModels
 
             if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 2)
             {
-                await _participantService.GetAllParticipantsAsync(CurrentUser.Id);
+                await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
                 CurrentContent = App.Services.GetRequiredService<CuratorWelcomePageViewModel>();
             }
             else if (CurrentUser.TypeUser == 3)

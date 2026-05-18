@@ -3,101 +3,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:scottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
              xmlns:local="clr-namespace:CozyTest.Pages.Curator"
-             Loaded="CuratorStatisticsPage_Loaded">
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:conv="clr-namespace:CozyTest.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="#F5F5F5">
+    
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
 
-    <Grid Margin="10">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="270"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        <DataGrid Grid.Row="1"
+      ItemsSource="{Binding Tests}"
+      SelectedItem="{Binding SelectedTest}"
+      AutoGenerateColumns="False"
+      IsReadOnly="True"
+      BorderThickness="0">
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="2"
-                   x:Name="ParticipantTitle"
-                   Style="{StaticResource MainText}"
-                   Margin="0,0,0,10"
-                   HorizontalAlignment="Center"/>
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="0,0,50,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
-                    <RowDefinition Height="200"/>
-                    <RowDefinition Height="200"/>
-                </Grid.RowDefinitions>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ShowCurrentStatisticCommand}"
+                               CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
 
-                <Grid Grid.Row="0">
-                    <scottPlot:WpfPlot x:Name="TimeType1Plot" Height="200" Width="200"/>
-                    <TextBlock x:Name="TimeType1Text" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   FontSize="14" 
-                   FontWeight="Bold"
-                   TextAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <scottPlot:WpfPlot x:Name="TimeType2Plot" Height="200" Width="200"/>
-                    <TextBlock x:Name="TimeType2Text" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   FontSize="14" 
-                   FontWeight="Bold"
-                   TextAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <scottPlot:WpfPlot x:Name="TimeType3Plot" Height="200" Width="200"/>
-                    <TextBlock x:Name="TimeType3Text" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   FontSize="14" 
-                   FontWeight="Bold"
-                   TextAlignment="Center"/>
-                </Grid>
-            </Grid>
-        </ScrollViewer>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название"
+                                Binding="{Binding Name}"
+                                Width="*"
+                                FontSize="14"/>
 
+                <DataGridTextColumn Header="Вопросов"
+                                Binding="{Binding PenaltyMax}"
+                                Width="90"
+                                FontSize="14"/>
 
-        <ScrollViewer Grid.Row="1"
-              Grid.Column="1"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              VerticalScrollBarVisibility="Auto"
-              HorizontalScrollBarVisibility="Disabled">
+                <DataGridTextColumn Header="Время (сек)"
+                                Binding="{Binding TimeLimitSecond}"
+                                Width="100"
+                                FontSize="14"/>
 
-            <ItemsControl x:Name="TestsItemsControl"
-                  HorizontalAlignment="Stretch">
+                <DataGridTextColumn Header="Попыток"
+                                Binding="{Binding MaxNumPassing}"
+                                Width="90"
+                                FontSize="14"/>
 
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel HorizontalAlignment="Stretch"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                <DataGridTextColumn Header="Дата создания"
+                                Binding="{Binding DateOfCreating, StringFormat={}{0:dd.MM.yyyy}}"
+                                Width="130"
+                                FontSize="14"/>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:TestStats}">
-                        <StackPanel Margin="0,0,0,30"
-                            HorizontalAlignment="Stretch">
+            </DataGrid.Columns>
+        </DataGrid>
 
-                            <TextBlock Text="{Binding TestName}"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               Margin="0,0,0,15"
-                                       HorizontalAlignment="Center"/>
-
-                            <scottPlot:WpfPlot Height="450"
-                                               Width="700"
-                                       HorizontalAlignment="Stretch"
-                                       Loaded="PerformancePlot_Loaded"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-            </ItemsControl>
-        </ScrollViewer>
+        <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="#2000685A" 
+            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         Value="0" 
+                         IsIndeterminate="True" 
+                         Foreground="{StaticResource MainSwamp}"
+                         Width="50" 
+                         Height="50"/>
+                <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

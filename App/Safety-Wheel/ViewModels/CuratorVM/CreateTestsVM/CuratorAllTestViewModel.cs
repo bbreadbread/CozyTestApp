@@ -1,17 +1,13 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
-using System.Collections.ObjectModel;
-using System.Windows;
 using CozyTest.ViewModels.CuratorVM;
-using System.Windows.Input;
-using System.Windows.Navigation;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using CozyTest.ViewModels.CuratorVM.CreateTestsVM;
-using System.ComponentModel;
-using CozyTest.ForShellWindow;
+using CozyTest.ViewModels.CuratorVM.ShowPassingVM;
 using Microsoft.Extensions.DependencyInjection;
-using WPFCustomMessageBox;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CozyTest.ViewModels.CreateTestsVM
 {
@@ -132,6 +128,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
 
             PublishTestCommand = new RelayCommand(_ => _ = PublishTestAsync(_ as Test));
             AssignedTestCommand = new RelayCommand(_ => _ = AssignedTestAsync(_ as Test));
+            ViewAttemptsCommand = new RelayCommand(_ => _ = ViewAttemptsAsync(_ as Test));
             ExportExcelTestCommand = new RelayCommand(_ => _ = ExportExcelTestAsync(_ as Test));
             _ = InitializeAsync();
         }
@@ -171,6 +168,18 @@ namespace CozyTest.ViewModels.CreateTestsVM
             try
             {
                 var vm = ActivatorUtilities.CreateInstance<AssignedDetailsViewModel>(_serviceProvider, test);
+                _dialogService.ShowWindow<ShellWindow>(vm);
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowMessage($"Ошибка: {ex.Message}", "Ошибка");
+            }
+        }
+        private async Task ViewAttemptsAsync(Test? test)
+        {
+            try
+            {
+                var vm = ActivatorUtilities.CreateInstance<CuratorShowPassingTestsViewModel>(_serviceProvider, test);
                 _dialogService.ShowWindow<ShellWindow>(vm);
             }
             catch (Exception ex)
@@ -222,9 +231,9 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 });
 
                 if (CurrentUser.TypeUser == 1)
-                    await _testService.GetAllAsync(null, null);
+                    await _testService.GetAllAsync();
                 else
-                    await _testService.GetAllAsync(null, CurrentUser.Id);
+                    await _testService.GetAllAsync(CurrentUser.Id);
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {

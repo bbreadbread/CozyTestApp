@@ -90,6 +90,13 @@ namespace CozyTest
                 var binding = navp.GetBindingExpression(StackPanel.VisibilityProperty);
                 binding?.UpdateTarget();
             }
+
+            var check = FindName("SwitcherAdmin") as CheckBox;
+            if (check != null)
+            {
+                var binding = check.GetBindingExpression(CheckBox.VisibilityProperty);
+                binding?.UpdateTarget();
+            }
         }
     }
 }

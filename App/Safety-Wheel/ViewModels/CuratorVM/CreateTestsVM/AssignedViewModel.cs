@@ -37,6 +37,17 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
+        private ObservableCollection<Participant> _allParticipantsList;
+        public ObservableCollection<Participant> AllParticipantsList
+        {
+            get => _allParticipantsList;
+            set
+            {
+                _allParticipantsList = value;
+                OnPropertyChanged(nameof(AllParticipantsList));
+            }
+        }
+
         private ObservableCollection<ParticipantsAssignedTest> _testsOnSelectedDate;
         public ObservableCollection<ParticipantsAssignedTest> TestsOnSelectedDate
         {
@@ -48,14 +59,13 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
-        public RelayCommand AssignTestCommand { get; }
-        public RelayCommand EditAssignmentCommand { get; }
-        public RelayCommand DeleteAssignmentCommand { get; }
-        public RelayCommand AssignToAllCommand { get; }
+        public RelayCommand AllBindCommand { get; }
+        public RelayCommand GroupsBindCommand { get; }
+        public RelayCommand ParticipantsBindCommand { get; }
+
         public RelayCommand SwitchAssignedGroupsCommand { get; }
         public RelayCommand SwitchAssignedParticipantCommand { get; }
-        public RelayCommand SaveAssignmentsCommand { get; }
-        public RelayCommand CancelCommand { get; }
+        public RelayCommand SwitchAllParticipantCommand { get; }
 
         private int _selectedTabIndex;
         public int SelectedTabIndex
@@ -88,8 +98,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 _selectedAssignedTest = value;
                 OnPropertyChanged();
-                CanEdit = value != null;
-                CanDelete = value != null;
             }
         }
 
@@ -98,6 +106,13 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         {
             get => _selectedParticipant;
             set => SetProperty(ref _selectedParticipant, value);
+        }
+
+        private Participant _selectedAllParticipant;
+        public Participant SelectedAllParticipant
+        {
+            get => _selectedAllParticipant;
+            set => SetProperty(ref _selectedAllParticipant, value);
         }
 
         private Group _selectedGroup;
@@ -141,6 +156,27 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
+        private bool _isAllBindSelected;
+        public bool IsAllBindSelected
+        {
+            get => _isAllBindSelected;
+            set { _isAllBindSelected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isGroupsBindSelected = true;
+        public bool IsGroupsBindSelected
+        {
+            get => _isGroupsBindSelected;
+            set { _isGroupsBindSelected = value; OnPropertyChanged(); }
+        }
+
+        private bool _isParticipantsBindSelected;
+        public bool IsParticipantsBindSelected
+        {
+            get => _isParticipantsBindSelected;
+            set { _isParticipantsBindSelected = value; OnPropertyChanged(); }
+        }
+
         private bool _isAssignToAll;
         public bool IsAssignToAll
         {
@@ -148,44 +184,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             set
             {
                 _isAssignToAll = value;
-                OnPropertyChanged();
-                if (value)
-                {
-                    AssignToAllParticipants();
-                }
-            }
-        }
-
-        private bool _canAssign;
-        public bool CanAssign
-        {
-            get => _canAssign;
-            set
-            {
-                _canAssign = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _canEdit;
-        public bool CanEdit
-        {
-            get => _canEdit;
-            set
-            {
-                _canEdit = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _canDelete;
-        public bool CanDelete
-        {
-            get => _canDelete;
-            set
-            {
-                _canDelete = value;
-                OnPropertyChanged();
+                SetProperty(ref _isAssignToAll, value);
             }
         }
 
@@ -203,25 +202,27 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             GroupService groupService,
             ParticipantAssignedTestService participantAssignedTestService) : base(navigationService, dialogService)
         {
+            CurrentUser.AdminModeOnChanged += async (_, _) =>
+            {
+                OnPropertyChanged(nameof(AdminModeOn));
+                await RefreshDataAsync();
+            };
+
             _groupService = groupService;
             _participantService = participantService;
             _participantAssignedTestService = participantAssignedTestService;
             _currentTest = null;
 
-            AssignTestCommand = new RelayCommand(_ => OpenAssignmentTab());
-            EditAssignmentCommand = new RelayCommand(_ => EditAssignment());
-            DeleteAssignmentCommand = new RelayCommand(_ => DeleteAssignment());
-            AssignToAllCommand = new RelayCommand(_ => AssignToAllParticipants());
+            AllBindCommand = new RelayCommand(_ => AllBind());
+            GroupsBindCommand = new RelayCommand(_ => GroupsBind());
+            ParticipantsBindCommand = new RelayCommand(_ => ParticipantsBind());
+
             SwitchAssignedGroupsCommand = new RelayCommand(_ => SwitchAssignedGroups());
             SwitchAssignedParticipantCommand = new RelayCommand(_ => SwitchAssignedParticipant());
-            SaveAssignmentsCommand = new RelayCommand(_ => SaveAssignments());
-            CancelCommand = new RelayCommand(_ => Cancel());
+            SwitchAllParticipantCommand = new RelayCommand(_ => SwitchAllParticipant());
 
             SelectedDate = DateTime.Today;
             AssignmentDate = DateTime.Today;
-            CanAssign = true;
-            CanEdit = false;
-            CanDelete = false;
 
             Task.Run(async () => await LoadDataAsync());
         }
@@ -240,24 +241,16 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             _currentTest = test;
             currentTestId = test?.Id ?? 0;
 
-            AssignTestCommand = new RelayCommand(_ => OpenAssignmentTab());
-            EditAssignmentCommand = new RelayCommand(_ => EditAssignment());
-            DeleteAssignmentCommand = new RelayCommand(_ => DeleteAssignment());
-            AssignToAllCommand = new RelayCommand(_ => AssignToAllParticipants());
+            AllBindCommand = new RelayCommand(_ => AllBind());
+            GroupsBindCommand = new RelayCommand(_ => GroupsBind());
+            ParticipantsBindCommand = new RelayCommand(_ => ParticipantsBind());
+
             SwitchAssignedGroupsCommand = new RelayCommand(_ => SwitchAssignedGroups());
             SwitchAssignedParticipantCommand = new RelayCommand(_ => SwitchAssignedParticipant());
-            SaveAssignmentsCommand = new RelayCommand(_ => SaveAssignments());
-            CancelCommand = new RelayCommand(_ => Cancel());
+            SwitchAllParticipantCommand = new RelayCommand(_ => SwitchAllParticipant());
 
             SelectedDate = DateTime.Today;
             AssignmentDate = DateTime.Today;
-
-            _datesWithAssignments = new ObservableCollection<DateTime>();
-            DatesWithAssignments = _datesWithAssignments;
-
-            CanAssign = true;
-            CanEdit = false;
-            CanDelete = false;
 
             Task.Run(async () => await LoadDataAsync());
         }
@@ -268,19 +261,22 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = true);
 
-                await _participantService.GetAllParticipantsAsync(CurrentUser.Id);
+                await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
                 await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
 
                 LoadDatesWithAssignments();
 
-                var groups = await _groupService.GetAllGroupsForCuratorAsync(CurrentUser.Id, currentTestId);
+                var groups = await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, CurrentUser.Id, currentTestId);
+                var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     GroupsList = new ObservableCollection<Group>(groups);
                     ParticipantsList = _participantService.Participants;
+                    AllParticipantsList = new ObservableCollection<Participant>(allParticipants);
 
                     UpdateGroupAssignmentStatus();
+                    UpdateParticipantsAssignedStatus();
                     LoadTestsForSelectedDate();
                 });
             }
@@ -304,21 +300,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             else if (SelectedTabIndex == 1)
             {
                 UpdateGroupAssignmentStatus();
+                UpdateParticipantsAssignedStatus();
             }
-        }
-
-        private async void LoadTestsForSelectedDate()
-        {
-            if (!SelectedDate.HasValue) return;
-
-            var assignments = _participantAssignedTestService.Assignments
-                .Where(a => a.DateTimeAssigned.HasValue && a.DateTimeAssigned.Value.Date == SelectedDate.Value.Date)
-                .ToList();
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                TestsOnSelectedDate = new ObservableCollection<ParticipantsAssignedTest>(assignments);
-            });
         }
 
         private async Task UpdateGroupAssignmentStatus()
@@ -335,113 +318,13 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
-        private bool IsParticipantAssigned(int participantId)
+        private void UpdateParticipantsAssignedStatus()
         {
-            return _participantAssignedTestService.IsAssigned(currentTestId, participantId);
-        }
+            if (ParticipantsList == null) return;
 
-        private void OpenAssignmentTab()
-        {
-            SelectedTabIndex = 1;
-            AssignmentDate = SelectedDate;
-            IsAssignToAll = false;
-            UpdateGroupAssignmentStatus();
-        }
-
-        private void EditAssignment()
-        {
-            if (SelectedAssignedTest == null) return;
-
-            SelectedTabIndex = 1;
-            AssignmentDate = SelectedAssignedTest.DateTimeAssigned;
-        }
-
-        private async void DeleteAssignment()
-        {
-            if (SelectedAssignedTest == null) return;
-
-            var result = MessageBox.Show("Удалить назначение?", "Подтверждение", MessageBoxButton.YesNo);
-            if (result != MessageBoxResult.Yes) return;
-
-            try
+            foreach (var participant in ParticipantsList)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = true);
-
-                await _participantAssignedTestService.RemoveAssignmentAsync(
-                    SelectedAssignedTest.ParticipantId,
-                    SelectedAssignedTest.TestId);
-
-                await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
-                LoadDatesWithAssignments();
-
-                LoadTestsForSelectedDate();
-                await UpdateGroupAssignmentStatus();
-
-                MessageBox.Show("Назначение удалено", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                    _dialogService.ShowMessage($"Ошибка удаления: {ex.Message}", "Ошибка"));
-            }
-            finally
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = false);
-            }
-        }
-
-        private async void AssignToAllParticipants()
-        {
-            var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
-            if (!allParticipants.Any())
-            {
-                MessageBox.Show("Нет привязанных к Вам тестируемых", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                IsAssignToAll = false;
-                return;
-            }
-
-            if (!AssignmentDate.HasValue)
-            {
-                MessageBox.Show("Выберите дату назначения", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-                IsAssignToAll = false;
-                return;
-            }
-
-            try
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = true);
-
-                bool allAssigned = allParticipants.All(p =>
-                    _participantAssignedTestService.IsAssigned(currentTestId, p.Id));
-
-                if (allAssigned)
-                {
-                    foreach (var participant in allParticipants)
-                    {
-                        await _participantAssignedTestService.RemoveAssignmentAsync(participant.Id, currentTestId);
-                    }
-                }
-                else
-                {
-                    await _participantAssignedTestService.AssignTestToParticipantsAsync(
-                        currentTestId, allParticipants, AssignmentDate.Value);
-                }
-
-                await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
-                await UpdateGroupAssignmentStatus();
-
-                IsAssignToAll = allParticipants.All(p =>
-                    _participantAssignedTestService.IsAssigned(currentTestId, p.Id));
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                    _dialogService.ShowMessage($"Ошибка: {ex.Message}", "Ошибка"));
-            }
-            finally
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = false);
+                participant.IsAssigned = _participantAssignedTestService.IsAssigned(currentTestId, participant.Id);
             }
         }
 
@@ -486,6 +369,9 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 }
 
                 await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
+                UpdateParticipantsAssignedStatus();
+                LoadDatesWithAssignments();
+                LoadTestsForSelectedDate();
             }
             catch (Exception ex)
             {
@@ -526,6 +412,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
                 await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
                 await UpdateGroupAssignmentStatus();
+                LoadDatesWithAssignments();
                 LoadTestsForSelectedDate();
             }
             catch (Exception ex)
@@ -539,22 +426,146 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             }
         }
 
-        private async void SaveAssignments()
+        public async void AllBind()
         {
+            var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
+
+            if (!allParticipants.Any())
+            {
+                MessageBox.Show("Нет привязанных к Вам тестируемых");
+                return;
+            }
+
+            if (!AssignmentDate.HasValue)
+            {
+                MessageBox.Show("Выберите дату назначения", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (IsAssignToAll == false)
+            {
+                await _participantAssignedTestService.AssignTestToParticipantsAsync(currentTestId, allParticipants, AssignmentDate.Value);
+            }
+            else
+            {
+                foreach (var participant in allParticipants)
+                {
+                    await _participantAssignedTestService.RemoveAssignmentAsync(participant.Id, currentTestId);
+                }
+            }
+
+            IsAssignToAll = !IsAssignToAll;
+            await RefreshDataAsync();
+        }
+
+        public void GroupsBind()
+        {
+            SelectedTabIndex = 1;
+            AssignmentTabIndex = 0;
+            IsAssignToAll = false;
+        }
+
+        public void ParticipantsBind()
+        {
+            SelectedTabIndex = 1;
+            AssignmentTabIndex = 1;
+            IsAssignToAll = false;
+        }
+
+        public async void SwitchAllParticipant()
+        {
+            if (SelectedAllParticipant == null) return;
+
+            if (!AssignmentDate.HasValue)
+            {
+                MessageBox.Show("Выберите дату назначения", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             try
             {
-                await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
-                LoadTestsForSelectedDate();
-                SelectedTabIndex = 0;
+                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = true);
 
-                MessageBox.Show("Назначения сохранены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                bool isAssigned = _participantAssignedTestService.IsAssigned(currentTestId, SelectedAllParticipant.Id);
+
+                if (isAssigned)
+                {
+                    await _participantAssignedTestService.RemoveAssignmentAsync(SelectedAllParticipant.Id, currentTestId);
+                }
+                else
+                {
+                    await _participantAssignedTestService.AssignTestToParticipantAsync(
+                        SelectedAllParticipant.Id, currentTestId, AssignmentDate);
+                }
+
+                await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
+                await UpdateGroupAssignmentStatus();
+                LoadDatesWithAssignments();
+                LoadTestsForSelectedDate();
             }
             catch (Exception ex)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
-                    _dialogService.ShowMessage($"Ошибка сохранения: {ex.Message}", "Ошибка"));
+                    _dialogService.ShowMessage($"Ошибка: {ex.Message}", "Ошибка"));
+            }
+            finally
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = false);
             }
         }
+
+        private void LoadTestsForSelectedDate()
+        {
+            if (!SelectedDate.HasValue) return;
+
+            var assignments = _participantAssignedTestService.Assignments
+                .Where(a => a.DateTimeAssigned.HasValue && a.DateTimeAssigned.Value.Date == SelectedDate.Value.Date)
+                .ToList();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TestsOnSelectedDate = new ObservableCollection<ParticipantsAssignedTest>(assignments);
+            });
+        }
+
+        private async Task RefreshDataAsync()
+        {
+            await _participantService.GetAllParticipantsAsync(AdminModeOn, CurrentUser.Id);
+            await _participantAssignedTestService.GetAllAssignmentsForCuratorAsync(CurrentUser.Id);
+
+            LoadDatesWithAssignments();
+
+            var groups = await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, CurrentUser.Id, currentTestId);
+            var allParticipants = await _participantService.GetAllAsync(CurrentUser.Id);
+
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                GroupsList = new ObservableCollection<Group>(groups);
+                ParticipantsList = _participantService.Participants;
+                AllParticipantsList = new ObservableCollection<Participant>(allParticipants);
+
+                UpdateGroupAssignmentStatus();
+                UpdateParticipantsAssignedStatus();
+                LoadTestsForSelectedDate();
+
+                CheckIfAllParticipantsSelected();
+            });
+        }
+
+        private void CheckIfAllParticipantsSelected()
+        {
+            if (AllParticipantsList == null || !AllParticipantsList.Any())
+            {
+                IsAssignToAll = false;
+                return;
+            }
+
+            bool allAssigned = AllParticipantsList.All(p =>
+                _participantAssignedTestService.IsAssigned(currentTestId, p.Id));
+
+            IsAssignToAll = allAssigned;
+        }
+
         private void LoadDatesWithAssignments()
         {
             var dates = _participantAssignedTestService.Assignments
@@ -562,8 +573,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 .Select(a => a.DateTimeAssigned.Value.Date)
                 .Distinct()
                 .ToList();
-
-            System.Diagnostics.Debug.WriteLine($"AssignedDetails: Найдено дат с назначениями: {dates.Count}");
 
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -580,13 +589,6 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
                 OnPropertyChanged(nameof(DatesWithAssignments));
             });
-        }
-        private void Cancel()
-        {
-            SelectedTabIndex = 0;
-            AssignmentDate = DateTime.Today;
-            IsAssignToAll = false;
-            UpdateGroupAssignmentStatus();
         }
     }
 }

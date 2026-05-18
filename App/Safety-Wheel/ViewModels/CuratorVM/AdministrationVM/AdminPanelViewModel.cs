@@ -480,7 +480,7 @@ namespace CozyTest.ViewModels.CuratorVM
                 var participants = await _participantService.GetAllBindAsync(SelectedCurator.Id);
                 ParticipantsForCuratorList = new ObservableCollection<Participant>(participants);
 
-                await _groupService.GetAllGroupsForCuratorAsync(SelectedCurator.Id);
+                await _groupService.GetAllGroupsForCuratorAsync(AdminModeOn, SelectedCurator.Id);
                 GroupsForCuratorList = new ObservableCollection<Group>(_groupService.Groups);
             }
         }

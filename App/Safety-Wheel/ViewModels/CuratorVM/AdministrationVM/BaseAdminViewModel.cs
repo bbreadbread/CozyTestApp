@@ -18,17 +18,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         protected readonly RequestService _requestService;
         protected readonly GroupService _groupService;
 
-        private bool _adminModeOn = false;
-        public bool AdminModeOn
-        {
-            get => _adminModeOn;
-            set
-            {
-                _adminModeOn = value;
-                OnPropertyChanged();
-                _ = ApplyFiltersAsync();
-            }
-        }
+
         private bool _bindIsChecked = false;
         public bool BindIsChecked
         {
@@ -105,6 +95,11 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             _testService = testService;
             _requestService = requestService;
             _groupService = groupService;
+        }
+
+        protected override async Task OnAdminModeChangedAsync()
+        {
+            await ApplyFiltersAsync();
         }
 
         public abstract Task ApplyFiltersAsync();

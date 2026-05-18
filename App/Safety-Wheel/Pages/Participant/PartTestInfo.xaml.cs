@@ -61,7 +61,6 @@ namespace CozyTest.Pages.Participant
         private async void ButtonStartTest_Click(object sender, RoutedEventArgs e)
         {
             var PartPassingTestPage = _serviceProvider.GetRequiredService<PartPassingTestPage>();
-            // Нужно передать параметры через другой способ, например через статические свойства или отдельный метод инициализации
             NavigationService.Navigate(PartPassingTestPage);
         }
 

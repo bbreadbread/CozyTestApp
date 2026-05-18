@@ -4,7 +4,6 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:viewModels="clr-namespace:CozyTest.ViewModels" 
-      xmlns:viewModelStat="clr-namespace:CozyTest.ViewModels.StatisticsVM" 
       xmlns:core="clr-namespace:CozyTest.Converters"
       xmlns:views="clr-namespace:CozyTest.Pages.Curator"
       xmlns:viewsP="clr-namespace:CozyTest.Pages.Participant"
@@ -13,7 +12,7 @@
        xmlns:vmC="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
        xmlns:vmP="clr-namespace:CozyTest.ViewModels.ParticipantVM"
        xmlns:vmShow="clr-namespace:CozyTest.ViewModels.CuratorVM.ShowPassingVM"
-       xmlns:vmS="clr-namespace:CozyTest.ViewModels.StatisticsVM">
+       xmlns:vmS="clr-namespace:CozyTest.ViewModels.CuratorVM.StatisticsVM">
 
 
     <Grid>
@@ -67,6 +66,10 @@
                         <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
                     </DataTrigger>
                 </DataTemplate.Triggers>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vmS:StatisticsCurrentTestViewModel}">
+                <views:CuratorCurrentTestStatisticsPage DataContext="{Binding}" />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type vmS:StatisticsViewModel}">
