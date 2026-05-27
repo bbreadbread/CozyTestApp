@@ -11,68 +11,70 @@
     <UserControl.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
+    <StackPanel>
+        <TextBlock Text="Отслеживание назначенных тестов. Для проверки статуса прохождения дважды кликните по интересующему тесту" Style="{StaticResource  AuthTitle}" FontSize="20" TextWrapping="Wrap" Margin="15"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <DataGrid Grid.Row="1"
+            <DataGrid Grid.Row="1"
           ItemsSource="{Binding Tests}"
           SelectedItem="{Binding SelectedTest}"
           AutoGenerateColumns="False"
           IsReadOnly="True"
           BorderThickness="0">
 
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding ShowCurrentAssignedCommand}"
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding ShowCurrentAssignedCommand}"
                                    CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Название"
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название"
                                     Binding="{Binding Name}"
                                     Width="*"
                                     FontSize="14"/>
 
-                <DataGridTextColumn Header="Вопросов"
+                    <DataGridTextColumn Header="Вопросов"
                                     Binding="{Binding PenaltyMax}"
                                     Width="90"
                                     FontSize="14"/>
 
-                <DataGridTextColumn Header="Время (сек)"
+                    <DataGridTextColumn Header="Время (сек)"
                                     Binding="{Binding TimeLimitSecond}"
                                     Width="100"
                                     FontSize="14"/>
 
-                <DataGridTextColumn Header="Попыток"
+                    <DataGridTextColumn Header="Попыток"
                                     Binding="{Binding MaxNumPassing}"
                                     Width="90"
                                     FontSize="14"/>
 
-                <DataGridTextColumn Header="Дата создания"
+                    <DataGridTextColumn Header="Дата создания"
                                     Binding="{Binding DateOfCreating, StringFormat={}{0:dd.MM.yyyy}}"
                                     Width="130"
                                     FontSize="14"/>
 
-            </DataGrid.Columns>
-        </DataGrid>
+                </DataGrid.Columns>
+            </DataGrid>
 
-        <Border Grid.Row="0" Grid.RowSpan="2"
+            <Border Grid.Row="0" Grid.RowSpan="2"
                 Background="#2000685A" 
                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                              Value="0" 
                              IsIndeterminate="True" 
                              Foreground="{StaticResource MainSwamp}"
                              Width="50" 
                              Height="50"/>
-                <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
-            </StackPanel>
-        </Border>
-    </Grid>
+                    <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </StackPanel>
 </UserControl>

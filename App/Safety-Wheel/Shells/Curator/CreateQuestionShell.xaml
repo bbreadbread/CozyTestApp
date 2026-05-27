@@ -8,7 +8,7 @@
       xmlns:conv="clr-namespace:CozyTest.Converters"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:vm="clr-namespace:CozyTest.ViewModels.CreateTestsVM"
-      d:DesignHeight="700" d:DesignWidth="904">
+     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
     <UserControl.Resources>
         <conv:BoolToOpacityConverter x:Key="BoolToOpacity"/>

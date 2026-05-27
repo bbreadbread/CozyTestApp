@@ -8,8 +8,7 @@
              xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
              mc:Ignorable="d" 
              Height="Auto" 
-             Width="850" 
-             Margin="100"
+             Width="650"
              Background="{StaticResource LightSwamp}">
 
     <Border Background="White"

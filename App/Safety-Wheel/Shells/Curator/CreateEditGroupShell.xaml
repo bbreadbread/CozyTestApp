@@ -7,36 +7,20 @@
              xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
              mc:Ignorable="d" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             Height="550" Width="750" Margin="60 55">
+             HorizontalAlignment="Stretch"  VerticalAlignment="Center">
 
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Работа с группой" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
-        <Grid>
-            <Grid.Resources>
+        <StackPanel>
+            <StackPanel.Resources>
                 <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
                 </Style>
-            </Grid.Resources>
+            </StackPanel.Resources>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
 
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="20"/>
-
-                <RowDefinition Height="80"/>
-            </Grid.RowDefinitions>
-
-            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Название группы" Text="{Binding Name}"/>
-            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Описание" Text="{Binding Description}"/>
+            <TextBox Grid.Row="0" mah:TextBoxHelper.Watermark="Название группы" Text="{Binding Name}"/>
+            <TextBox Grid.Row="2" mah:TextBoxHelper.Watermark="Описание" Text="{Binding Description}"/>
             <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Cоздатель:  " FontSize="36" FontWeight="SemiBold" Foreground="{StaticResource MainSwamp}" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding CurrentUser}" VerticalAlignment="Center" FontSize="36"/>
@@ -45,6 +29,6 @@
             <Border Grid.Row="5" BorderBrush="{StaticResource DarkSwamp}" BorderThickness="2" VerticalAlignment="Top"/>
 
             <Button Grid.Row="7" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30" Command="{Binding AddGroupCommand}"/>
-        </Grid>
+        </StackPanel>
     </StackPanel>
 </UserControl>

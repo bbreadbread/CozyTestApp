@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
-             Height="700" Width="875"  Background="White">
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Background="White">
 
     
     <Grid>

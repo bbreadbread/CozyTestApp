@@ -21,9 +21,10 @@ namespace CozyTest.Converters
             {
                 return targetTypeStr switch
                 {
-                    "Options" => questionType == 1 ? Visibility.Visible : Visibility.Collapsed,
-                    "Text" => questionType == 2 ? Visibility.Visible : Visibility.Collapsed,
-                    "Compliance" => questionType == 3 ? Visibility.Visible : Visibility.Collapsed,
+                    "Options" or "1" => questionType == 1 ? Visibility.Visible : Visibility.Collapsed,
+                    "Text" or "2" => questionType == 2 ? Visibility.Visible : Visibility.Collapsed,
+                    "Compliance" or "3" => questionType == 3 ? Visibility.Visible : Visibility.Collapsed,
+                    "12" => questionType == 1 || questionType == 2 ? Visibility.Visible : Visibility.Collapsed,
                     "Empty" => questionType == 3 ? Visibility.Visible : Visibility.Collapsed,
                     _ => Visibility.Collapsed
                 };

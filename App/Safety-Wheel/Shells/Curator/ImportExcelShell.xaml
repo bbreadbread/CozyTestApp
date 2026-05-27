@@ -6,7 +6,7 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:local="clr-namespace:CozyTest.ForShellWindow"
       mc:Ignorable="d" 
-      Height="570" Width="750">
+      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">

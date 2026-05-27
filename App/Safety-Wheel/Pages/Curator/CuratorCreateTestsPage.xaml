@@ -1542,11 +1542,15 @@
                         Command="{Binding AddComplianceQuestionCommand}"
                         Style="{StaticResource ConfirmButton}"
                         HorizontalAlignment="Center"
-                        Margin="10"/>
+                        Margin="10 10 0 10"/>
+                
+                <Border Margin="40 10 40 10" BorderBrush="{StaticResource HoverSwamp}" BorderThickness="3"/>
+                
                 <Button Content="СОХРАНИТЬ ТЕСТ"
-                        Margin="20 10 10 10"
+                        Margin="0 10 10 10"
                         Command="{Binding SaveTestCommand}"
-                        Style="{StaticResource ConfirmButton}"/>
+                        Style="{StaticResource ConfirmButton}"
+                        Background="#0D3636"/>
             </StackPanel>
         </StackPanel>
 

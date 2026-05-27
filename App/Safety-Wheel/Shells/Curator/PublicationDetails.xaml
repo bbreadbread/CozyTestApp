@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CozyTest.ForShellWindow"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             Height="700" Width="875">
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

@@ -61,6 +61,8 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
         public ShowPassingNavigationViewModel(INavigationService navigationService, IDialogService dialogService) : base(navigationService, dialogService)
         {
             CreateMenuItems();
+
+            CurrentContent = App.Services.GetRequiredService<CuratorShowPassingTestsViewModel>();
         }
 
         public void CreateMenuItems()

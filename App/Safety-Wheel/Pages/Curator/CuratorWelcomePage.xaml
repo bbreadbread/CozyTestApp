@@ -68,7 +68,7 @@
                         </Grid>
                     </Button>
 
-                    <Border Grid.ColumnSpan="3" Grid.Row="5" Margin="20 20 20 20" Style="{StaticResource Welcome30r}" Background="{StaticResource LightSwamp}">
+                <Border Grid.ColumnSpan="3" Grid.Row="5" Margin="20 20 20 20" Style="{StaticResource Welcome30r}" Background="{StaticResource PaleSwamp}">
                         <Label Content="Инструменты управления:" Style="{StaticResource WelcomeLabel}" HorizontalAlignment="Center" Foreground="{StaticResource DarkSwamp}"/>
                     </Border>
 

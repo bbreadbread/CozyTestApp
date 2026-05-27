@@ -63,7 +63,7 @@ namespace CozyTest.Pages.Curator
 
             for (int i = 0; i < bars.Bars.Count; i++)
             {
-                bars.Bars[i].FillColor = ScottPlot.Color.FromHex("#4285F4");
+                bars.Bars[i].FillColor = ScottPlot.Color.FromHex("#275353");
                 bars.Bars[i].LineColor = ScottPlot.Color.FromHex("#FFFFFF");
                 bars.Bars[i].LineWidth = 1;
             }

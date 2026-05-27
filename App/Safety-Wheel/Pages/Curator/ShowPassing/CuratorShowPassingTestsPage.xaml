@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:CozyTest.Pages.Curator"
       mc:Ignorable="d" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-      MinHeight="870"
              VerticalAlignment="Stretch"
              HorizontalAlignment="Stretch">
 

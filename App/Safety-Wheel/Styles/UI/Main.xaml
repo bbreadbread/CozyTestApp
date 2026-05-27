@@ -1242,7 +1242,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="30"/>
-        <Setter Property="Margin" Value="5 0 0 15"/>
+        <Setter Property="Margin" Value="15"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="MaxWidth" Value="800"/>
@@ -1260,10 +1260,12 @@
     </Style>
     
     <Style TargetType="Button" x:Key="ShellButton">
-        <Setter Property="Height" Value="80"/>
+        <Setter Property="Height" Value="60"/>
         <Setter Property="Background" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="Foreground" Value="{StaticResource White}"/>
-        <Setter Property="FontSize" Value="36"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="15 50 15 15"/>
+        <Setter Property="Height" Value="70"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
@@ -1272,6 +1274,9 @@
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="15"/>
+        <Setter Property="Height" Value="70"/>
+        
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
@@ -1281,6 +1286,8 @@
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{StaticResource DarkSwamp}"/>
         <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin" Value="15"/>
+        <Setter Property="Height" Value="70"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>

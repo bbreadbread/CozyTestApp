@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" Height="600" Width="900">
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
     <Grid Margin="15">
         <Grid.RowDefinitions>

@@ -6,43 +6,23 @@
       xmlns:local="clr-namespace:CozyTest.ForShellWindow"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
   mc:Ignorable="d" 
-  Height="700" Width="750" Margin="80">
+  HorizontalAlignment="Stretch"  VerticalAlignment="Center" Margin="50">
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Работа с пользователем" Margin="20" Grid.ColumnSpan="3" Style="{StaticResource ShellTitle}"/>
-            <Grid>
-            <Grid.Resources>
+        <StackPanel>
+            <StackPanel.Resources>
                 <Style TargetType="TextBox" BasedOn="{StaticResource ShellTextBox}">
                 </Style>
-            </Grid.Resources>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="40"/>
-
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="20"/>
-
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="20"/>
-
-                <RowDefinition Height="80"/>
-            </Grid.RowDefinitions>
-
-            <TextBox Grid.Row="0" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding NameParticipant}" />
-            <TextBox Grid.Row="2" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Логин" Text="{Binding LoginParticipant}"/>
-            <TextBox Grid.Row="4" Margin="0 0 0 0" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding PasswordParticipant}"/>
+            </StackPanel.Resources>
+            <TextBox Grid.Row="0" mah:TextBoxHelper.Watermark="Имя Фамилия" Text="{Binding NameParticipant}" />
+            <TextBox Grid.Row="2" mah:TextBoxHelper.Watermark="Логин" Text="{Binding LoginParticipant}"/>
+            <TextBox Grid.Row="4" mah:TextBoxHelper.Watermark="Пароль" Text="{Binding PasswordParticipant}"/>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center">
                 <RadioButton GroupName="123" Content="Закрепить за мной" FontSize="24" IsChecked="{Binding BindMe}"/>
                 <StackPanel Orientation="Horizontal"  Visibility="{Binding Converter={StaticResource PasswordEditVisibilityConverter}, ConverterParameter=Admin}">
                     <RadioButton GroupName="123" Content="Закрепить за " FontSize="24" IsChecked="{Binding BindFor}"/>
-                    <ComboBox Width="305" Margin="10,0,0,0"
+                    <ComboBox Width="305"
                               Style="{StaticResource UpMenuTestComboBox}" 
                               FontSize="24" 
                               ItemsSource="{Binding CuratorsList}" 
@@ -54,6 +34,6 @@
 
             <Button Grid.Row="8" Style="{StaticResource ShellButton}" Content="Сохранить" FontSize="30" Command="{Binding SaveParticipantCommand}"/>
 
-        </Grid>
+        </StackPanel>
     </StackPanel>
 </UserControl>
