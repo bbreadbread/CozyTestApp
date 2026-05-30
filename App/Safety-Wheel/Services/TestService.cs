@@ -8,6 +8,8 @@ namespace CozyTest.Services
     public class TestService
     {
         private readonly IDbContextFactory<CozyTestContext> _factory;
+        private readonly ILoggingService _logger;
+
         private List<Test> _tests = new();
 
         public IReadOnlyList<Test> Tests => _tests;
@@ -36,9 +38,10 @@ namespace CozyTest.Services
                 .Include(t => t.CuratorCreate)
                 .ToListAsync();
         }
-        public TestService(IDbContextFactory<CozyTestContext> factory)
+        public TestService(IDbContextFactory<CozyTestContext> factory, ILoggingService logger)
         {
             _factory = factory;
+            _logger = logger;   
         }
 
         public async Task InitializeAsync() => await GetAllAsync();
@@ -117,6 +120,13 @@ namespace CozyTest.Services
 
             test.Id = entity.Id;
             _tests.Add(entity);
+            await _logger.LogAsync(
+                whoMade: CurrentUser.Name,
+                whoRole: CurrentUser.ClassUser.ToString(),
+                action: LogActionType.Create,
+                objectType: LogObjectType.Test,
+                objectName: entity.Name
+            );
         }
 
         public async Task GetAllAsync(int? teacherId = null, bool? setList = false)
@@ -182,47 +192,6 @@ namespace CozyTest.Services
             _tests = tests;
         }
 
-        public async Task RemoveAsync(Test test)
-        {
-            using var db = _factory.CreateDbContext();
-
-            var attempts = await db.Attempts
-                .Where(a => a.TestId == test.Id)
-                .ToListAsync();
-
-            var attemptId = attempts.Select(a => a.Id).ToList();
-
-            var participantAnswersByAttempts = await db.ParticipantAnswers
-                .Where(sa => attemptId.Contains(sa.AttemptId))
-                .ToListAsync();
-
-            db.ParticipantAnswers.RemoveRange(participantAnswersByAttempts);
-
-            var questions = await db.Questions
-                .Where(q => q.TestId == test.Id)
-                .ToListAsync();
-
-            var questionIds = questions.Select(q => q.Id).ToList();
-
-            var participantAnswersByQuestions = await db.ParticipantAnswers
-                .Where(sa => questionIds.Contains(sa.QuestionId))
-                .ToListAsync();
-
-            db.ParticipantAnswers.RemoveRange(participantAnswersByQuestions);
-
-            var options = await db.Options
-                .Where(o => questionIds.Contains(o.QuestionId))
-                .ToListAsync();
-
-            db.Options.RemoveRange(options);
-            db.Questions.RemoveRange(questions);
-            db.Attempts.RemoveRange(attempts);
-            db.Tests.Remove(test);
-
-            await db.SaveChangesAsync();
-
-            _tests.Remove(test);
-        }
 
         public async Task UpdateAsync(Test test)
         {
@@ -330,6 +299,7 @@ namespace CozyTest.Services
                         localTest.IsArchive = test.IsArchive;
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -337,26 +307,5 @@ namespace CozyTest.Services
             }
         }
 
-        public async Task UpdateQuestionCountAsync(int testId, int count)
-        {
-            using var db = _factory.CreateDbContext();
-            var test = await db.Tests.FindAsync(testId);
-            if (test != null)
-            {
-                test.MaxNumPassing = count;
-                await db.SaveChangesAsync();
-            }
-        }
-
-        public async Task UpdatePenaltyMaxAsync(int testId, int penaltyMax)
-        {
-            using var db = _factory.CreateDbContext();
-            var test = await db.Tests.FindAsync(testId);
-            if (test != null)
-            {
-                test.PenaltyMax = penaltyMax;
-                await db.SaveChangesAsync();
-            }
-        }
     }
 }

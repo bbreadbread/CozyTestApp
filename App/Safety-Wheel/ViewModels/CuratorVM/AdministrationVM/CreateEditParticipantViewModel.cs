@@ -3,6 +3,7 @@ using CozyTest.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Microsoft.Extensions.Logging;
 
 namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 {
@@ -105,8 +106,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             ParticipantsViewModel participantsViewModel,
             ParticipantService participantService,
-            CuratorService curatorService)
-            : base(dialogService, navigationService, participantService, curatorService, null, null, null)
+        CuratorService curatorService, ILoggingService logger)
+            : base(dialogService, navigationService, participantService, curatorService, null, null, null, logger)
         {
             _participantsViewModel = participantsViewModel;
             _participantService = participantService;

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using CozyTest.ForShellWindow;
 
 namespace CozyTest.ViewModels
 {
@@ -35,32 +36,41 @@ namespace CozyTest.ViewModels
                 SetProperty(ref _adminRoleOn, value);
             }
         }
-        public MainWindowViewModel(INavigationService navigationService, IDialogService dialogService,
-             ParticipantService participantService,
-             CuratorService curatorService) : base(navigationService, dialogService)
-        {
-            _participantService = participantService;
-            _curatorService = curatorService;
-
-
-            LogoutCommand = new RelayCommand(_ => Logout());
-            SetAuthorizationPage();
-        }
-
         public object CurrentPage
         {
             get => _currentPage;
             set => SetProperty(ref _currentPage, value);
         }
 
-        public ICommand LogoutCommand { get; }
 
+        public ICommand LogoutCommand { get; }
+        public ICommand ShowLogsCommand { get; }
+
+        public MainWindowViewModel(INavigationService navigationService, IDialogService dialogService,
+             ParticipantService participantService,
+             CuratorService curatorService, ILoggingService logger) : base(navigationService, dialogService, logger)
+        {
+            _participantService = participantService;
+            _curatorService = curatorService;
+
+
+            LogoutCommand = new RelayCommand(_ => Logout());
+            ShowLogsCommand = new RelayCommand(_ => ShowLogs());
+
+            SetAuthorizationPage();
+        }
 
         public void SetAuthorizationPage()
         {
             var authViewModel = App.Services.GetRequiredService<AuthorizationViewModel>();
             authViewModel.LoginSuccess += OnLoginSuccess;
             CurrentPage = authViewModel;
+        }
+
+        public void ShowLogs()
+        {
+            var logsViewModel = App.Services.GetRequiredService<LogsViewModel>();
+            _dialogService.ShowWindow<ShellWindow>(logsViewModel);
         }
 
         private void OnLoginSuccess(object sender, EventArgs e)

@@ -152,7 +152,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         INavigationService navigationService,
         ParticipantService participantService,
             GroupService groupService,
-            ParticipantPublicTestService participantPublicTestService) : base(navigationService, dialogService)
+            ParticipantPublicTestService participantPublicTestService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CurrentUser.AdminModeOnChanged += async (_, _) =>
             {
@@ -182,7 +182,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             ParticipantService participantService,
         GroupService groupService,
             ParticipantPublicTestService participantPublicTestService,
-            Test test) : base(navigationService, dialogService)
+            Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _groupService = groupService;
             _participantService = participantService;
@@ -321,6 +321,16 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             foreach (var participant in participantsInGroup)
             {
                 await _participantPublicTestService.SwitchParticipantPublicStatusAsync(participant.Id, currentTestId);
+
+                await _logger.LogAsync(
+                       whoMade: CurrentUser.Name,
+                       whoRole: CurrentUser.ClassUser.ToString(),
+                       action: LogActionType.Public,
+                       objectType: LogObjectType.Test,
+                       objectName: _currentTest.Name,
+                       details: participant.Name
+
+                   );
             }
 
             SelectedGroup.IsPublished = newStatus;
@@ -334,6 +344,15 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
             await _participantPublicTestService.SwitchParticipantPublicStatusAsync(SelectedParticipant.Id, currentTestId);
 
+            await _logger.LogAsync(
+                       whoMade: CurrentUser.Name,
+                       whoRole: CurrentUser.ClassUser.ToString(),
+                       action: LogActionType.Public,
+                       objectType: LogObjectType.Test,
+                       objectName: _currentTest.Name,
+                       details: SelectedParticipant.Name
+                   );
+
             await RefreshDataAsync();
         }
 
@@ -342,6 +361,15 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             if (SelectedAllParticipant == null) return;
 
             await _participantPublicTestService.SwitchParticipantPublicStatusAsync(SelectedAllParticipant.Id, currentTestId);
+
+            await _logger.LogAsync(
+                       whoMade: CurrentUser.Name,
+                       whoRole: CurrentUser.ClassUser.ToString(),
+                       action: LogActionType.Edit,
+                       objectType: LogObjectType.Test,
+                       objectName: _currentTest.Name,
+                       details: "Всем привязанным"
+                   );
 
             await RefreshDataAsync();
         }

@@ -170,8 +170,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             RequestService requestService,
             ParticipantService participantService,
-            CuratorService curatorService)
-            : base(dialogService, navigationService, participantService, curatorService, null, requestService, null)
+            CuratorService curatorService, ILoggingService logger)
+            : base(dialogService, navigationService, participantService, curatorService, null, requestService, null, logger)
         {
             _dialogService = dialogService;
             _navigationService = navigationService;
@@ -264,15 +264,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 IsLoading = true;
 
                 int? curatorId = null;
-                if (BindMe)
-                {
-                    curatorId = CurrentUser.Id;
-                }
-                else if (BindFor && SelectedCuratorForBind != null)
-                {
-                    curatorId = SelectedCuratorForBind.Id;
-                }
-
+                
                 SelectedRequests.Status = "Принята";
                 SelectedRequests.ReviewerId = CurrentUser.Id;
                 await _requestService.UpdateAsync(SelectedRequests);
@@ -289,9 +281,28 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
                 await _participantService.AddAsync(newParticipant);
                 var lastParticipant = await _participantService.GetLastAsync();
-                await _participantService.UpdateParticipantBindForCuratorAsync(lastParticipant.Id, (int)curatorId, true);
+                
+                if (BindMe)
+                {
+                    curatorId = CurrentUser.Id;
+                    await _participantService.UpdateParticipantBindForCuratorAsync(lastParticipant.Id, (int)curatorId, true);
+                }
+                else if (BindFor && SelectedCuratorForBind != null)
+                {
+                    curatorId = SelectedCuratorForBind.Id;
+                    await _participantService.UpdateParticipantBindForCuratorAsync(lastParticipant.Id, (int)curatorId, true);
+                }
 
                 _dialogService.ShowMessage($"Заявка от '{Name}' принята. Участник создан.", "Успех");
+
+                await _logger.LogAsync(
+                   whoMade: CurrentUser.Name,
+                   whoRole: "CozyTest.Models.Curator",
+                   action: LogActionType.Create,
+                   objectType: LogObjectType.Application,
+                   objectName: SelectedRequests.Name,
+                   details: SelectedRequests.Status
+                );
 
                 AcceptEnabled = false;
                 RejectEnabled = false;
@@ -320,6 +331,15 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 await _requestService.UpdateAsync(SelectedRequests);
 
                 _dialogService.ShowMessage($"Заявка от '{Name}' отклонена.", "Информация");
+
+                await _logger.LogAsync(
+                   whoMade: CurrentUser.Name,
+                   whoRole: "CozyTest.Models.Participant",
+                   action: LogActionType.Create,
+                   objectType: LogObjectType.Application,
+                   objectName: SelectedRequests.Name,
+                   details: SelectedRequests.Status
+                );
 
                 AcceptEnabled = false;
                 RejectEnabled = false;

@@ -3,6 +3,7 @@ using CozyTest.Pages.Curator;
 using CozyTest.Services;
 using CozyTest.ViewModels.CuratorVM;
 using CozyTest.ViewModels.CuratorVM.CreateTestsVM;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -200,8 +201,8 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 DTestTypeService dTestTypeService,
                 TopicService topicService,
                 CriteriaService criteriaService,
-                CorrespondenceService correspondenceService)
-                : base(navigationService, dialogService)
+                CorrespondenceService correspondenceService, ILoggingService logger)
+                : base(navigationService, dialogService, logger)
         {
             IsTestFinished = false;
             _optionService = optionService;
@@ -247,8 +248,8 @@ namespace CozyTest.ViewModels.CreateTestsVM
             TopicService topicService,
             CriteriaService criteriaService,
             CorrespondenceService correspondenceService,
-            Test test)
-            : base(navigationService, dialogService)
+        Test test, ILoggingService logger)
+            : base(navigationService, dialogService, logger)
         {
             _optionService = optionService;
             _questionService = questionService;
@@ -584,6 +585,14 @@ namespace CozyTest.ViewModels.CreateTestsVM
                         }
                     }
                 }
+
+                await _logger.LogAsync(
+                   whoMade: CurrentUser.Name,
+                   whoRole: "CozyTest.Models.Curator",
+                   action: LogActionType.Edit,
+                   objectType: LogObjectType.Test,
+                   objectName: Test.Name
+                );
 
                 MessageBox.Show("Тест успешно обновлён!");
             }
@@ -1009,7 +1018,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
 
         private void GoGradingSystem()
         {
-            var g = new GradingSystemViewModel(_navigationService, _dialogService, _criteriaService, Test);
+            var g = new GradingSystemViewModel(_navigationService, _dialogService, _criteriaService, Test, _logger);
             _dialogService.ShowWindow<ShellWindow>(g);
         }
 

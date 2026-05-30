@@ -157,7 +157,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             AttemptService attemptService,
             ParticipantAnswerService participantAnswerService,
             CorrespondenceService correspondenceService,
-            CuratorShowPassingTestsViewModel viewModel) : base(navigationService, dialogService)
+            CuratorShowPassingTestsViewModel viewModel, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _testService = testService;
             _questionService = questionService;

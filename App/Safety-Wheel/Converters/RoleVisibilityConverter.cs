@@ -31,6 +31,7 @@ namespace CozyTest.Converters
                     "Curator" => currentRole == 2,
                     "AllCurators" => currentRole == 1 || currentRole == 2,
                     "All" => currentRole == 1 || currentRole == 2 || currentRole == 3,
+                    "Participant" => currentRole == 3,
                     _ => false
                 };
 

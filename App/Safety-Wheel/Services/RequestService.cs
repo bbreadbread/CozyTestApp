@@ -74,6 +74,7 @@ namespace CozyTest.Services
         //    db.SaveChanges();
         //}
 
+        //Отклонена Принята
         public async Task UpdateAsync(Requests request)
         {
             using var db = _factory.CreateDbContext();
@@ -84,6 +85,7 @@ namespace CozyTest.Services
                 existing.Status = request.Status;
                 existing.ReviewerId = request.ReviewerId;
                 await db.SaveChangesAsync();
+
             }
         }
 

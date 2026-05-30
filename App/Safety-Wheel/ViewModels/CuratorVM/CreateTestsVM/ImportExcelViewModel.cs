@@ -118,7 +118,7 @@ namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
                CriteriaService criteriaService,
                OptionService optionService,
                CorrespondenceService correspondenceService,
-               IServiceProvider serviceProvider) : base(navigationService, dialogService)
+               IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _dialogService = dialogService;
             _topicService = topicService;

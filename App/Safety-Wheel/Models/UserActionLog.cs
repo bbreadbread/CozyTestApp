@@ -12,9 +12,13 @@ namespace CozyTest.Models
 
         public DateTime? TimeStamp { get; set; }
 
+        public string? TypeWhoMade { get; set; }
+
         public string? WhoMade { get; set; }
 
-        public string LevelLog { get; set; } = null!;
+        public int LevelLog { get; set; }
+
+        public string? TypeObject { get; set; }
 
         public string? Object { get; set; }
 

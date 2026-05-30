@@ -21,11 +21,13 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="1"
-      ItemsSource="{Binding Tests}"
-      SelectedItem="{Binding SelectedTest}"
-      AutoGenerateColumns="False"
-      IsReadOnly="True"
-      BorderThickness="0">
+                  ItemsSource="{Binding Tests}"
+                  SelectedItem="{Binding SelectedTest}"
+                  BorderThickness="3"  
+                  Background="White"
+                  BorderBrush="{StaticResource MainSwamp}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

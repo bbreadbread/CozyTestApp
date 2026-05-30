@@ -88,7 +88,7 @@ namespace CozyTest.ViewModels.ParticipantVM
             ParticipantFavoriteTestService favoriteTestService,
             ParticipantAssignedTestService assignedTestService,
             ParticipantPublicTestService publicTestService,
-            IServiceProvider serviceProvider) : base(navigationService, dialogService)
+            IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _testService = testService;
             _topicService = topicService;

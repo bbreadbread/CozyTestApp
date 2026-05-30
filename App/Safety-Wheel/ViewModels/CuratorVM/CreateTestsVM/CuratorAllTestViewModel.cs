@@ -108,7 +108,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
             ParticipantService participantService,
             GroupService groupService,
             ParticipantPublicTestService participantPublicTestService,
-            IServiceProvider serviceProvider) : base(navigationService, dialogService)
+            IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _testService = testService;
             _topicService = topicService;
@@ -386,6 +386,17 @@ namespace CozyTest.ViewModels.CreateTestsVM
 
                 await _testService.UpdateAsync(test);
                 await LoadTestsAsync();
+
+                await _logger.LogAsync(
+                                           whoMade: CurrentUser.Name,
+                                           whoRole: CurrentUser.ClassUser.ToString(),
+                                           action: LogActionType.Archive,
+                                           objectType: LogObjectType.Test,
+                                           objectName: test.Name,
+                                           details: test.IsArchive == true
+                                           ? "заархивировал"
+                                           : "восстановил из архива"
+                                       );
             }
             catch (Exception ex)
             {

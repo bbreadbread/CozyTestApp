@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:CozyTest"
+        xmlns:vmSimple="clr-namespace:CozyTest.ViewModels"
         xmlns:vm="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
         xmlns:vmC="clr-namespace:CozyTest.ViewModels.CuratorVM.CreateTestsVM"
         xmlns:vmShow="clr-namespace:CozyTest.ViewModels.CuratorVM.ShowPassingVM"
@@ -22,6 +23,10 @@
         Title="{Binding WindowTitle}">
 
     <mah:MetroWindow.Resources>
+
+        <DataTemplate DataType="{x:Type vmSimple:LogsViewModel}">
+            <views:LogsListShell/>
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type vmShow:CuratorShowAssignedPassingCurrentTestViewModel}">
             <views:CuratorShowAssignedPassingCurrentTestShell/>

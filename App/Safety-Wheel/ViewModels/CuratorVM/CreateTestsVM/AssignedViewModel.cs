@@ -200,7 +200,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             ParticipantService participantService,
             GroupService groupService,
-            ParticipantAssignedTestService participantAssignedTestService) : base(navigationService, dialogService)
+            ParticipantAssignedTestService participantAssignedTestService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CurrentUser.AdminModeOnChanged += async (_, _) =>
             {
@@ -233,7 +233,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             ParticipantService participantService,
             GroupService groupService,
             ParticipantAssignedTestService participantAssignedTestService,
-            Test test) : base(navigationService, dialogService)
+            Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _groupService = groupService;
             _participantService = participantService;
@@ -358,6 +358,15 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                     foreach (var participant in participantsInGroup)
                     {
                         await _participantAssignedTestService.RemoveAssignmentAsync(participant.Id, currentTestId);
+
+                        await _logger.LogAsync(
+                            whoMade: CurrentUser.Name,
+                            whoRole: CurrentUser.ClassUser.ToString(),
+                            action: LogActionType.Assigned,
+                            objectType: LogObjectType.Test,
+                            objectName: _currentTest.Name,
+                            details: participant.Name
+                        );
                     }
                     SelectedGroup.IsAssigned = false;
                 }
@@ -414,6 +423,16 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 await UpdateGroupAssignmentStatus();
                 LoadDatesWithAssignments();
                 LoadTestsForSelectedDate();
+
+
+                await _logger.LogAsync(
+                            whoMade: CurrentUser.Name,
+                            whoRole: CurrentUser.ClassUser.ToString(),
+                            action: LogActionType.Assigned,
+                            objectType: LogObjectType.Test,
+                            objectName: _currentTest.Name,
+                            details: SelectedParticipant.Name
+                        );
             }
             catch (Exception ex)
             {
@@ -502,6 +521,15 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 await UpdateGroupAssignmentStatus();
                 LoadDatesWithAssignments();
                 LoadTestsForSelectedDate();
+
+                await _logger.LogAsync(
+                      whoMade: CurrentUser.Name,
+                      whoRole: CurrentUser.ClassUser.ToString(),
+                      action: LogActionType.Assigned,
+                      objectType: LogObjectType.Test,
+                      objectName: _currentTest.Name,
+                      details: "Всем привязанным"
+                  );
             }
             catch (Exception ex)
             {

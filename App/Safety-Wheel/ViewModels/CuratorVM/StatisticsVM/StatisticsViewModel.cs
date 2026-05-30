@@ -45,7 +45,7 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
             INavigationService navigationService,
             IDialogService dialogService,
             TestService testService,
-            IServiceProvider serviceProvider) : base(navigationService, dialogService)
+            IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
 
             CurrentUser.AdminModeOnChanged += async (_, _) =>

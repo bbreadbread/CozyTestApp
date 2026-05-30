@@ -8,12 +8,15 @@ namespace CozyTest.Services
     public class ParticipantService
     {
         private readonly IDbContextFactory<CozyTestContext> _factory;
+        private readonly ILoggingService _logger;
+
         public ObservableCollection<Participant> Participants { get; } = new();
         public ObservableCollection<ParticipantsPublicTest> ParticipantsPublicTests { get; } = new();
 
-        public ParticipantService(IDbContextFactory<CozyTestContext> factory)
+        public ParticipantService(IDbContextFactory<CozyTestContext> factory, ILoggingService logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         public async Task InitializeAsync()
@@ -102,6 +105,14 @@ namespace CozyTest.Services
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
                 Participants.Add(entity));
+
+            await _logger.LogAsync(
+                whoMade: CurrentUser.Name,
+                whoRole: CurrentUser.ClassUser.ToString(),
+                action: LogActionType.Create,
+                objectType: LogObjectType.Participant,
+                objectName: entity.Name
+            );
         }
 
         public async Task<Participant> GetLastAsync()
@@ -202,20 +213,6 @@ namespace CozyTest.Services
                 .FirstOrDefaultAsync(s => s.Id == curator.ParticipantProfileId.Value);
         }
 
-        public async Task RemoveAsync(Participant participant)
-        {
-            using var db = _factory.CreateDbContext();
-            db.Participants.Remove(participant);
-            if (await db.SaveChangesAsync() > 0)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    if (Participants.Contains(participant))
-                        Participants.Remove(participant);
-                });
-            }
-        }
-
         public async Task UpdateAsync(Participant participant)
         {
             using var db = _factory.CreateDbContext();
@@ -227,6 +224,14 @@ namespace CozyTest.Services
                 existing.Password = participant.Password;
                 existing.CuratorCreateId = participant.CuratorCreateId;
                 await db.SaveChangesAsync();
+
+                await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Edit,
+                    objectType: LogObjectType.Participant,
+                    objectName: existing.Name
+                );
             }
         }
 
@@ -243,11 +248,20 @@ namespace CozyTest.Services
                     user.IsArchive = !user.IsArchive;
                     await db.SaveChangesAsync();
                 }
+
+                await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Archive,
+                    objectType: LogObjectType.Participant,
+                    objectName: user.Name
+                );
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
+            
         }
 
         public async Task UpdateParticipantBindForCuratorAsync(int userId, int curatorId, bool bind)

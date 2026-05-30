@@ -58,7 +58,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 }, TaskScheduler.Current);
             }
         }
-        public ShowPassingNavigationViewModel(INavigationService navigationService, IDialogService dialogService) : base(navigationService, dialogService)
+        public ShowPassingNavigationViewModel(INavigationService navigationService, IDialogService dialogService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CreateMenuItems();
 

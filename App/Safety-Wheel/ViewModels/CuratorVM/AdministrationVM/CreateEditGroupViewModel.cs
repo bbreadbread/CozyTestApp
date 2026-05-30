@@ -51,7 +51,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             IDialogService dialogService,
             GroupService groupService,
-            GroupsViewModel groupsViewModel) : base(navigationService, dialogService)
+            GroupsViewModel groupsViewModel, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _groupService = groupService;
             _groupsViewModel = groupsViewModel;

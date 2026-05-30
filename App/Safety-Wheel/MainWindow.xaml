@@ -6,7 +6,7 @@
         xmlns:conv="clr-namespace:CozyTest.Converters"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:pages="clr-namespace:CozyTest.Pages.Curator"
-                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:auth="clr-namespace:CozyTest.Pages.Participant"
         xmlns:view="clr-namespace:CozyTest.ViewModels.CuratorVM.AdministrationVM"
         xmlns:viewc="clr-namespace:CozyTest.ViewModels"
@@ -19,7 +19,13 @@
         BorderBrush="{StaticResource DarkSwamp}"
         Closing="MainWindow_Closing"
         MinHeight="800" MinWidth="1450">
-
+    
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="Logs" Command="{Binding ShowLogsCommand}"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
+    
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 

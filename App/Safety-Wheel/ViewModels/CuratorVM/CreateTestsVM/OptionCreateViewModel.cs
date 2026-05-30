@@ -8,7 +8,7 @@ namespace CozyTest.ViewModels.CreateTestsVM
 {
     public class OptionCreateViewModel : ObservableObject
     {
-        public Option NewOption { get; set; } = new();
+        public Option NewOption { get; set; } = new() { IsCorrect = false };
 
         public bool IsImage { get; set; }
 

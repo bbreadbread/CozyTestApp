@@ -24,7 +24,9 @@
           SelectedItem="{Binding SelectedTest}"
           AutoGenerateColumns="False"
           IsReadOnly="True"
-          BorderThickness="0">
+                       BorderThickness="3"  
+ Background="White"
+ BorderBrush="{StaticResource MainSwamp}">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">

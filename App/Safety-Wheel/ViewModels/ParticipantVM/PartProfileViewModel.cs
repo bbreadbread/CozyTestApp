@@ -1,6 +1,8 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
 using CozyTest.ViewModels.CuratorVM;
+using CozyTest.ViewModels.CuratorVM.ShowPassingVM;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace CozyTest.ViewModels.ParticipantVM
 {
     public class PartProfileViewModel : BaseViewModel
     {
+        private readonly IServiceProvider _serviceProvider;
         public override string WindowTitle => "Профиль тестируемого";
 
         private readonly ParticipantService _participantService;
@@ -34,6 +37,39 @@ namespace CozyTest.ViewModels.ParticipantVM
         private string _accLoginText;
         private string _accNameText;
         private ParticipantsAssignedTest _selectedAssignedTest;
+
+        private string _oldPassword;
+        public string OldPassword
+        {
+            get => _oldPassword;
+            set => SetProperty(ref _oldPassword, value);
+        }
+
+        private string _newPassword;
+        public string NewPassword
+        {
+            get => _newPassword;
+            set => SetProperty(ref _newPassword, value);
+        }
+
+        private string _renewPassword;
+        public string reNewPassword
+        {
+            get => _renewPassword;
+            set => SetProperty(ref _renewPassword, value);
+        }
+        private string _name = CurrentUser.Name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+        private string _login = CurrentUser.Login;
+        public string Login
+        {
+            get => _login;
+            set => SetProperty(ref _login, value);
+        }
 
         public DateTime? SelectedDate
         {
@@ -155,19 +191,32 @@ namespace CozyTest.ViewModels.ParticipantVM
             }
         }
 
-        public ICommand GoToAssignedTestsCommand { get; }
+        public bool _IsChangePassworrd = false;
+        public bool IsChangePassworrd
+        {
+            get => _IsChangePassworrd;
+            set
+            {
+                _IsChangePassworrd = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand GoToAllAttemptsCommand { get; }
+        public ICommand SaveProfileDataCommand { get; }
 
         public PartProfileViewModel(
             INavigationService navigationService,
+            IServiceProvider serviceProvider,
             IDialogService dialogService,
             ParticipantService participantService,
             AttemptService attemptService,
             ParticipantAssignedTestService assignedTestService,
             GroupService groupService,
             CuratorService curatorService,
-            TestService testService) : base(navigationService, dialogService)
+            TestService testService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
+            _serviceProvider = serviceProvider;
             _participantService = participantService;
             _attemptService = attemptService;
             _assignedTestService = assignedTestService;
@@ -175,8 +224,8 @@ namespace CozyTest.ViewModels.ParticipantVM
             _curatorService = curatorService;
             _testService = testService;
 
-            GoToAssignedTestsCommand = new RelayCommand(_ => GoToAssignedTests());
             GoToAllAttemptsCommand = new RelayCommand(_ => GoToAllAttempts());
+            SaveProfileDataCommand = new RelayCommand(_ => SaveProfileData());
 
             _datesWithAssignments = new ObservableCollection<DateTime>();
             DatesWithAssignments = _datesWithAssignments;
@@ -186,6 +235,42 @@ namespace CozyTest.ViewModels.ParticipantVM
             Task.Run(async () => await LoadDataAsync());
         }
 
+        public void SaveProfileData()
+        {
+            Participant p = (Participant)CurrentUser.ClassUser;
+            if (IsChangePassworrd == true)
+            {
+                if (p.Password != OldPassword)
+                {
+                    MessageBox.Show("Неверный старый пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                if (NewPassword != reNewPassword)
+                {
+                    MessageBox.Show("Неверное повторение пароля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                p.Password = NewPassword;
+            }
+
+            p.Name = Name;
+            p.Login = Login;
+
+            try
+            {
+                _participantService.UpdateAsync(p);
+                CurrentUser.Name = Name;
+
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    mainWindow.UpdateUserName(CurrentUser.Name);
+                }
+
+                }
+            catch { }
+        }
         private async Task LoadDataAsync()
         {
             try
@@ -347,14 +432,17 @@ namespace CozyTest.ViewModels.ParticipantVM
             return DatesWithAssignments.Contains(date.Date);
         }
 
-        private void GoToAssignedTests()
-        {
-            //_navigationService.NavigateTo("AssignedTestsPage");
-        }
-
         private void GoToAllAttempts()
         {
-            //_navigationService.NavigateTo("AllAttemptsPage");
+            try
+            {
+                var vm = ActivatorUtilities.CreateInstance<CuratorShowPassingTestsViewModel>(_serviceProvider, (Participant)CurrentUser.ClassUser);
+                _dialogService.ShowWindow<ShellWindow>(vm);
+            }
+            catch (Exception ex)
+            {
+                _dialogService.ShowMessage($"Ошибка: {ex.Message}", "Ошибка");
+            }
         }
 
         private bool _isLoading;

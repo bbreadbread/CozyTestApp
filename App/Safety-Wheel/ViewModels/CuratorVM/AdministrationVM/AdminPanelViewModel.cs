@@ -421,7 +421,7 @@ namespace CozyTest.ViewModels.CuratorVM
             CuratorService curatorService,
             TestService testService,
             RequestService requestService,
-            GroupService groupService) : base(navigationService, dialogService)
+            GroupService groupService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _participantService = participantService;
             _curatorService = curatorService;

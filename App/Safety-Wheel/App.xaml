@@ -25,7 +25,8 @@
             <converters:QuestionToTagConverter x:Key="QuestionToTagConverter"/>
             <converters:MarkLvlToColorConverter x:Key="MarkLvlToColorConverter"/>
             <converters:StringToColorConverter x:Key="StringToColorConverter"/>
-            <converters:PercentageToWidthConverter  x:Key="PercentageToWidthConverter "/>
+            <converters:PercentageToWidthConverter  x:Key="PercentageToWidthConverter"/>
+            <converters:RoleLogsConverter  x:Key="RoleLogsConverter"/>
 
 
             <converters:RoleVisibilityConverter x:Key="RoleVisibilityConverter"/>

@@ -38,7 +38,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             IDialogService dialogService,
             RequestService requestService,
-            IServiceProvider serviceProvider) : base(navigationService, dialogService)
+            IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _requestService = requestService;
             _serviceProvider = serviceProvider;

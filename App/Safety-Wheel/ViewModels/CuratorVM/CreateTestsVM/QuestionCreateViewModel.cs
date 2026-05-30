@@ -237,20 +237,25 @@ namespace CozyTest.ViewModels.CreateTestsVM
             var dialog = new OpenFileDialog
             {
                 Filter = "Изображения|*.jpg;*.jpeg;*.png;*.gif;*.bmp",
-                Title = "Выберите изображение для варианта ответа",
-                InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images")
+                Title = "Выберите изображения для вариантов ответа",
+                InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images"),
+                Multiselect = true
             };
 
             if (dialog.ShowDialog() == true)
             {
-                string destPath = CopyImageToTestFolder(dialog.FileName);
-
-                if (!string.IsNullOrEmpty(destPath))
+                foreach (string fileName in dialog.FileNames)
                 {
-                    string relativePath = GetRelativePathForTest(destPath);
-                    Options.Add(new OptionCreateViewModel(true, this, _parent));
-                    var newOption = Options.Last();
-                    newOption.SetImagePath(relativePath);
+                    string destPath = CopyImageToTestFolder(fileName);
+
+                    if (!string.IsNullOrEmpty(destPath))
+                    {
+                        string relativePath = GetRelativePathForTest(destPath);
+
+                        var newOption = new OptionCreateViewModel(true, this, _parent);
+                        newOption.SetImagePath(relativePath);
+                        Options.Add(newOption);
+                    }
                 }
             }
         }

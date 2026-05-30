@@ -95,8 +95,6 @@
                                 </ListView.View>
                             </ListView>
                         </GroupBox>
-
-                        <Button Grid.Column="1" Grid.Row="1" Content="Перейти к выбранному тесту" Command="{Binding GoToAssignedTestsCommand}" Margin="6 4 4 4"/>
                     </Grid>
 
                     
@@ -105,23 +103,41 @@
 
             <Border Margin="10" Style="{StaticResource CardBorderSimpleStyle}" Height="Auto">
                 <StackPanel Margin="20">
-                    <TextBlock Margin="0 0 0 10" Style="{StaticResource MainWelcomeTB}" HorizontalAlignment="Left">
-                        <Run Text="Всего пройдено опросов: " FontWeight="SemiBold"/>
-                        <Run Text="{Binding TotalQuizzesPassed}"/>
+
+                    <TextBlock Margin="0 0 0 10" Style="{StaticResource MainWelcomeTB}">
+                        <Run Text="Поменять данные от аккаунта:" FontWeight="SemiBold"/>
                     </TextBlock>
 
-                    <TextBlock Margin="0 0 0 10" Style="{StaticResource MainWelcomeTB}" HorizontalAlignment="Left">
-                        <Run Text="Всего пройдено тестов: " FontWeight="SemiBold"/>
-                        <Run Text="{Binding TotalTestsPassed}"/>
+                    <TextBlock FontSize="20"> 
+                        <Run Text="ФИО:"/>
+                        <TextBox Text="{Binding Name}" Width="300"/>
                     </TextBlock>
 
-                    <TextBlock Margin="0 0 0 10" Style="{StaticResource MainWelcomeTB}" HorizontalAlignment="Left">
-                        <StackPanel>
-                            <TextBlock Text="Большего всего попыток у теста:  " HorizontalAlignment="Left" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding TestWithMostAttempts}" HorizontalAlignment="Left" TextWrapping="Wrap"/>
-                        </StackPanel>
+                    <TextBlock FontSize="20">
+                        <Run Text="Логин:"/>
+                        <TextBox Text="{Binding Login}" Width="300"/>
                     </TextBlock>
-                    <Button Content="Посмотреть все свои прохождения" Command="{Binding GoToAllAttemptsCommand}" HorizontalAlignment="Center"/>
+
+                    <CheckBox Content="Поменять пароль" IsChecked="{Binding IsChangePassworrd}" Margin="10 20 10 5"/>
+
+                    <StackPanel Visibility="{Binding IsChangePassworrd, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock FontSize="20">
+                        <Run Text="Старый пароль:"/>
+                        <PasswordBox x:Name="OldPassword" PasswordChanged="OldPassword_PasswordChanged" Width="300"/>
+                        </TextBlock>
+
+                        <TextBlock FontSize="20">
+                        <Run Text="Новый пароль:"/>
+                        <PasswordBox x:Name="NewPassword" Width="300" PasswordChanged="NewPassword_PasswordChanged"/>
+                        </TextBlock>
+
+                        <TextBlock FontSize="20">
+                        <Run Text="Новый пароль(еще раз):"/>
+                        <PasswordBox x:Name="ReNewPassword" Width="300" PasswordChanged="ReNewPassword_PasswordChanged"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button Content="Сохранить"  Command="{Binding SaveProfileDataCommand}" Margin="0 20 0 0"/>
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -168,9 +184,11 @@
                     </DataGrid>
                 </StackPanel>
             </Border>
+            
+            <Button Content="Посмотреть все свои прохождения" FontSize="20" Command="{Binding GoToAllAttemptsCommand}" HorizontalAlignment="Stretch" Height="60" Margin="10"/>
         </StackPanel>
 
-        <Border Grid.RowSpan="5" Grid.ColumnSpan="5"
+        <!--<Border Grid.RowSpan="5" Grid.ColumnSpan="5"
         Background="#2000685A" 
         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -181,6 +199,6 @@
                      Height="50"/>
                 <TextBlock Text="Загрузка..." Margin="0 10 0 0" FontSize="16"/>
             </StackPanel>
-        </Border>
+        </Border>-->
     </Grid>
 </UserControl>

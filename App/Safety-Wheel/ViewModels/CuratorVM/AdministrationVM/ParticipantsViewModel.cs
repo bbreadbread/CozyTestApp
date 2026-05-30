@@ -86,13 +86,13 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         public RelayCommand ArchiveParticipantCommand { get; }
 
         public ParticipantsViewModel(
-    IDialogService dialogService,
-    INavigationService navigationService,
-    ParticipantService participantService,
-    GroupService groupService,
-    CuratorService curatorService,
-    IServiceProvider serviceProvider)
-    : base(dialogService, navigationService, participantService, curatorService, null, null, groupService)
+            IDialogService dialogService,
+            INavigationService navigationService,
+            ParticipantService participantService,
+            GroupService groupService,
+            CuratorService curatorService,
+            IServiceProvider serviceProvider, ILoggingService logger)
+    : base(dialogService, navigationService, participantService, curatorService, null, null, groupService, logger)
         {
             _dialogService = dialogService;
             _navigationService = navigationService;

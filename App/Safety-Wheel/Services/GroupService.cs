@@ -8,11 +8,14 @@ namespace CozyTest.Services
     public class GroupService
     {
         private readonly IDbContextFactory<CozyTestContext> _factory;
+        private readonly ILoggingService _logger;
+
         public ObservableCollection<Group> Groups { get; } = new();
 
-        public GroupService(IDbContextFactory<CozyTestContext> factory)
+        public GroupService(IDbContextFactory<CozyTestContext> factory, ILoggingService logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         public async Task InitializeAsync() => await GetAllGroupsForUserAsync();
@@ -35,6 +38,14 @@ namespace CozyTest.Services
                 entity.Id = entity.Id;
                 Groups.Add(entity);
             });
+
+            await _logger.LogAsync(
+                whoMade: CurrentUser.Name,
+                whoRole: CurrentUser.ClassUser.ToString(),
+                action: LogActionType.Create,
+                objectType: LogObjectType.Group,
+                objectName: entity.Name
+            );
         }
 
         public async Task DeleteAsync(Group group)
@@ -47,6 +58,14 @@ namespace CozyTest.Services
                     if (Groups.Contains(group))
                         Groups.Remove(group);
                 });
+
+            await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Delete,
+                    objectType: LogObjectType.Group,
+                    objectName: group.Name
+                );
         }
 
         public async Task UpdateAsync(Group group)
@@ -73,6 +92,14 @@ namespace CozyTest.Services
                     }
                 });
             }
+
+            await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Edit,
+                    objectType: LogObjectType.Group,
+                    objectName: existing.Name
+                );
         }
 
         public async Task GetAllGroupsForUserAsync()

@@ -8,11 +8,13 @@ namespace CozyTest.Services
     public class CuratorService
     {
         private readonly IDbContextFactory<CozyTestContext> _factory;
+        private readonly ILoggingService _logger;
         public ObservableCollection<Curator> Curators { get; } = new();
 
-        public CuratorService(IDbContextFactory<CozyTestContext> factory)
+        public CuratorService(IDbContextFactory<CozyTestContext> factory, ILoggingService logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         public async Task InitializeAsync() => await GetAllAsync();
@@ -27,7 +29,7 @@ namespace CozyTest.Services
                 Name = cur.Name,
                 IsAdmin = cur.IsAdmin,
                 IsArchive = cur.IsArchive,
-                ParticipantProfileId = cur.ParticipantProfileId,                               
+                ParticipantProfileId = cur.ParticipantProfileId,
             };
             await db.Curators.AddAsync(entity);
             await db.SaveChangesAsync();
@@ -36,6 +38,14 @@ namespace CozyTest.Services
             {
                 Curators.Add(entity);
             });
+
+            await _logger.LogAsync(
+                whoMade: CurrentUser.Name,
+                whoRole: CurrentUser.ClassUser.ToString(),
+                action: LogActionType.Create,
+                objectType: LogObjectType.Curator,
+                objectName: entity.Name
+            );
         }
 
         public async Task GetAllAsync()
@@ -90,11 +100,21 @@ namespace CozyTest.Services
             using var db = _factory.CreateDbContext();
             db.Curators.Remove(teacher);
             if (await db.SaveChangesAsync() > 0)
+            {
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     if (Curators.Contains(teacher))
                         Curators.Remove(teacher);
                 });
+
+                await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Archive,
+                    objectType: LogObjectType.Curator,
+                    objectName: teacher.Name
+                );
+            }
         }
 
         public async Task UpdateAsync(Curator teacher)
@@ -118,6 +138,14 @@ namespace CozyTest.Services
                         localTeacher.Name = teacher.Name;
                     }
                 });
+
+                await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Edit,
+                    objectType: LogObjectType.Curator,
+                    objectName: existing.Name
+                );
             }
         }
 
@@ -149,6 +177,14 @@ namespace CozyTest.Services
                             localCurator.IsArchive = newArchiveStatus;
                         }
                     });
+
+                    await _logger.LogAsync(
+                        whoMade: CurrentUser.Name,
+                        whoRole: CurrentUser.ClassUser.ToString(),
+                        action: LogActionType.Archive,
+                        objectType: LogObjectType.Curator,
+                        objectName: user.Name
+                    );
                 }
             }
             catch (Exception ex)
@@ -178,6 +214,15 @@ namespace CozyTest.Services
                             localCurator.IsAdmin = newAdminStatus;
                         }
                     });
+
+                    await _logger.LogAsync(
+                        whoMade: CurrentUser.Name,
+                        whoRole: CurrentUser.ClassUser.ToString(),
+                        action: LogActionType.Admin,
+                        objectType: LogObjectType.Curator,
+                        objectName: user.Name,
+                        details: newAdminStatus ? "Администратор" : "Экзаменатор"
+                    );
                 }
             }
             catch (Exception ex)
@@ -186,40 +231,6 @@ namespace CozyTest.Services
             }
         }
 
-        public async Task UpdateCuratorAsync(Curator updatedCurator)
-        {
-            try
-            {
-                using var db = _factory.CreateDbContext();
-                var existing = await db.Curators.FindAsync(updatedCurator.Id);
-                if (existing != null)
-                {
-                    existing.Login = updatedCurator.Login;
-                    existing.Password = updatedCurator.Password;
-                    existing.Name = updatedCurator.Name;
-                    existing.IsAdmin = updatedCurator.IsAdmin;
-                    existing.IsArchive = updatedCurator.IsArchive;
-                    await db.SaveChangesAsync();
-
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        var localCurator = Curators.FirstOrDefault(c => c.Id == updatedCurator.Id);
-                        if (localCurator != null)
-                        {
-                            localCurator.Login = updatedCurator.Login;
-                            localCurator.Password = updatedCurator.Password;
-                            localCurator.Name = updatedCurator.Name;
-                            localCurator.IsAdmin = updatedCurator.IsAdmin;
-                            localCurator.IsArchive = updatedCurator.IsArchive;
-                        }
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка обновления куратора: {ex.Message}");
-            }
-        }
 
         public async Task<List<Curator>> GetCuratorsForParticipantAsync(int participantId)
         {

@@ -25,12 +25,9 @@
         <Grid Grid.Row="0" MaxWidth="1450" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <!-- WrapPanel с фильтрами -->
                 <ColumnDefinition Width="Auto"/>
-                <!-- StackPanel с кнопками -->
             </Grid.ColumnDefinitions>
 
-            <!-- Фильтры в WrapPanel -->
             <WrapPanel Grid.Column="0" Orientation="Horizontal">
 
                 <RadioButton Content="Своё авторство" 
@@ -102,7 +99,6 @@
 
             </WrapPanel>
 
-            <!-- Кнопки справа вертикально -->
             <StackPanel Grid.Column="1" 
                 Orientation="Vertical" 
                 VerticalAlignment="Top"

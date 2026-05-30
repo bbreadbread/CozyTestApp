@@ -1,4 +1,5 @@
-﻿using CozyTest.Models;
+﻿using ControlzEx.Standard;
+using CozyTest.Models;
 using CozyTest.Services;
 using System.Collections.ObjectModel;
 
@@ -39,8 +40,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             CuratorsViewModel curatorsViewModel,
             CuratorService curatorService,
-            ParticipantService participantService)
-            : base(dialogService, navigationService, participantService, curatorService, null, null, null)
+            ParticipantService participantService, ILoggingService logger)
+            : base(dialogService, navigationService, participantService, curatorService, null, null, null, logger)
         {
             _curatorsViewModel = curatorsViewModel;
             _curatorService = curatorService;
@@ -77,6 +78,12 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 _curatorsViewModel.SelectedCurator.Name = NameCurator;
                 _curatorsViewModel.SelectedCurator.Login = LoginCurator;
                 _curatorsViewModel.SelectedCurator.Password = PasswordCurator;
+
+                if (_curatorsViewModel.SelectedCurator.Id == CurrentUser.Id)
+                {
+                    CurrentUser.Name = NameCurator;
+                    CurrentUser.Login = LoginCurator;
+                }
             }
             else
             {

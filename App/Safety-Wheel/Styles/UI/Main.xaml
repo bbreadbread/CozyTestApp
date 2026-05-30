@@ -31,8 +31,14 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
     </Style>
-    
-    <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="CBStyle">
+
+    <!-- В ресурсах окна или App.xaml -->
+    <Style x:Key="WrapTextStyle" TargetType="TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="None"/>
+    </Style>
+        
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}" x:Key="CBStyle">
         <Setter Property="Height" Value="66"/>
         <Setter Property="FontSize" Value="32"/>
         <Setter Property="Background" Value="{StaticResource LightSwamp}"/>

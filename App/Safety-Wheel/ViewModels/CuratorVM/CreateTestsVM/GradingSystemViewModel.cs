@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 
 namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
 {
@@ -32,8 +33,8 @@ namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
 
         public ICommand SaveCommand { get; }
 
-        public GradingSystemViewModel(INavigationService navigationService, IDialogService dialogService, CriteriaService criteriaService, Test test)
-            : base(navigationService, dialogService)
+        public GradingSystemViewModel(INavigationService navigationService, IDialogService dialogService, CriteriaService criteriaService, Test test, ILoggingService logger)
+            : base(navigationService, dialogService, logger)
         {
             _criteriaService = criteriaService;
             Test = test;

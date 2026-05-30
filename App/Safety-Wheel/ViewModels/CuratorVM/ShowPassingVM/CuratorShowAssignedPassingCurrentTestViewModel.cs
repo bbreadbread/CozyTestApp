@@ -41,7 +41,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             GroupService groupService,
             AttemptService attemptService,
             ParticipantAssignedTestService participantAssignedTestService,
-            Test test) : base(navigationService, dialogService)
+            Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CurrentUser.AdminModeOnChanged += async (_, _) =>
             {

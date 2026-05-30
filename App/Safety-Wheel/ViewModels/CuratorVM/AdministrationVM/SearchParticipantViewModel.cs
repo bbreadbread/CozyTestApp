@@ -80,7 +80,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             ParticipantService participantService,
             CuratorService curatorService,
             GroupService groupService,
-            ParticipantsViewModel participantsViewModel) : base(navigationService, dialogService)
+            ParticipantsViewModel participantsViewModel, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _participantService = participantService;
             _curatorService = curatorService;

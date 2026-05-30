@@ -159,7 +159,7 @@ namespace CozyTest.ViewModels.ParticipantVM
             ParticipantAnswerService participantAnswerService,
             CorrespondenceService correspondenceService,
             CriteriaService criteriaService,
-            Test test) : base(navigationService, dialogService)
+            Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             IsTestFinished =false;
             _testService = testService;
@@ -191,6 +191,7 @@ namespace CozyTest.ViewModels.ParticipantVM
             FinishTestCommand = new RelayCommand(async _ => await FinishTestAsync());
 
             Task.Run(async () => await LoadTestAsync());
+
         }
 
         private async Task LoadTestAsync()
@@ -212,7 +213,7 @@ namespace CozyTest.ViewModels.ParticipantVM
                     await CreateAttempt();
 
                     var latestQuestions = _currentTest.Questions
-                        .Where(p=>p.IsArchive!= true)
+                        .Where(p => p.IsArchive != true)
                         .GroupBy(q => q.NumberActual)
                         .Select(g => g.OrderByDescending(q => q.Version).First())
                         .ToList();
@@ -259,6 +260,15 @@ namespace CozyTest.ViewModels.ParticipantVM
             finally
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => IsLoading = false);
+
+                await _logger.LogAsync(
+                    whoMade: CurrentUser.Name,
+                    whoRole: CurrentUser.ClassUser.ToString(),
+                    action: LogActionType.Edit,
+                    objectType: LogObjectType.Test,
+                    objectName: _currentTest.Name,
+                    details: "начал"
+                );
             }
         }
 
@@ -490,6 +500,15 @@ namespace CozyTest.ViewModels.ParticipantVM
 
                 MessageBox.Show(message, "Завершение", MessageBoxButton.OK, MessageBoxImage.Information);
             });
+
+            await _logger.LogAsync(
+                   whoMade: CurrentUser.Name,
+                   whoRole: CurrentUser.ClassUser.ToString(),
+                   action: LogActionType.Edit,
+                   objectType: LogObjectType.Test,
+                   objectName: _currentTest.Name,
+                   details: "закончил"
+               );
 
         }
         int CurrentMarkLvl = 0;

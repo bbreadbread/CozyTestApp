@@ -87,7 +87,7 @@ namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
         public CreateEditTopicViewModel(
             INavigationService navigationService,
             IDialogService dialogService,
-            TopicService topicService) : base(navigationService, dialogService)
+            TopicService topicService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _topicService = topicService;
             _dialogService = dialogService;

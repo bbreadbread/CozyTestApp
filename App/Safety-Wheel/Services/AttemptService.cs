@@ -70,6 +70,7 @@ namespace CozyTest.Services
                 Status = attempt.Status,
                 MarkLvl = attempt.MarkLvl
             };
+
             await db.Attempts.AddAsync(entity);
             await db.SaveChangesAsync();
         }

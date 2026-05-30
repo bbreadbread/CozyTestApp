@@ -66,7 +66,7 @@ namespace CozyTest.ViewModels
             CuratorService curatorService,
             AttemptService attemptService,
             TopicService topicService,
-            TestService testService) : base(navigationService, dialogService)
+            TestService testService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _participantService = participantService;
             _curatorService = curatorService;

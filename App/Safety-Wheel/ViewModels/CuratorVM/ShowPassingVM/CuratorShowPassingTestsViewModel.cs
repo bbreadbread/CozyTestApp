@@ -172,6 +172,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             set => SetProperty(ref _selectedAttempt, value);
         }
         public Test? _currentTest;
+        public Participant? _currentParticipant;
 
         public ICommand ClearFiltersCommand { get; }
         public ICommand GoCurrentAttemptCommand { get; }
@@ -185,7 +186,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             ParticipantService participantService,
             TopicService topicService,
             CriteriaService criteriaService,
-            CuratorService curatorService) : base(navigationService, dialogService)
+            CuratorService curatorService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CurrentUser.AdminModeOnChanged += async (_, _) =>
             {
@@ -219,7 +220,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             TopicService topicService,
             CriteriaService criteriaService,
             CuratorService curatorService,
-            Test test) : base(navigationService, dialogService)
+            Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
 
             CurrentUser.AdminModeOnChanged += async (_, _) =>
@@ -231,6 +232,35 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
 
             IsCurrentTest = true;
             _currentTest = test;
+
+            _attemptService = attemptService;
+            _testService = testService;
+            _participantService = participantService;
+            _topicService = topicService;
+            _curatorService = curatorService;
+            _serviceProvider = serviceProvider;
+            _criteriaService = criteriaService;
+           
+
+            ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
+            GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
+
+            _ = LoadInitialDataAsync();
+            IsSelectedActive = false;
+        }
+        public CuratorShowPassingTestsViewModel(
+            INavigationService navigationService,
+            IDialogService dialogService,
+            IServiceProvider serviceProvider,
+            AttemptService attemptService,
+            TestService testService,
+            ParticipantService participantService,
+            TopicService topicService,
+            CriteriaService criteriaService,
+            CuratorService curatorService,
+            Participant participant, ILoggingService logger) : base(navigationService, dialogService, logger)
+        {
+            _currentParticipant = participant;
 
             _attemptService = attemptService;
             _testService = testService;
@@ -300,12 +330,16 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 else
                     await _attemptService.GetAllAsync(testId: _currentTest.Id);
             }
-            else
+            else if (CurrentUser.TypeUser == 1 )
             {
                 if (_currentTest == null)
                     await _attemptService.GetAllAsync(curatorId: CurrentUser.Id);
                 else
                     await _attemptService.GetAllAsync(testId: _currentTest.Id, curatorId: CurrentUser.Id);
+            }
+            else if (_currentParticipant != null)
+            {
+                await _attemptService.GetAllAsync(participantId: CurrentUser.Id);
             }
         }
 

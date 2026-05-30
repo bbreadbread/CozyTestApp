@@ -49,7 +49,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             RequestService requestService,
             ParticipantService participantService,
-            CuratorService curatorService) : base(navigationService, dialogService)
+            CuratorService curatorService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _dialogService = dialogService;
             _requestService = requestService;
@@ -83,6 +83,14 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 });
 
                 _dialogService.ShowMessage("Заявка отправлена. Результат подтверждения уточняйте у преподавателя", "Успех");
+
+                await _logger.LogAsync(
+                   whoMade: Name,
+                   whoRole: "CozyTest.Models.Participant",
+                   action: LogActionType.Authorization,
+                   objectType: LogObjectType.Application,
+                   objectName: Name
+               );
 
                 ClearForm();
             }

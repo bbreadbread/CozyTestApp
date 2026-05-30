@@ -51,9 +51,11 @@ namespace CozyTest
                 services.AddTransient<RequestService>();
                 services.AddTransient<TopicService>();
                 services.AddTransient<DTestTypeService>();
+                services.AddTransient<LogsViewModel>();
 
                 services.AddSingleton<INavigationService, Services.NavigationService>();
                 services.AddSingleton<IDialogService, DialogService>();
+                services.AddSingleton<ILoggingService, LoggingService > ();
 
                 services.AddSingleton<MainViewModel>();
                 services.AddSingleton<ShowPassingNavigationViewModel>();

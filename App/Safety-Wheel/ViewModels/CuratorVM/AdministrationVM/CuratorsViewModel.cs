@@ -1,6 +1,7 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
     {
         private readonly IDialogService _dialogService;
         private readonly INavigationService _navigationService;
+        private readonly ILoggingService logger;
+
+
         private readonly CuratorService _curatorService;
         private readonly ParticipantService _participantService;
         private readonly ParticipantPublicTestService _participantPublicTestService;
@@ -106,8 +110,8 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             ParticipantService participantService,
             TestService testService,
             GroupService groupService, 
-            ParticipantPublicTestService participantPublicTestService)
-            : base(dialogService, navigationService, participantService, curatorService, testService, null, groupService)
+            ParticipantPublicTestService participantPublicTestService, ILoggingService logger)
+            : base(dialogService, navigationService, participantService, curatorService, testService, null, groupService ,logger)
         {
             _dialogService = dialogService;
             _navigationService = navigationService;
@@ -149,7 +153,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
         {
             try
             {
-                var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this, _curatorService, _participantService);
+                var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this, _curatorService, _participantService, logger);
                 _dialogService.ShowWindow<ShellWindow>(vm);
             }
             catch (Exception ex)
@@ -164,7 +168,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 if (SelectedCurator == null) return;
 
-                var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this, _curatorService, _participantService);
+                var vm = new CreateEditCuratorAdminViewModel(_dialogService, _navigationService, this, _curatorService, _participantService, logger);
                 _dialogService.ShowWindow<ShellWindow>(vm);
             }
             catch (Exception ex)
@@ -179,7 +183,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
             try
             {
-                var vm = new PublicDetailsViewModel(_dialogService, _navigationService, _participantService, _groupService, _participantPublicTestService);
+                var vm = new PublicDetailsViewModel(_dialogService, _navigationService, _participantService, _groupService, _participantPublicTestService, logger);
                 _dialogService.ShowWindow<ShellWindow>(vm);
             }
             catch (Exception ex)
@@ -212,7 +216,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
                 return;
             }
 
-            if (SelectedCurator.IsAdmin == false)
+            if (CurrentUser.AdminModeOn == false)
             {
                 MessageBox.Show("Вы не обладаете достаточными правами для удаления", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;

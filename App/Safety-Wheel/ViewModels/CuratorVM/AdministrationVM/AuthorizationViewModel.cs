@@ -38,7 +38,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             INavigationService navigationService,
             ParticipantService participantService,
             CuratorService curatorService,
-            IServiceProvider serviceProvider) : base(navigationService, dialogService)
+            IServiceProvider serviceProvider, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _participantService = participantService ?? throw new ArgumentNullException(nameof(participantService));
             _curatorService = curatorService ?? throw new ArgumentNullException(nameof(curatorService));
@@ -100,6 +100,28 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
 
             if (user is Curator c)
                 CurrentUser.Login = c.Login;
+
+
+            if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 2)
+            {
+                _logger.LogAsync(
+                whoMade: CurrentUser.Name,
+                whoRole: CurrentUser.ClassUser.ToString(),
+                action: LogActionType.Authorization,
+                objectType: LogObjectType.Curator,
+                objectName: CurrentUser.Name
+            );
+            }
+            else
+            {
+                _logger.LogAsync(
+                 whoMade: CurrentUser.Name,
+                 whoRole: CurrentUser.ClassUser.ToString(),
+                 action: LogActionType.Authorization,
+                 objectType: LogObjectType.Participant,
+                 objectName: CurrentUser.Name
+             );
+            }
         }
 
         private async Task AfterLogin()

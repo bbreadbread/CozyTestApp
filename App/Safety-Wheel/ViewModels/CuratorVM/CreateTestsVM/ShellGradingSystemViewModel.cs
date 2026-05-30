@@ -14,7 +14,7 @@ namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
 
         ShellGradingSystemViewModel(
             IDialogService dialogService,
-            INavigationService navigationService) : base(navigationService, dialogService)
+            INavigationService navigationService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
 
         }

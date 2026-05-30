@@ -15,6 +15,7 @@ namespace CozyTest.ViewModels.CuratorVM
         public virtual string WindowTitle => "CozyTest";
         protected readonly INavigationService _navigationService;
         protected readonly IDialogService _dialogService;
+        protected readonly ILoggingService _logger;
 
         private bool _adminModeOn;
         public virtual bool AdminModeOn
@@ -32,10 +33,11 @@ namespace CozyTest.ViewModels.CuratorVM
         protected virtual Task OnAdminModeChangedAsync() => Task.CompletedTask;
 
         public ICommand GoBackCommand { get; }
-        protected BaseViewModel(INavigationService navigationService, IDialogService dialogService)
+        protected BaseViewModel(INavigationService navigationService, IDialogService dialogService, ILoggingService logger)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _logger = logger;
 
             _adminModeOn = CurrentUser.AdminModeOn;
 

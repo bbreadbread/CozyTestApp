@@ -1,6 +1,7 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
 using CozyTest.ViewModels.CuratorVM;
+using Microsoft.Extensions.Logging;
 using ScottPlot.WPF;
 using System;
 using System.Collections.ObjectModel;
@@ -114,8 +115,8 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
             Test currentTest,
             AttemptService attemptService,
             CorrespondenceService correspondenceService,
-            ParticipantAnswerService participantAnswerService)
-            : base(navigationService, dialogService)
+            ParticipantAnswerService participantAnswerService, ILoggingService logger)
+            : base(navigationService, dialogService, logger)
         {
             CurrentTest = currentTest;
             _attemptService = attemptService;
