@@ -30,6 +30,11 @@
             <Setter Property="Margin" Value="0,4,0,4"/>
         </Style>
     </UserControl.Resources>
+    <Grid HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600"/>
+            <ColumnDefinition Width="700"/>
+        </Grid.ColumnDefinitions>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel MaxWidth="900" HorizontalAlignment="Center" Margin="24,24,24,48">
