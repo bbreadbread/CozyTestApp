@@ -14,6 +14,8 @@ namespace CozyTest.ViewModels
 {
     public class LogsViewModel : BaseViewModel
     {
+        public override string WindowTitle => "Логи";
+
         private readonly IDbContextFactory<CozyTestContext> _factory;
         private readonly ILoggingService _logger;
 
@@ -24,7 +26,6 @@ namespace CozyTest.ViewModels
         {
             "Все",
             "Куратор",
-            "Куратор-администратор",
             "Тестируемый"
         };
 
@@ -210,7 +211,6 @@ namespace CozyTest.ViewModels
                     return SelectedWho switch
                     {
                         "Куратор" => l.TypeWhoMade == "Curator" && !l.Message.Contains("администратор"),
-                        "Куратор-администратор" => l.TypeWhoMade == "Curator" && l.Message.Contains("администратор"),
                         "Тестируемый" => l.TypeWhoMade == "Participant",
                         _ => true
                     };

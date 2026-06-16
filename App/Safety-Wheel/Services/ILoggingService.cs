@@ -33,32 +33,34 @@ namespace CozyTest.Services
     {
         private static readonly Dictionary<(string Role, LogActionType Action, LogObjectType Object), string> Templates = new()
         {
-            [("CozyTest.Models.Curator", LogActionType.Authorization, LogObjectType.Curator)] = "Куратор {0} зашел в аккаунт",//+
-            [("CozyTest.Models.Participant", LogActionType.Authorization, LogObjectType.Application)] = "Тестируемый {0} отправил заявку на регистрацию",//+
-            [("CozyTest.Models.Participant", LogActionType.Authorization, LogObjectType.Participant)] = "Тестируемый {0} зашел в аккаунт",//+
+            [("CozyTest.Models.Curator", LogActionType.Authorization, LogObjectType.Curator)] = "Куратор {0} зашел в аккаунт",
+            [("CozyTest.Models.Participant", LogActionType.Authorization, LogObjectType.Application)] = "Тестируемый {0} отправил заявку на регистрацию",
+            [("CozyTest.Models.Participant", LogActionType.Authorization, LogObjectType.Participant)] = "Тестируемый {0} зашел в аккаунт",
 
-            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Application)] = "Куратор {0} обработал заявку на создание аккаунта от {1}. Заявка: {2}",//!!!
-            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Curator)] = "Куратор {0} создал куратора {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Participant)] = "Куратор {0} создал тестируемого {1}",//+*
-            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Group)] = "Куратор {0} создал группу {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Test)] = "Куратор {0} создал тест {1}",//+
+            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Application)] = "Куратор {0} обработал заявку на создание аккаунта от {1}. Заявка: {2}",
+            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Curator)] = "Куратор {0} создал куратора {1}",
+            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Participant)] = "Куратор {0} создал тестируемого {1}",
+            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Group)] = "Куратор {0} создал группу {1}",
+            [("CozyTest.Models.Curator", LogActionType.Create, LogObjectType.Test)] = "Куратор {0} создал тест {1}",
             
-            [("CozyTest.Models.Curator", LogActionType.Admin, LogObjectType.Curator)] = "Куратор {0} поменял админство куратора {1}. Новый статус: {2}",//+
+            [("CozyTest.Models.Curator", LogActionType.Admin, LogObjectType.Curator)] = "Куратор {0} поменял админство куратора {1}. Новый статус: {2}",
 
-            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Curator)] = "Куратор {0} редактировал куратора {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Participant)] = "Куратор {0} редактировал тестируемого {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Group)] = "Куратор {0} редактировал группу {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Test)] = "Куратор {0} редактировал тест {1}",//
-            [("CozyTest.Models.Participant", LogActionType.Edit, LogObjectType.Test)] = "Тестируемый {0} начал/закончил прохождение теста {1}",//
+            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Curator)] = "Куратор {0} редактировал куратора {1}",
+            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Participant)] = "Куратор {0} редактировал тестируемого {1}",
+            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Group)] = "Куратор {0} редактировал группу {1}",
+            [("CozyTest.Models.Curator", LogActionType.Edit, LogObjectType.Test)] = "Куратор {0} редактировал тест {1}",
+            [("CozyTest.Models.Participant", LogActionType.Edit, LogObjectType.Test)] = "Тестируемый {0} начал/закончил прохождение теста {1}",
 
-            [("CozyTest.Models.Curator", LogActionType.Public, LogObjectType.Test)] = "Куратор {0} опубликовал тест {1}. Кому: {2}",//+
-            [("CozyTest.Models.Curator", LogActionType.Assigned, LogObjectType.Test)] = "Куратор {0} назначит тест {1}. Кому: {2}",//+
+            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Curator)] = "Куратор {0} заархивировал куратора {1}",
+            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Participant)] = "Куратор {0} заархивировал тестируемого {1}",
+            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Test)] = "Куратор {0} {2} тест {1}",
+            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Question)] = "Куратор {0} заархивировал вопрос {1}",
+      
+            [("CozyTest.Models.Curator", LogActionType.Public, LogObjectType.Test)] = "Куратор {0} опубликовал тест {1}. Кому: {2}",
 
-            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Curator)] = "Куратор {0} заархивировал куратора {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Participant)] = "Куратор {0} заархивировал тестируемого {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Delete, LogObjectType.Group)] = "Куратор {0} удалил группу {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Test)] = "Куратор {0} {2} тест {1}",//+
-            [("CozyTest.Models.Curator", LogActionType.Archive, LogObjectType.Question)] = "Куратор {0} заархивировал вопрос {1}",//.............................
+            [("CozyTest.Models.Curator", LogActionType.Assigned, LogObjectType.Test)] = "Куратор {0} назначит тест {1}. Кому: {2}",
+
+            [("CozyTest.Models.Curator", LogActionType.Delete, LogObjectType.Group)] = "Куратор {0} удалил группу {1}",
         };
 
         public static string GetTemplate(string role, LogActionType action, LogObjectType objType)

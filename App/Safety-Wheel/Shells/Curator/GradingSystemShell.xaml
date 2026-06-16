@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:CozyTest.ForShellWindow"
       mc:Ignorable="d" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+     HorizontalAlignment="Center" VerticalAlignment="Center">
 
     <Grid>
         <Grid.RowDefinitions>

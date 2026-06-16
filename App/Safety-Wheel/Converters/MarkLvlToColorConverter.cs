@@ -13,6 +13,8 @@ namespace CozyTest.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) return App.Current.Resources[""];
+
             if (int.TryParse(value.ToString(), out int mark))
             {
                 switch (mark)

@@ -27,15 +27,12 @@
         <DataTemplate DataType="{x:Type vmSimple:LogsViewModel}">
             <views:LogsListShell/>
         </DataTemplate>
-        
         <DataTemplate DataType="{x:Type vmShow:CuratorShowAssignedPassingCurrentTestViewModel}">
             <views:CuratorShowAssignedPassingCurrentTestShell/>
         </DataTemplate>
-        
         <DataTemplate DataType="{x:Type vmShow:CuratorShowPassingTestsViewModel}">
             <viewsCur:CuratorShowPassingTestsPage/>
         </DataTemplate>
-        
         <DataTemplate DataType="{x:Type vmShow:CuratorShowPassingCurrentTestViewModel}">
             <views:CuratorShowPassingCurrentTestShell/>
         </DataTemplate>
@@ -48,11 +45,9 @@
         <DataTemplate DataType="{x:Type vm:PublicDetailsViewModel}">
             <views:PublicationDetails/>
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type vm:AssignedDetailsViewModel}">
             <views:AssignedDetails/>
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type vm:CreateEditGroupViewModel}">
             <views:CreateEditGroup/>
         </DataTemplate>

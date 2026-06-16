@@ -26,7 +26,7 @@ namespace CozyTest.ViewModels
             set => SetProperty(ref _userFullName, value);
         }
 
-         private bool _adminRoleOn = false;
+        private bool _adminRoleOn = false;
         public bool AdminRoleOn
         {
             get => _adminRoleOn;
@@ -69,8 +69,11 @@ namespace CozyTest.ViewModels
 
         public void ShowLogs()
         {
-            var logsViewModel = App.Services.GetRequiredService<LogsViewModel>();
-            _dialogService.ShowWindow<ShellWindow>(logsViewModel);
+            if (CurrentUser.TypeUser == 1 || CurrentUser.TypeUser == 2)
+            {
+                var logsViewModel = App.Services.GetRequiredService<LogsViewModel>();
+                _dialogService.ShowWindow<ShellWindow>(logsViewModel);
+            }
         }
 
         private void OnLoginSuccess(object sender, EventArgs e)

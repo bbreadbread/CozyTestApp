@@ -5,6 +5,7 @@ using CozyTest.Pages.Participant;
 using CozyTest.Services;
 using CozyTest.ViewModels;
 using CozyTest.ViewModels.CuratorVM.AdministrationVM;
+using CozyTest.ViewModels.ParticipantVM;
 using MahApps.Metro.Controls;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -68,11 +69,12 @@ namespace CozyTest
                 return;
             }
 
-            //if (PartPassingTestPage._isTestActivated)
-            //{
-            //    var attemptService = App.Services.GetRequiredService<AttemptService>();
-            //    await attemptService.RemoveAsync(PartPassingTestPage._attempt);
-            //}
+            if (VM.CurrentPage is MainViewModel mvm)
+            {
+                    if (mvm.CurrentContent is PassingTestViewModel past)
+                        past.EmergencyFinishTestAsync();
+                
+            }
         }
 
         public void RefreshUserRole()

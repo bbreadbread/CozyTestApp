@@ -33,19 +33,16 @@ namespace CozyTest.ViewModels
             get => _icon;
             set => SetProperty(ref _icon, value);
         }
-
         public object Label
         {
             get => _label;
             set => SetProperty(ref _label, value);
         }
-
         public object ToolTip
         {
             get => _toolTip;
             set => SetProperty(ref _toolTip, value);
         }
-
         public object Tag
         {
             get => _tag;
@@ -56,7 +53,6 @@ namespace CozyTest.ViewModels
             get => _isVisible;
             set => SetProperty(ref _isVisible, value);
         }
-
         public ObservableObject Content { get; set; }
     }
 }

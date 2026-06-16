@@ -445,7 +445,7 @@
                                                     </ItemsControl>
                                                 </Grid>
 
-                                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" Visibility="{Binding IsQuestionType,  Converter={StaticResource QuestionTypeVisibilityConverter},  ConverterParameter=Text}">
+                                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsQuestionType,  Converter={StaticResource QuestionTypeVisibilityConverter},  ConverterParameter=Text}">
                                                     <Border Background="{StaticResource LightSwamp}"
                                                   BorderBrush="{StaticResource MainSwamp}"
                                                   Width="450"
@@ -650,6 +650,25 @@
 
                                                     <Button Grid.Column="4" Grid.Row="1" VerticalAlignment="Bottom" Content="Добавить" Command="{Binding AddComplianceOptionCommand}" Margin="5" HorizontalAlignment="Left" Style="{StaticResource ConfirmButton}"/>
                                                 </Grid>
+
+                                                <Expander Grid.Row="3"  VerticalAlignment="Bottom"
+                                                          Grid.ColumnSpan="2"
+                                                          Margin="0 15 0 0" Background="{StaticResource DarkSwamp}" >
+                                                    <Expander.Header>
+                                                        <TextBlock Text="Комментарий" HorizontalAlignment="Left" FontSize="25" Foreground="White" FontWeight="DemiBold"/>
+                                                    </Expander.Header>
+
+                                                    <Border Background="{StaticResource LightSwamp}">
+                                                        <TextBox Text="{Binding Comments, UpdateSourceTrigger=PropertyChanged}"
+                                                                 FontSize="14"
+                                                                 TextWrapping="Wrap"
+                                                                 AcceptsReturn="True"
+                                                                 Height="80"
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 mah:TextBoxHelper.Watermark="Введите комментарий к вопросу..."/>
+                                                    </Border>
+                                                </Expander>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>

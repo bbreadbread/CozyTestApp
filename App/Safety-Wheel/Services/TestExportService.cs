@@ -43,7 +43,12 @@ namespace CozyTest.Services
 
             worksheet.Cells[currentRow, 1].Value = _test.Name;
 
-            var sortedQuestions = _test.Questions.OrderBy(q => q.NumberActual).ToList();
+            var sortedQuestions = _test.Questions
+                                       .Where(p => p.IsArchive != true)
+                                       .GroupBy(q => q.NumberActual)
+                                       .Select(g => g.OrderByDescending(q => q.Version).FirstOrDefault())
+                                       .OrderBy(q => q.NumberActual)
+                                       .ToList();
 
             foreach (var question in sortedQuestions)
             {

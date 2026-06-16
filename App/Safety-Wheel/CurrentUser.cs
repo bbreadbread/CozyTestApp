@@ -10,6 +10,7 @@ namespace CozyTest
     {
         public static object ClassUser { get; set; }
         public static byte TypeUser { get; set; }
+
         public static int Id { get; set; }
         public static string Name { get; set; }
         public static string Login { get; set; }

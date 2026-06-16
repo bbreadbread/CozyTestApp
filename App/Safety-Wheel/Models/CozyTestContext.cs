@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using CozyTest.Models;
@@ -50,8 +51,16 @@ public partial class CozyTestContext : DbContext
 
     public virtual DbSet<UserActionLog> UserActionLogs { get; set; }
 
+    string connStr = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "connection.settings"));
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=HOME-PC;Database=cozy-test;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(connStr);
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Attempt>(entity =>

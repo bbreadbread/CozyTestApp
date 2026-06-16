@@ -102,6 +102,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             _serviceProvider = serviceProvider;
 
             _ = InitializeAsync();
+            _ = ApplyFiltersAsync();
 
             SearchParticipantCommand = new RelayCommand(_ => SearchParticipant());
             AddParticipantCommand = new RelayCommand(_ => AddParticipant());
@@ -115,7 +116,7 @@ namespace CozyTest.ViewModels.CuratorVM.AdministrationVM
             {
                 IsLoading = true;
 
-                if (CurrentUser.TypeUser == 1)
+                if (CurrentUser.TypeUser == 1 && AdminModeOn == true)
                 {
                     await _participantService.InitializeForAdminAsync();
                     BindIsChecked = false;

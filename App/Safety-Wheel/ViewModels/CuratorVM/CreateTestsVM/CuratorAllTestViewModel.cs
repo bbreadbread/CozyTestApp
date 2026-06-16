@@ -239,11 +239,6 @@ namespace CozyTest.ViewModels.CreateTestsVM
                 {
                     foreach (var test in _testService.Tests)
                     {
-                        if (test.Questions != null)
-                        {
-                            test.PenaltyMax = test.Questions.Count;
-                        }
-
                         var testVM = new TestListItemViewModel(test, _testService, true);
                         Tests.Add(testVM);
                         _allTests.Add(test);

@@ -1,7 +1,10 @@
 ﻿using CozyTest.Models;
 using CozyTest.Services;
+using CozyTest.ViewModels.CreateTestsVM;
 using CozyTest.ViewModels.CuratorVM;
 using CozyTest.ViewModels.ParticipantVM.TestsVM;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -19,6 +22,7 @@ namespace CozyTest.ViewModels.ParticipantVM
         private readonly ParticipantAnswerService _participantAnswerService;
         private readonly CorrespondenceService _correspondenceService;
         private readonly CriteriaService _criteriaService;
+        private readonly IServiceProvider _serviceProvider;
 
         private Test _currentTest;
 
@@ -40,6 +44,28 @@ namespace CozyTest.ViewModels.ParticipantVM
         private string _timeLimit;
         private System.Timers.Timer _timer;
         private int _remainingSeconds;
+
+        public object _buttonColor = App.Current.Resources["MainSwamp"];
+        public string _buttonText = "Принять ответ";
+
+        public object ButtonColor
+        {
+            get => _buttonColor;
+            set
+            {
+                _buttonColor = value;
+                OnPropertyChanged();
+            }
+        }
+        public string ButtonText
+        {
+            get => _buttonText;
+            set
+            {
+                _buttonText = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<QuestionPassingViewModel> Questions
         {
@@ -147,11 +173,11 @@ namespace CozyTest.ViewModels.ParticipantVM
 
         public ICommand SelectQuestionCommand { get; }
         public ICommand SubmitAnswerCommand { get; }
-        public ICommand FinishTestCommand { get; }
 
         public PassingTestViewModel(
             INavigationService navigationService,
             IDialogService dialogService,
+            IServiceProvider serviceProvider,
             TestService testService,
             QuestionService questionService,
             OptionService optionService,
@@ -161,6 +187,7 @@ namespace CozyTest.ViewModels.ParticipantVM
             CriteriaService criteriaService,
             Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
+            _serviceProvider = serviceProvider;
             IsTestFinished =false;
             _testService = testService;
             _questionService = questionService;
@@ -188,7 +215,6 @@ namespace CozyTest.ViewModels.ParticipantVM
             });
 
             SubmitAnswerCommand = new RelayCommand(_ => SubmitCurrentAnswer());
-            FinishTestCommand = new RelayCommand(async _ => await FinishTestAsync());
 
             Task.Run(async () => await LoadTestAsync());
 
@@ -299,12 +325,25 @@ namespace CozyTest.ViewModels.ParticipantVM
             OnPropertyChanged(nameof(SelectedQuestion));
         }
 
+        bool isFinish = false;
         private async void SubmitCurrentAnswer()
         {
-            if (IsTestFinished == true) return;
+            if (IsTestFinished == true)
+            {
+                var viewModel = ActivatorUtilities.CreateInstance<PartAllTestViewModel>(_serviceProvider);
+                _navigationService.NavigateTo(viewModel);
+
+                return;
+            }
+                    
             if (SelectedQuestion == null) return;
 
-            if (SelectedQuestion.IsAnswered)
+            if (isFinish == true)
+            {
+                await FinishTestAsync();
+                return;
+            }
+            else if (SelectedQuestion.IsAnswered)
             {
                 MessageBox.Show("Вы уже ответили на этот вопрос", "Внимание");
                 return;
@@ -326,7 +365,17 @@ namespace CozyTest.ViewModels.ParticipantVM
             }
             else
             {
-                await FinishTestAsync();
+                var msg = MessageBox.Show("Перейти к завершению теста?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (msg == MessageBoxResult.No) return;
+                else await FinishTestAsync();
+            }
+
+            if (Questions.FirstOrDefault(p => p.IsAnswered == false) == null)
+            {
+                isFinish = true;
+                ButtonColor = App.Current.Resources["HoverGreen"];
+                ButtonText = "Завершить прохождение";
             }
         }
 
@@ -457,8 +506,34 @@ namespace CozyTest.ViewModels.ParticipantVM
             }
         }
 
+        public async Task EmergencyFinishTestAsync()
+        {
+            IsTestFinished = true;
+
+            var score = await CalculateScore();
+
+            string gradeName = await CalculateGradeAsync(score);
+            _timer?.Stop();
+            Attempt.Score = score;
+            Attempt.FinishedAt = DateTime.Now;
+            Attempt.Status = "Завершен(Принудительный выход)";
+            Attempt.MarkLvl = CurrentMarkLvl;
+            Attempt.AttemptNumber = await _attemptService.GetLastNumPlusOne(_currentTest.Id, CurrentUser.Id);
+            await _attemptService.UpdateAsync(Attempt);
+
+            await _logger.LogAsync(
+                   whoMade: CurrentUser.Name,
+                   whoRole: CurrentUser.ClassUser.ToString(),
+                   action: LogActionType.Edit,
+                   objectType: LogObjectType.Test,
+                   objectName: _currentTest.Name,
+                   details: "закончил(Принудительный выход)"
+               );
+        }
+            
         public async Task FinishTestAsync()
         {
+
             IsTestFinished = true;
 
             if (SelectedQuestion != null && !SelectedQuestion.IsAnswered)
@@ -510,6 +585,9 @@ namespace CozyTest.ViewModels.ParticipantVM
                    details: "закончил"
                );
 
+
+            ButtonColor = App.Current.Resources["Gold"];
+            ButtonText = "Выйти из теста";
         }
         int CurrentMarkLvl = 0;
         private async Task SaveEmptyAnswerAsync(QuestionPassingViewModel qvm)

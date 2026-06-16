@@ -147,7 +147,6 @@ namespace CozyTest.Services
 
             foreach (var test in tests)
             {
-                test.PenaltyMax = test.Questions?.Count ?? 0;
                 if (setList == true) _tests.Add(test);
             }
 
