@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <converters:PercentageToWidthConverter  x:Key="PercentageToWidthConverter"/>
-        
+
         <Style x:Key="QuestionCardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
@@ -157,10 +157,10 @@
                 </Grid>
             </Border>
 
-            
+
         </StackPanel>
-         <ScrollViewer Grid.Column="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-             
+        <ScrollViewer Grid.Column="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
             <StackPanel MaxWidth="700" HorizontalAlignment="Stretch" Margin="24,24,24,48">
                 <TextBlock Text="Вопросы, на которые часто даются неправильные ответы" 
            FontSize="18" 
@@ -171,96 +171,96 @@
                     BorderThickness="1" 
                     CornerRadius="8" 
                     Margin="0,0,0,24">
-                <DataGrid ItemsSource="{Binding QuestionsWrong}"
+                    <DataGrid ItemsSource="{Binding QuestionsWrong}"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
                           HeadersVisibility="Column"
                           GridLinesVisibility="Horizontal"
                           BorderThickness="0"
                           Background="White">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Вопрос" 
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Вопрос" 
                                             Binding="{Binding QuestionText}" 
                                             Width="*"
                                             FontSize="14"/>
-                        <DataGridTextColumn Header="Правильные ответы" 
+                            <DataGridTextColumn Header="Правильные ответы" 
                                             Binding="{Binding RatioText}" 
                                             Width="Auto"
                                             FontSize="14"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
 
-            <ItemsControl ItemsSource="{Binding QuestionDetails}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource QuestionCardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="{Binding QuestionText}" 
+                <ItemsControl ItemsSource="{Binding QuestionDetails}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource QuestionCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding QuestionText}" 
                                            FontSize="16" 
                                            FontWeight="Medium" 
                                            Foreground="#202124"
                                            TextWrapping="Wrap"
                                            Margin="0 0 0 8"/>
 
-                                <TextBlock Text="{Binding CorrectRatioText}" 
+                                    <TextBlock Text="{Binding CorrectRatioText}" 
                                            FontSize="14" 
                                            Foreground="#5F6368"
                                            Margin="0 0 0 16"/>
 
-                                <ItemsControl ItemsSource="{Binding Options}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0 0 0 8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
+                                    <ItemsControl ItemsSource="{Binding Options}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0 0 0 8">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
 
-                                                <StackPanel Grid.Row="0" 
+                                                    <StackPanel Grid.Row="0" 
                                                             Orientation="Horizontal"
                                                             Margin="10 0 0 4">
-                                                    <TextBlock Text="✓ " 
+                                                        <TextBlock Text="✓ " 
                                                                Foreground="#34A853"
                                                                FontWeight="Bold"
                                                                Visibility="{Binding IsCorrect, 
                                                                    Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                                    <TextBlock Text="{Binding Text}" 
+                                                        <TextBlock Text="{Binding Text}" 
                                                                FontSize="14" 
                                                                Foreground="#202124"
                                                                TextWrapping="Wrap"/>
-                                                </StackPanel>
+                                                    </StackPanel>
 
-                                                <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="10 0 0 0">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="510"/>
-                                                        <ColumnDefinition Width="60"/>
-                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="10 0 0 0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="510"/>
+                                                            <ColumnDefinition Width="60"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                    <Border Grid.Column="0"
+                                                        <Border Grid.Column="0"
                                                             Height="20"
                                                             CornerRadius="4"
                                                             Background="{StaticResource LightSwamp}"
                                                             BorderBrush="{StaticResource MainSwamp}"
                                                             BorderThickness="1"
                                                             Margin="0,0,8,0">
-                                                        <Border Background="{StaticResource MainSwamp}"
+                                                            <Border Background="{StaticResource MainSwamp}"
                                                                 CornerRadius="4"
                                                                 HorizontalAlignment="Left"
                                                                 Width="{Binding Percentage, 
                                                                     Converter={StaticResource PercentageToWidthConverter},
                                                                     ConverterParameter=510}"/>
-                                                    </Border>
+                                                        </Border>
 
-                                                    <TextBlock Grid.Column="1" 
+                                                        <TextBlock Grid.Column="1" 
                                                                Text="{Binding CountText}" 
                                                                FontSize="12" 
                                                                Foreground="#5F6368"
                                                                VerticalAlignment="Center"/>
-                                                </Grid>
+                                                    </Grid>
 
-                                                <Expander Grid.Row="2" 
+                                                    <Expander Grid.Row="2" 
                                                           Header="Иные ответы участников" 
                                                           Padding="10"
                                                           HorizontalAlignment="Stretch"
@@ -271,134 +271,112 @@
                                                           Visibility="{Binding QuestionOpt.QuestionTypeId, 
                                                               Converter={StaticResource QuestionTypeVisibilityConverter}, 
                                                               ConverterParameter=Text}">
-                                                    <ItemsControl ItemsSource="{Binding OtherAnswers}">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <StackPanel Margin="0 8 0 0">
-                                                                    <TextBlock Text="{Binding Text}" 
+                                                        <ItemsControl ItemsSource="{Binding OtherAnswers}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Margin="0 8 0 0">
+                                                                        <TextBlock Text="{Binding Text}" 
                                                                                FontSize="14" 
                                                                                Margin="0 0 0 5"
                                                                                Foreground="#202124"
                                                                                TextWrapping="Wrap"/>
 
-                                                                    <Grid HorizontalAlignment="Stretch">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="510"/>
-                                                                            <ColumnDefinition Width="60"/>
-                                                                        </Grid.ColumnDefinitions>
+                                                                        <Grid HorizontalAlignment="Stretch">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="510"/>
+                                                                                <ColumnDefinition Width="60"/>
+                                                                            </Grid.ColumnDefinitions>
 
-                                                                        <Border Grid.Column="0"
+                                                                            <Border Grid.Column="0"
                                                                                 Height="20"
                                                                                 CornerRadius="4"
                                                                                 Background="{StaticResource LightSwamp}"
                                                                                 BorderBrush="{StaticResource MainSwamp}"
                                                                                 BorderThickness="1"
                                                                                 Margin="0 0 8 0">
-                                                                            <Border Background="{StaticResource MainSwamp}"
+                                                                                <Border Background="{StaticResource MainSwamp}"
                                                                                     CornerRadius="4"
                                                                                     HorizontalAlignment="Left"
                                                                                     Width="{Binding Percentage, 
                                                                                          Converter={StaticResource PercentageToWidthConverter},
                                                                                          ConverterParameter=510}"/>
-                                                                        </Border>
+                                                                            </Border>
 
-                                                                        <TextBlock Grid.Column="1" 
+                                                                            <TextBlock Grid.Column="1" 
                                                                                    Text="{Binding CountText}" 
                                                                                    FontSize="12" 
                                                                                    Foreground="#5F6368"
                                                                                    VerticalAlignment="Center"/>
-                                                                    </Grid>
-                                                                </StackPanel>
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </Expander>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                                        </Grid>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </Expander>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                <ItemsControl ItemsSource="{Binding Pairs}"
+                                    <ItemsControl ItemsSource="{Binding Pairs}"
                                               Visibility="{Binding QuestionTypeId, 
                                                   Converter={StaticResource QuestionTypeVisibilityConverter}, 
                                                   ConverterParameter=Compliance}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0,0,0,8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,0,8">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
 
-                                                <StackPanel Grid.Row="0" 
+                                                    <StackPanel Grid.Row="0" 
                                                             Orientation="Horizontal"
                                                             Margin="0,0,0,4">
-                                                    <TextBlock Text="{Binding CorrectIndicator}" 
+                                                        <TextBlock Text="{Binding CorrectIndicator}" 
                                                                FontWeight="Bold"
                                                                Margin="0,0,4,0"/>
-                                                    <TextBlock Text="{Binding FullPairText}" 
+                                                        <TextBlock Text="{Binding FullPairText}" 
                                                                FontSize="14" 
                                                                Foreground="#202124"
                                                                TextWrapping="Wrap"/>
-                                                </StackPanel>
+                                                    </StackPanel>
 
-                                                <Grid Grid.Row="1">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
+                                                    <Grid Grid.Row="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                    <Border Grid.Column="0"
+                                                        <Border Grid.Column="0"
                                                             Height="20"
                                                             CornerRadius="4"
                                                             Background="#78A9A9"
                                                             Margin="0,0,8,0">
-                                                        <Border 
+                                                            <Border 
                                                                 CornerRadius="4"
                                                                 HorizontalAlignment="Left"
                                                                 Width="{Binding Percentage, 
                                                                     Converter={StaticResource PercentageToWidthConverter},
                                                                     ConverterParameter=510}"/>
-                                                    </Border>
+                                                        </Border>
 
-                                                    <TextBlock Grid.Column="1" 
+                                                        <TextBlock Grid.Column="1" 
                                                                Text="{Binding CountText}" 
                                                                FontSize="12" 
                                                                Foreground="#5F6368"
                                                                VerticalAlignment="Center"/>
+                                                    </Grid>
                                                 </Grid>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <!--<Border Background="White" 
-                    BorderBrush="#DADCE0"
-                    BorderThickness="1"
-                    CornerRadius="8" 
-                    Padding="48" 
-                    Margin="0,24,0,0">
-                <StackPanel HorizontalAlignment="Center">
-                    <materialDesign:PackIcon Kind="ChartBar" 
-                                             Width="64" 
-                                             Height="64" 
-                                             Foreground="#DADCE0"/>
-                    <TextBlock Text="Нет данных для отображения" 
-                               FontSize="16" 
-                               Foreground="#5F6368" 
-                               HorizontalAlignment="Center"
-                               Margin="0,16,0,0"/>
-                </StackPanel>
-            </Border>-->
-
-        </StackPanel>
-    </ScrollViewer>
-        
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
-   
 </UserControl>

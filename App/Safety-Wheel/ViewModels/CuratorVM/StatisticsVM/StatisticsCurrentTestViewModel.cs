@@ -151,24 +151,52 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
 
         private async Task LoadTestStatisticsAsync()
         {
-            var attempts = await _attemptService.GetAttemptsByTestAsync(CurrentTest.Id);
-
-            var filteredAttempts = SelectedParticipant == null
-                ? attempts.Where(a => a.StartedAt.HasValue && a.FinishedAt.HasValue).ToList()
-                : attempts.Where(a => a.ParticipantId == SelectedParticipant.Id
-                                    && a.StartedAt.HasValue && a.FinishedAt.HasValue).ToList();
-
-            TotalResponses = filteredAttempts.Count;
-
-            var scores = filteredAttempts
-                .Where(a => a.Score.HasValue)
-                .Select(a => a.Score.Value)
-                .OrderBy(s => s)
-                .ToList();
-
-            if (scores.Any())
+            try
             {
-                CountQuest = (int)filteredAttempts[0].CountQuestions;
+                var attempts = await _attemptService.GetAttemptsByTestAsync(CurrentTest.Id);
+
+                var filteredAttempts = SelectedParticipant == null
+                    ? attempts.Where(a => a.StartedAt.HasValue && a.FinishedAt.HasValue).ToList()
+                    : attempts.Where(a => a.ParticipantId == SelectedParticipant.Id
+                                        && a.StartedAt.HasValue && a.FinishedAt.HasValue).ToList();
+
+                TotalResponses = filteredAttempts.Count;
+
+                if (filteredAttempts.Count == 0)
+                {
+                    CountQuest = 0;
+                    AverageScore = 0;
+                    MedianScore = 0;
+                    MinScore = 0;
+                    MaxScore = 0;
+                    ScoreDistributionData = Array.Empty<double>();
+                    ScoreDistributionLabels = Array.Empty<string>();
+                    QuestionsWrong = new ObservableCollection<QuestionSummary>();
+                    QuestionDetails = new ObservableCollection<QuestionDetailStatistics>();
+                    return;
+                }
+
+                var scores = filteredAttempts
+                    .Where(a => a.Score.HasValue)
+                    .Select(a => a.Score.Value)
+                    .OrderBy(s => s)
+                    .ToList();
+
+                if (!scores.Any())
+                {
+                    CountQuest = (int)(filteredAttempts.FirstOrDefault()?.CountQuestions ?? 0);
+                    AverageScore = 0;
+                    MedianScore = 0;
+                    MinScore = 0;
+                    MaxScore = 0;
+                    ScoreDistributionData = Array.Empty<double>();
+                    ScoreDistributionLabels = Array.Empty<string>();
+                    QuestionsWrong = new ObservableCollection<QuestionSummary>();
+                    QuestionDetails = new ObservableCollection<QuestionDetailStatistics>();
+                    return;
+                }
+
+                CountQuest = (int)(filteredAttempts.FirstOrDefault()?.CountQuestions ?? 0);
                 AverageScore = Math.Round(scores.Average(), 1);
                 MinScore = scores.Min();
                 MaxScore = scores.Max();
@@ -177,176 +205,169 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
                 MedianScore = count % 2 == 0
                     ? (scores[count / 2 - 1] + scores[count / 2]) / 2.0
                     : scores[count / 2];
-            }
-            else
-            {
-                CountQuest = scores.Count;
-                AverageScore = 0;
-                MedianScore = 0;
-                MinScore = 0;
-                MaxScore = 0;
-            }
 
-            var distribution = new double[(int)filteredAttempts[0].CountQuestions];
-            var labels = Enumerable.Range(0, (int)filteredAttempts[0].CountQuestions).Select(i => i.ToString()).ToArray();
+                int maxQuestions = (int)(filteredAttempts.FirstOrDefault()?.CountQuestions ?? 0);
+                var distribution = new double[maxQuestions + 1];
+                var labels = Enumerable.Range(0, maxQuestions + 1).Select(i => i.ToString()).ToArray();
 
-            foreach (var score in scores)
-            {
-                int index = (int)Math.Round((double)score);
-                if (index >= 0 && index <= (int)filteredAttempts[0].CountQuestions)
-                    distribution[index]++;
-            }
-
-            ScoreDistributionData = distribution;
-            ScoreDistributionLabels = labels;
-            var wrongs = new ObservableCollection<QuestionSummary>();
-            var details = new ObservableCollection<QuestionDetailStatistics>();
-
-            foreach (var question in CurrentTest.Questions.OrderBy(q => q.NumberActual))
-            {
-                var answers = _participantAnswerService.GetAnswersByQuestion(question.Id);
-
-                var filteredAnswers = SelectedParticipant == null
-                    ? answers.ToList()
-                    : answers.Where(a => a.Attempt.ParticipantId == SelectedParticipant.Id).ToList();
-
-                if (!filteredAnswers.Any()) continue;
-
-                var totalAnswers = filteredAnswers.Count;
-                var correctCount = filteredAnswers.Count(a => a.IsCorrect == true);
-                var incorrectCount = totalAnswers - correctCount;
-                var correctPercent = (double)correctCount / totalAnswers * 100;
-                var incorrectPercent = (double)incorrectCount / totalAnswers * 100;
-
-                if (incorrectPercent > 50)
+                foreach (var score in scores)
                 {
-                    wrongs.Add(new QuestionSummary
-                    {
-                        QuestionText = question.TestQuest,
-                        CorrectCount = correctCount,
-                        TotalCount = totalAnswers
-                    });
+                    int index = (int)Math.Round((double)score);
+                    if (index >= 0 && index < distribution.Length)
+                        distribution[index]++;
                 }
 
-                var optionStats = new ObservableCollection<OptionDetail>();
-                var pairStats = new ObservableCollection<PairDetail>();
+                ScoreDistributionData = distribution;
+                ScoreDistributionLabels = labels;
 
-                if (question.QuestionTypeId == 3) 
+                var wrongs = new ObservableCollection<QuestionSummary>();
+                var details = new ObservableCollection<QuestionDetailStatistics>();
+
+                foreach (var question in CurrentTest.Questions.OrderBy(q => q.NumberActual))
                 {
-                    var matchingAnswers = filteredAnswers
-                        .Where(a => a.ConstantOptionId != 0 && a.OptionId != 0)
-                        .ToList();
+                    var answers = _participantAnswerService.GetAnswersByQuestion(question.Id);
 
-                    var correspondences = await _correspondenceService.GetByQuestionIdAsync(question.Id);
-                    var correctPairs = correspondences.ToDictionary(
-                        c => c.ConstantId,
-                        c => c.СorrespondingId);
+                    var filteredAnswers = SelectedParticipant == null
+                        ? answers.ToList()
+                        : answers.Where(a => a.Attempt.ParticipantId == SelectedParticipant.Id).ToList();
 
-                    var allOptions = question.Options.ToDictionary(o => o.Id, o => o.TextAnswer);
-                    var constantOptions = question.Options
-                        .Where(o => correctPairs.Keys.Contains(o.Id))
-                        .ToDictionary(o => o.Id, o => o.TextAnswer);
+                    if (!filteredAnswers.Any()) continue;
 
-                    var pairGroups = matchingAnswers
-                        .GroupBy(a => new { a.ConstantOptionId, a.OptionId })
-                        .Select(g => new
-                        {
-                            ConstantId = g.Key.ConstantOptionId,
-                            SelectedId = g.Key.OptionId,
-                            Count = g.Count()
-                        })
-                        .ToList();
+                    var totalAnswers = filteredAnswers.Count;
+                    var correctCount = filteredAnswers.Count(a => a.IsCorrect == true);
+                    var incorrectCount = totalAnswers - correctCount;
+                    var correctPercent = totalAnswers > 0 ? (double)correctCount / totalAnswers * 100 : 0;
+                    var incorrectPercent = totalAnswers > 0 ? (double)incorrectCount / totalAnswers * 100 : 0;
 
-                    foreach (var constantId in correctPairs.Keys)
+                    if (incorrectPercent > 50)
                     {
-                        var constantText = allOptions.GetValueOrDefault(constantId, "???");
-                        var correctCorrespondingId = correctPairs[constantId];
-                        var correctText = allOptions.GetValueOrDefault(correctCorrespondingId, "???");
+                        wrongs.Add(new QuestionSummary
+                        {
+                            QuestionText = question.TestQuest,
+                            CorrectCount = correctCount,
+                            TotalCount = totalAnswers
+                        });
+                    }
 
-                        var selectionsForConstant = pairGroups
-                            .Where(p => p.ConstantId == constantId)
+                    var optionStats = new ObservableCollection<OptionDetail>();
+                    var pairStats = new ObservableCollection<PairDetail>();
+
+                    if (question.QuestionTypeId == 3)
+                    {
+                        var matchingAnswers = filteredAnswers
+                            .Where(a => a.ConstantOptionId != 0 && a.OptionId != 0)
                             .ToList();
 
-                        var totalForConstant = selectionsForConstant.Sum(p => p.Count);
-
-                        foreach (var selection in selectionsForConstant)
+                        if (matchingAnswers.Any())
                         {
-                            var selectedText = allOptions.GetValueOrDefault(selection.SelectedId, "???");
-                            var isCorrect = selection.SelectedId == correctCorrespondingId;
-                            var percent = totalForConstant > 0
-                                ? Math.Round((double)selection.Count / totalForConstant * 100, 1)
-                                : 0;
+                            var correspondences = await _correspondenceService.GetByQuestionIdAsync(question.Id);
+                            var correctPairs = correspondences.ToDictionary(
+                                c => c.ConstantId,
+                                c => c.СorrespondingId);
 
-                            pairStats.Add(new PairDetail
-                            {
-                                ConstantText = constantText,
-                                SelectedText = selectedText,
-                                CorrectText = correctText,
-                                Count = selection.Count,
-                                Percentage = percent,
-                                IsCorrect = isCorrect,
-                                FullPairText = $"{constantText} → {selectedText}"
-                            });
-                        }
-                    }
+                            var allOptions = question.Options.ToDictionary(o => o.Id, o => o.TextAnswer);
+                            var constantOptions = question.Options
+                                .Where(o => correctPairs.Keys.Contains(o.Id))
+                                .ToDictionary(o => o.Id, o => o.TextAnswer);
 
-                    pairStats = new ObservableCollection<PairDetail>(
-                        pairStats.OrderBy(p => p.ConstantText)
-                                 .ThenByDescending(p => p.Count));
-                }
-                else if (question.QuestionTypeId == 2)
-                {
-                    if (question.Options?.Any() == true)
-                    {
-                        foreach (var option in question.Options)
-                        {
-                            var optionCountCorrect = filteredAnswers.Where(p=>p.IsCorrect == true).Count(a => a.OptionId == option.Id);
-                            var optionPercent = totalAnswers > 0
-                                ? Math.Round((double)optionCountCorrect / totalAnswers * 100, 1)
-                                : 0;
-
-                            var optdet = new OptionDetail
-                            {
-                                QuestionOpt = option.Question,
-                                Text = option.TextAnswer,
-                                Count = optionCountCorrect,
-                                Percentage = optionPercent,
-                                IsCorrect = option.IsCorrect ?? false,
-                                BarWidth = optionPercent
-                            };
-
-                            var textAnswers = filteredAnswers
-                              .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
-                              .Select(a => a.TextAnswer.Trim())
-                              .ToList();
-
-                            var correctTexts = question.Options?
-                                .Where(o => o.IsCorrect == true)
-                                .Select(o => o.TextAnswer.ToLower().Trim())
-                                .ToHashSet() ?? new HashSet<string>();
-
-                            var wrongAnswers = textAnswers
-                                .Where(a => !correctTexts.Contains(a.ToLower().Trim()))
-                                .GroupBy(a => a.ToLower().Trim())
-                                .Select(g => new OtherAnswer
+                            var pairGroups = matchingAnswers
+                                .GroupBy(a => new { a.ConstantOptionId, a.OptionId })
+                                .Select(g => new
                                 {
-                                    Text = g.First(),
-                                    Count = g.Count(),
-                                    Percentage = Math.Round((double)g.Count() / totalAnswers * 100, 1)
+                                    ConstantId = g.Key.ConstantOptionId,
+                                    SelectedId = g.Key.OptionId,
+                                    Count = g.Count()
                                 })
-                                .OrderByDescending(o => o.Count)
                                 .ToList();
 
-                            optdet.OtherAnswers = new ObservableCollection<OtherAnswer>(wrongAnswers);
+                            foreach (var constantId in correctPairs.Keys)
+                            {
+                                var constantText = allOptions.GetValueOrDefault(constantId, "???");
+                                var correctCorrespondingId = correctPairs[constantId];
+                                var correctText = allOptions.GetValueOrDefault(correctCorrespondingId, "???");
 
+                                var selectionsForConstant = pairGroups
+                                    .Where(p => p.ConstantId == constantId)
+                                    .ToList();
 
-                            optionStats.Add(optdet);
+                                var totalForConstant = selectionsForConstant.Sum(p => p.Count);
+
+                                foreach (var selection in selectionsForConstant)
+                                {
+                                    var selectedText = allOptions.GetValueOrDefault(selection.SelectedId, "???");
+                                    var isCorrect = selection.SelectedId == correctCorrespondingId;
+                                    var percent = totalForConstant > 0
+                                        ? Math.Round((double)selection.Count / totalForConstant * 100, 1)
+                                        : 0;
+
+                                    pairStats.Add(new PairDetail
+                                    {
+                                        ConstantText = constantText,
+                                        SelectedText = selectedText,
+                                        CorrectText = correctText,
+                                        Count = selection.Count,
+                                        Percentage = percent,
+                                        IsCorrect = isCorrect,
+                                        FullPairText = $"{constantText} → {selectedText}"
+                                    });
+                                }
+                            }
+
+                            pairStats = new ObservableCollection<PairDetail>(
+                                pairStats.OrderBy(p => p.ConstantText)
+                                         .ThenByDescending(p => p.Count));
                         }
                     }
-                }
-                else if (question.Options?.Any() == true)
-                {
-                    if (question.Options?.Any() == true)
+                    else if (question.QuestionTypeId == 2)
+                    {
+                        if (question.Options?.Any() == true)
+                        {
+                            foreach (var option in question.Options)
+                            {
+                                var optionCountCorrect = filteredAnswers.Where(p => p.IsCorrect == true).Count(a => a.OptionId == option.Id);
+                                var optionPercent = totalAnswers > 0
+                                    ? Math.Round((double)optionCountCorrect / totalAnswers * 100, 1)
+                                    : 0;
+
+                                var optdet = new OptionDetail
+                                {
+                                    QuestionOpt = option.Question,
+                                    Text = option.TextAnswer,
+                                    Count = optionCountCorrect,
+                                    Percentage = optionPercent,
+                                    IsCorrect = option.IsCorrect ?? false,
+                                    BarWidth = optionPercent
+                                };
+
+                                var textAnswers = filteredAnswers
+                                  .Where(a => !string.IsNullOrWhiteSpace(a.TextAnswer))
+                                  .Select(a => a.TextAnswer.Trim())
+                                  .ToList();
+
+                                var correctTexts = question.Options?
+                                    .Where(o => o.IsCorrect == true)
+                                    .Select(o => o.TextAnswer?.ToLower().Trim() ?? "")
+                                    .ToHashSet() ?? new HashSet<string>();
+
+                                var wrongAnswers = textAnswers
+                                    .Where(a => !correctTexts.Contains(a.ToLower().Trim()))
+                                    .GroupBy(a => a.ToLower().Trim())
+                                    .Select(g => new OtherAnswer
+                                    {
+                                        Text = g.First(),
+                                        Count = g.Count(),
+                                        Percentage = totalAnswers > 0 ? Math.Round((double)g.Count() / totalAnswers * 100, 1) : 0
+                                    })
+                                    .OrderByDescending(o => o.Count)
+                                    .ToList();
+
+                                optdet.OtherAnswers = new ObservableCollection<OtherAnswer>(wrongAnswers);
+
+                                optionStats.Add(optdet);
+                            }
+                        }
+                    }
+                    else if (question.Options?.Any() == true)
                     {
                         foreach (var option in question.Options)
                         {
@@ -367,22 +388,36 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
                             optionStats.Add(optdet);
                         }
                     }
+
+                    details.Add(new QuestionDetailStatistics
+                    {
+                        QuestionText = question.TestQuest,
+                        CorrectCount = correctCount,
+                        TotalCount = totalAnswers,
+                        Options = optionStats,
+                        Pairs = pairStats,
+                        ChartData = optionStats.Select(o => (double)o.Count).ToArray(),
+                        ChartLabels = optionStats.Select(o => o.Text).ToArray()
+                    });
                 }
 
-                details.Add(new QuestionDetailStatistics
-                {
-                    QuestionText = question.TestQuest,
-                    CorrectCount = correctCount,
-                    TotalCount = totalAnswers,
-                    Options = optionStats,
-                    Pairs = pairStats,
-                    ChartData = optionStats.Select(o => (double)o.Count).ToArray(),
-                    ChartLabels = optionStats.Select(o => o.Text).ToArray()
-                });
+                QuestionsWrong = wrongs;
+                QuestionDetails = details;
             }
+            catch (Exception ex)
+            {
+                CountQuest = 0;
+                AverageScore = 0;
+                MedianScore = 0;
+                MinScore = 0;
+                MaxScore = 0;
+                ScoreDistributionData = Array.Empty<double>();
+                ScoreDistributionLabels = Array.Empty<string>();
+                QuestionsWrong = new ObservableCollection<QuestionSummary>();
+                QuestionDetails = new ObservableCollection<QuestionDetailStatistics>();
 
-            QuestionsWrong = wrongs;
-            QuestionDetails = details;
+                _dialogService.ShowMessage($"Ошибка загрузки статистики: {ex.Message}", "Ошибка");
+            }
         }
 
     }
@@ -399,6 +434,7 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
     {
         public string QuestionText { get; set; }
         public int CorrectCount { get; set; }
+        public int QuestionTypeId { get; set; }
         public int TotalCount { get; set; }
         public string CorrectRatioText => $"Верных ответов: {CorrectCount} из {TotalCount}";
         public ObservableCollection<PairDetail> Pairs { get; set; } = new();
@@ -430,10 +466,10 @@ namespace CozyTest.ViewModels.CuratorVM.StatisticsVM
 
     public class PairDetail
     {
-        public string ConstantText { get; set; }     
-        public string SelectedText { get; set; }     
-        public string CorrectText { get; set; }      
-        public string FullPairText { get; set; }     
+        public string ConstantText { get; set; }
+        public string SelectedText { get; set; }
+        public string CorrectText { get; set; }
+        public string FullPairText { get; set; }
         public int Count { get; set; }
         public double Percentage { get; set; }
         public bool IsCorrect { get; set; }

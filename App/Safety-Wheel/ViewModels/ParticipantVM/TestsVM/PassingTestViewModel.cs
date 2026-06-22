@@ -443,6 +443,11 @@ namespace CozyTest.ViewModels.ParticipantVM
                         };
                         await _participantAnswerService.AddAsync(answer);
                     }
+
+                    foreach (var opt in qvm.Options)
+                    {
+                        opt.IsCorrect = opt.Option.IsCorrect == true;
+                    }
                 }
                 else if (qvm.Question.QuestionTypeId == 2)
                 {

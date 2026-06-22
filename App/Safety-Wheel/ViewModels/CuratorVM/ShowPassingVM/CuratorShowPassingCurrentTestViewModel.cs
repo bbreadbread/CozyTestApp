@@ -214,11 +214,11 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 if (_attempt.FinishedAt.HasValue && _attempt.StartedAt != default)
                 {
                     var duration = _attempt.FinishedAt.Value - _attempt.StartedAt;
-                    TimeLimit = $"{duration}";
+                    TimeLimit = $"{(int)duration.Value.TotalHours:D2}:{duration.Value.Minutes:D2}:{duration.Value.Seconds:D2}";
                 }
                 else
                 {
-                    TimeLimit = "--:--";
+                    TimeLimit = "--:--:--";
                 }
 
                 var questionsForView = new List<Question>();
@@ -257,6 +257,11 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     qvm.Question.NumberNow = ++i;
                     ApplyParticipantAnswers(qvm, participantAnswers);
                     Questions.Add(qvm);
+
+                    foreach (var opt in qvm.Options)
+                    {
+                        opt.IsCorrect = opt.Option.IsCorrect == true;
+                    }
                 }
 
                 SelectedQuestion = Questions.First();
@@ -293,8 +298,6 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 qvm.IsCorrect = false;
             }
             else qvm.IsAnswered = true;
-
-            
 
             var actualOptions = qvm.Question.Options.ToList();
 

@@ -5,6 +5,7 @@ using CozyTest.ViewModels.CuratorVM.AdministrationVM;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,20 +22,24 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
         private readonly TopicService _topicService;
         private readonly CuratorService _curatorService;
         private readonly CriteriaService _criteriaService;
+        private readonly GroupService _groupService;
 
         private string _participantNameFilter = string.Empty;
         private string _testNameFilter = string.Empty;
         private Topic? _selectedTopic;
         private Curator? _selectedAuthor;
+        private Group? _selectedGroup;
         private DateTime? _selectedDate;
         private string? _selectedStatus;
         private bool _isSelectedArchive;
+        private bool _isShowLast;
         private bool _isSelectedActive = true;
         private bool _isCurrentTest = false;
         private Curator? _selectedCoauthor;
 
         private ObservableCollection<Curator> _curators = new();
         private ObservableCollection<Topic> _topics = new();
+        private ObservableCollection<Group> _groups = new();
         private ObservableCollection<string> _statuses = new() { "В процессе", "Завершен" };
 
         private ObservableCollection<AttemptDisplayModel> _attemptsList = new();
@@ -80,6 +85,15 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     LoadAttemptsAsync();
             }
         }
+        public Group? SelectedGroup
+        {
+            get => _selectedGroup;
+            set
+            {
+                if (SetProperty(ref _selectedGroup, value))
+                    LoadAttemptsAsync();
+            }
+        }
 
         public DateTime? SelectedDate
         {
@@ -100,7 +114,59 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     LoadAttemptsAsync();
             }
         }
+        public double _midleScore;
+        public double MiddleScore
+        {
+            get => _midleScore;
+            set
+            {
+                if (SetProperty(ref _midleScore, value)) ;
+            }
+        }
+        private int _countQuest;
+        public int CountQuest
+        {
+            get => _countQuest;
+            set { _countQuest = value; OnPropertyChanged(); }
+        }
 
+        private double _averageScore;
+        public double AverageScore
+        {
+            get => _averageScore;
+            set { _averageScore = value; OnPropertyChanged(); }
+        }
+        private int _totalResponses;
+        public int TotalResponses
+        {
+            get => _totalResponses;
+            set { _totalResponses = value; OnPropertyChanged(); }
+        }
+
+        private async Task MiddleScoreTaks()
+        {
+            if (SelectedAttempt == null) return;
+
+            var attempts = await _attemptService.GetAttemptsByTestAsync(SelectedAttempt.TestId);
+
+            TotalResponses = attempts.Count;
+
+            var scores = attempts
+                .Where(a => a.Score.HasValue)
+                .Select(a => a.Score.Value)
+                .OrderBy(s => s)
+                .ToList();
+
+            if (scores.Any())
+            {
+                CountQuest = (int)attempts.FirstOrDefault(p=>p.Id == SelectedAttempt.Id).CountQuestions;
+                MiddleScore = Math.Round(scores.Average(), 1);
+            }
+            else
+            {
+                MiddleScore = 0;
+            }
+        }
         public bool IsSelectedArchive
         {
             get => _isSelectedArchive;
@@ -111,6 +177,15 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     if (value) IsSelectedActive = false;
                     LoadAttemptsAsync();
                 }
+            }
+        }
+        public bool IsShowLast
+        {
+            get => _isShowLast;
+            set
+            {
+                SetProperty(ref _isShowLast, value);
+                LoadAttemptsAsync();
             }
         }
 
@@ -153,6 +228,11 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             get => _topics;
             set => SetProperty(ref _topics, value);
         }
+        public ObservableCollection<Group> Groups
+        {
+            get => _groups;
+            set => SetProperty(ref _groups, value);
+        }
 
         public ObservableCollection<string> Statuses
         {
@@ -169,13 +249,20 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
         public AttemptDisplayModel? SelectedAttempt
         {
             get => _selectedAttempt;
-            set => SetProperty(ref _selectedAttempt, value);
+            set
+            {
+                SetProperty(ref _selectedAttempt, value);
+
+                MiddleScoreTaks();
+            }
         }
         public Test? _currentTest;
         public Participant? _currentParticipant;
 
         public ICommand ClearFiltersCommand { get; }
         public ICommand GoCurrentAttemptCommand { get; }
+        public ICommand SelectTestCommand { get; }
+        public ICommand SelectParticipantCommand { get; }
 
         public CuratorShowPassingTestsViewModel(
             INavigationService navigationService,
@@ -186,6 +273,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             ParticipantService participantService,
             TopicService topicService,
             CriteriaService criteriaService,
+            GroupService groupService,
             CuratorService curatorService, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             CurrentUser.AdminModeOnChanged += async (_, _) =>
@@ -202,10 +290,13 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             _curatorService = curatorService;
             _serviceProvider = serviceProvider;
             _criteriaService = criteriaService;
+            _groupService = groupService;
            
-
             ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
             GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
+
+            SelectTestCommand = new RelayCommand(_ => SelectTest());
+            SelectParticipantCommand = new RelayCommand(_ => SelectParticipant());
 
             _ = LoadInitialDataAsync();
         }
@@ -219,7 +310,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             ParticipantService participantService,
             TopicService topicService,
             CriteriaService criteriaService,
-            CuratorService curatorService,
+            CuratorService curatorService, GroupService groupService,
             Test test, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
 
@@ -240,7 +331,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             _curatorService = curatorService;
             _serviceProvider = serviceProvider;
             _criteriaService = criteriaService;
-           
+            _groupService = groupService;
 
             ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
             GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
@@ -257,7 +348,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             ParticipantService participantService,
             TopicService topicService,
             CriteriaService criteriaService,
-            CuratorService curatorService,
+            CuratorService curatorService, GroupService groupService,
             Participant participant, ILoggingService logger) : base(navigationService, dialogService, logger)
         {
             _currentParticipant = participant;
@@ -269,7 +360,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             _curatorService = curatorService;
             _serviceProvider = serviceProvider;
             _criteriaService = criteriaService;
-           
+            _groupService = groupService;
 
             ClearFiltersCommand = new RelayCommand(_ => ClearFilters());
             GoCurrentAttemptCommand = new RelayCommand(_ => GoCurrentAttemp());
@@ -295,6 +386,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                 await _curatorService.GetAllAsync();
                 await _topicService.GetAllAsync();
                 await _criteriaService.GetAllAsync();
+                await _groupService.GetAllGroupsForUserAsync();
 
                 await LoadListAttemptAsync();
 
@@ -302,11 +394,13 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
 
                 var curators = _curatorService.Curators;
                 var topics = _topicService.Topics;
+                var group = _groupService.Groups;
 
                 await Application.Current.Dispatcher.InvokeAsync(() =>
                 {
                     Curators = new ObservableCollection<Curator>(curators);
                     Topics = new ObservableCollection<Topic>(topics);
+                    Groups = new ObservableCollection<Group>(group);
                 });
 
                 await LoadAttemptsAsync();
@@ -343,6 +437,16 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
             }
         }
 
+        private async Task SelectTest()
+        {
+            TestNameFilter = SelectedAttempt.TestName;
+        }
+
+        private async Task SelectParticipant()
+        {
+            ParticipantNameFilter = SelectedAttempt.ParticipantName;
+        }
+
         private async Task LoadAttemptsAsync()
         {
             try
@@ -374,6 +478,18 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     filtered = filtered.Where(a => a.Test?.CuratorCreateId == SelectedAuthor.Id);
                 }
 
+                if (SelectedGroup != null)
+                {
+                    var participantsInGroup = await _participantService
+                        .GetAllParticipantForGroupAsync(SelectedGroup.Id);
+
+                    var participantIdsInGroup = participantsInGroup
+                        .Select(p => p.Id)
+                        .ToList();
+
+                    filtered = filtered.Where(a => participantIdsInGroup.Contains((int)a.ParticipantId));
+                }
+
                 if (SelectedDate.HasValue)
                 {
                     var date = SelectedDate.Value.Date;
@@ -385,6 +501,13 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     filtered = filtered.Where(a => a.Status == SelectedStatus);
                 }
 
+                if (IsShowLast == true)
+                {
+                    filtered = filtered
+                        .GroupBy(a => new { a.ParticipantId, a.TestId })
+                        .Select(g => g.OrderByDescending(a => a.AttemptNumber).First());
+                }
+
                 if (IsSelectedArchive && !IsSelectedActive)
                 {
                     filtered = filtered.Where(a => a.Test?.IsArchive == true);
@@ -394,6 +517,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     filtered = filtered.Where(a => a.Test?.IsArchive != true);
                 }
 
+               
                 if (SelectedCoauthor != null)
                 {
                     filtered = filtered.Where(a => a.Test?.Curators.Any(c => c.Id == SelectedCoauthor.Id) == true);
@@ -407,6 +531,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
                     displayList.Add(new AttemptDisplayModel
                     {
                         Id = a.Id,
+                        TestId = (int)a.TestId,
                         ParticipantName = a.Participant?.Name ?? "Неизвестно",
                         TestName = a.Test?.Name ?? "Неизвестно",
                         TopicName = a.Test?.Topic?.Name ?? "-",
@@ -464,6 +589,7 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
     public class AttemptDisplayModel : ObservableObject
     {
         private int _id;
+        private int _testId;
         private string _participantName = string.Empty;
         private string _testName = string.Empty;
         private string _topicName = string.Empty;
@@ -482,6 +608,12 @@ namespace CozyTest.ViewModels.CuratorVM.ShowPassingVM
         {
             get => _id;
             set => SetProperty(ref _id, value);
+        }
+        
+        public int TestId
+        {
+            get => _testId;
+            set => SetProperty(ref _testId, value);
         }
 
         public string ParticipantName

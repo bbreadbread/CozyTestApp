@@ -29,99 +29,124 @@
             </Grid.RowDefinitions>
 
             <TextBox Height="45"
-                Grid.Row="0"
-                Grid.Column="0"
-                Margin="10"
-                     Style="{StaticResource TBoxStyle}"
-                mah:TextBoxHelper.Watermark="Тестируемый"
-                Background="{StaticResource LightSwamp}"
-                BorderBrush="{StaticResource MainSwamp}"
-                BorderThickness="3"
-                Text="{Binding ParticipantNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Margin="10"
+                         Style="{StaticResource TBoxStyle}"
+                    mah:TextBoxHelper.Watermark="Тестируемый"
+                    Background="{StaticResource LightSwamp}"
+                    BorderBrush="{StaticResource MainSwamp}"
+                    BorderThickness="3"
+                    Text="{Binding ParticipantNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBox Height="45"
-                Grid.Row="0"
-                Grid.Column="1"
-                Width="300"
-                Margin="10"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                             Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                             Style="{StaticResource TBoxStyle}"
+                        mah:TextBoxHelper.Watermark="Название теста"
+                        Background="{StaticResource LightSwamp}"
+                        BorderBrush="{StaticResource MainSwamp}"
+                        BorderThickness="3"
+                        Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox Height="45"
+                      Grid.Row="0"
+                      Margin="5"
+                      Grid.Column="0"
+                      mah:TextBoxHelper.Watermark="Тема"  Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                      Style="{StaticResource UpMenuTestComboBox}"
+                      ItemsSource="{Binding Topics}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedTopic}"
+                      IsEditable="True"
+                      IsTextSearchEnabled="True"
+                      TextSearch.TextPath="Name"/>
+
+            <ComboBox Height="45"
+                     Grid.Row="0"
+                     Margin="5"
+                     Grid.Column="1"
                      Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                     Style="{StaticResource TBoxStyle}"
-                mah:TextBoxHelper.Watermark="Название теста"
-                Background="{StaticResource LightSwamp}"
-                BorderBrush="{StaticResource MainSwamp}"
-                BorderThickness="3"
-                Text="{Binding TestNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <ComboBox Height="45"
-                Grid.Row="0"
-                Margin="10"
-                Grid.Column="2"
-                mah:TextBoxHelper.Watermark="Тема"  Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                Style="{StaticResource UpMenuTestComboBox}"
-                ItemsSource="{Binding Topics}"
-                DisplayMemberPath="Name"
-                SelectedItem="{Binding SelectedTopic}"/>
-
-            <ComboBox Height="45"
-                Grid.Row="0"
-                Margin="10"
-                Grid.Column="3"  Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                mah:TextBoxHelper.Watermark="Автор теста"
-                Style="{StaticResource UpMenuTestComboBox}"
-                ItemsSource="{Binding Curators}"
-                DisplayMemberPath="Name"
-                SelectedItem="{Binding SelectedAuthor}"/>
+                     mah:TextBoxHelper.Watermark="Автор теста"
+                     Style="{StaticResource UpMenuTestComboBox}"
+                     ItemsSource="{Binding Curators}"
+                     DisplayMemberPath="Name"
+                     SelectedItem="{Binding SelectedAuthor}"
+                     IsEditable="True"
+                     IsTextSearchEnabled="True"
+                     TextSearch.TextPath="Name"/>
 
             <Button Grid.Row="0"
-                Grid.Column="4"
-                Width="130"
-                Height="50"
-                Background="Transparent"
-                BorderThickness="0"
-                Padding="0"
-                Margin="3"
-                HorizontalAlignment="Center"
-                Command="{Binding ClearFiltersCommand}">
+                        Grid.Column="4"
+                        Width="130"
+                        Height="50"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Margin="3"
+                        HorizontalAlignment="Center"
+                        Command="{Binding ClearFiltersCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="pack://application:,,,/Images/clear_icon.png"
-                        Width="40"
-                        Height="40"/>
+                                Width="40"
+                                Height="40"/>
                     <TextBlock Text="Очистить" TextWrapping="Wrap" Width="80" Margin="10 0 0 0"
-                        TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
+                                TextElement.Foreground="{StaticResource MainSwamp}" TextElement.FontWeight="Bold"/>
                 </StackPanel>
             </Button>
 
             <DatePicker Height="45"
-                Grid.Row="1"
-                Grid.Column="0"                Margin="10"
+                        Grid.Row="1"
+                        Grid.Column="0"                Margin="10"
 
-                SelectedDate="{Binding SelectedDate}"
-                mah:TextBoxHelper.Watermark="Дата прохождения"/>
+                        SelectedDate="{Binding SelectedDate}"
+                        mah:TextBoxHelper.Watermark="Дата прохождения"/>
 
-            <ComboBox Height="45"
-                Grid.Row="1"
-                Grid.Column="1"
-                Width="300"                Margin="10"
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1">
 
-                mah:TextBoxHelper.Watermark="Статус"
-                Style="{StaticResource UpMenuTestComboBox}"
-                ItemsSource="{Binding Statuses}"
-                SelectedItem="{Binding SelectedStatus}"/>
+                <ComboBox Height="45"
+                          Grid.Row="0" Margin="5"
+                          Grid.Column="1"  Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                          mah:TextBoxHelper.Watermark="Группа"
+                          Style="{StaticResource UpMenuTestComboBox}"
+                          ItemsSource="{Binding Groups}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedGroup}"
+                          IsEditable="True"
+                          IsTextSearchEnabled="True"
+                          TextSearch.TextPath="Name"/>
 
-            <StackPanel Grid.Row="1" Grid.Column="2"                Margin="10"  Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
->
-                <ToggleButton Content="Архивные"
-                    TextElement.FontSize="20"
-                    IsChecked="{Binding IsSelectedArchive}"
-                    TextElement.FontWeight="Bold"
-                    Margin="0 0 0 5"/>
-
-                <ToggleButton Content="Активные"
-                    TextElement.FontSize="20"
-                    IsChecked="{Binding IsSelectedActive}"
-                    TextElement.FontWeight="Bold"/>
+                <ComboBox Height="45"
+                          Width="300"
+                          Margin="5"
+                          mah:TextBoxHelper.Watermark="Статус"
+                          Style="{StaticResource UpMenuTestComboBox}"
+                          ItemsSource="{Binding Statuses}"
+                          SelectedItem="{Binding SelectedStatus}"/>
             </StackPanel>
 
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="10" Visibility="{Binding IsCurrentTest, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+    >
+                <ToggleButton Content="Архивные"
+                                    TextElement.FontSize="20"
+                                    IsChecked="{Binding IsSelectedArchive}"
+                                    TextElement.FontWeight="Bold"
+                                    Margin="0 0 0 5"/>
+
+                <ToggleButton Content="Активные"
+                                    TextElement.FontSize="20"
+                                    IsChecked="{Binding IsSelectedActive}"
+                                    TextElement.FontWeight="Bold"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="3" VerticalAlignment="Center">
+                <CheckBox Content="Показывать только последние попытки"
+                                    TextElement.FontSize="20"
+                                    IsChecked="{Binding IsShowLast}"
+                                    TextElement.FontWeight="Bold" Margin="0 5"/>
+            </StackPanel>
         </Grid>
 
         <DockPanel Margin="5" LastChildFill="True" Grid.Row="1">
@@ -129,35 +154,36 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0"
-            Background="{StaticResource MainSwamp}"
-            CornerRadius="4 4 0 0"
-            Padding="16">
+                        Background="{StaticResource MainSwamp}"
+                        CornerRadius="4 4 0 0"
+                        Padding="16">
                     <TextBlock Text="Прохождения тестов"
-                   Foreground="White"
-                   FontWeight="Bold"
+                               Foreground="White"
+                               FontWeight="Bold"
                                FontSize="20"
-                   VerticalAlignment="Center"/>
+                               VerticalAlignment="Center"/>
                 </Border>
 
                 <Border Grid.Row="1"
-            BorderThickness="3"
-            BorderBrush="{StaticResource MainSwamp}"
-            Background="White">
+                        BorderThickness="3"
+                        BorderBrush="{StaticResource MainSwamp}"
+                        Background="White">
                     <DataGrid
-            BorderThickness="0"
-            ItemsSource="{Binding AttemptsList}"
-            SelectedItem="{Binding SelectedAttempt}"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            HeadersVisibility="Column"
-            Background="White">
+                        BorderThickness="0"
+                        ItemsSource="{Binding AttemptsList}"
+                        SelectedItem="{Binding SelectedAttempt}"
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                        HeadersVisibility="Column"
+                        Background="White">
 
                         <DataGrid.InputBindings>
                             <MouseBinding MouseAction="LeftDoubleClick"
-                              Command="{Binding GoCurrentAttemptCommand}"/>
+                                          Command="{Binding GoCurrentAttemptCommand}"/>
                         </DataGrid.InputBindings>
 
                         <DataGrid.Columns>
@@ -187,10 +213,25 @@
                                 <Setter Property="Background" Value="{Binding MarkLvl, Converter={StaticResource MarkLvlToColorConverter}}"/>
                             </Style>
                         </DataGrid.RowStyle>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding SelectTestCommand}" Header="Выбрать тест"/>
+                                <MenuItem Command="{Binding SelectParticipantCommand}" Header="Выбрать тестируемого"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </Border>
-    </Grid>
-    </DockPanel>
+
+                <Border Grid.Row="2" VerticalAlignment="Center">
+                    <TextBlock FontSize="25" Style="{StaticResource AuthTitle}">
+                        <Run Text="Средний балл для выбранного теста: "/>
+                         <Run Text="{Binding MiddleScore}"/>
+                         <Run Text=" из "/>
+                         <Run Text="{Binding CountQuest}"/>
+                    </TextBlock>
+                </Border>
+            </Grid>
+        </DockPanel>
 
         <Border Grid.RowSpan="2" 
           Background="#2000685A" 

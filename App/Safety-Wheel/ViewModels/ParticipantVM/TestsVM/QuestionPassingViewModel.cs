@@ -186,6 +186,12 @@ namespace CozyTest.ViewModels.ParticipantVM.TestsVM
             get => _isSelected;
             set => SetProperty(ref _isSelected, value);
         }
+        private bool _isCorrect;
+        public bool IsCorrect
+        {
+            get => _isCorrect;
+            set => SetProperty(ref _isCorrect, value);
+        }
 
         public bool IsConstant { get; set; }
         public string DisplayText => Option?.TextAnswer ?? string.Empty;

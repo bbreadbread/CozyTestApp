@@ -297,9 +297,15 @@
                 </ScrollViewer>
             </Grid>
 
-            <Button Content="{Binding ButtonText}"  Background="{Binding ButtonColor}"
-             Grid.Row="1" Grid.Column="1" Width="250" Height="55"
-             HorizontalAlignment="Center" Command="{Binding SubmitAnswerCommand}"/>
+            <Button Content="{Binding ButtonText}"  
+                    Background="{Binding ButtonColor}"
+                    Grid.Row="1" 
+                    Grid.Column="1" 
+                    Width="250" 
+                    Height="55"
+                    FontWeight="DemiBold"
+                    HorizontalAlignment="Center"
+                    Command="{Binding SubmitAnswerCommand}"/>
 
             <Border Grid.RowSpan="2" Grid.ColumnSpan="5" Background="#2000685A" 
              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">

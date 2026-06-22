@@ -159,7 +159,7 @@ namespace CozyTest.ViewModels.CuratorVM.CreateTestsVM
         {
             try
             {
-                string sourcePath = @"D:\VisualStudioProject\CozyTest\Safety-Wheel\bin\Debug\net8.0-windows\Пример теста для импорта.xlsx";
+                string sourcePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "primerTest.xlsx");
 
                 if (!File.Exists(sourcePath))
                 {
