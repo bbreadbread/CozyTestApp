@@ -52,8 +52,6 @@ public partial class CozyTestContext : DbContext
     public virtual DbSet<UserActionLog> UserActionLogs { get; set; }
 
     string connStr = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "connection.settings"));
-
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -61,6 +59,7 @@ public partial class CozyTestContext : DbContext
             optionsBuilder.UseSqlServer(connStr);
         }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Attempt>(entity =>

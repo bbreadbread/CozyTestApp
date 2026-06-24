@@ -23,6 +23,8 @@
   <ItemGroup>
     <Content Include="connection.settings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>connection.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="icon.ico" />
   </ItemGroup>
@@ -34,6 +36,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="connection.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>connection.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

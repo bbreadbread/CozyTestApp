@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:RegistrationCuratorCozyTest.ViewModels"
-        xmlns:local="clr-namespace:RegistrationCuratorCozyTest"
         xmlns:models="clr-namespace:RegistrationCuratorCozyTest.Models"
         mc:Ignorable="d"
-        Title="Регистрация куратора CozyTest" Height="450" Width="900">
-    
+        Title="Регистрация куратора CozyTest" Height="550" Width="900"
+        WindowStartupLocation="CenterScreen">
+
     <Window.DataContext>
         <vm:RegisterCuratorViewModel/>
     </Window.DataContext>
@@ -17,96 +17,99 @@
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="30"/>
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <Style TargetType="PasswordBox">
             <Setter Property="Height" Value="30"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="5 10 5 0"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <DataTemplate DataType="{x:Type models:Curator}">
+            <Border BorderBrush="#275353" BorderThickness="0 0 0 1" Padding="5 10" Background="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="ID:" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1" Text="ФИО:" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="2" Text="Логин:" FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Id}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Name}"/>
+                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Login}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
     </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <StackPanel Margin="20" Grid.RowSpan="2">
+            <Label Content="Имя Фамилия"/>
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Orientation="Vertical" Margin="20" Grid.RowSpan="2">
+            <Label Content="Логин"/>
+            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label Content="Имя Фамилия" />
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                 Margin="0,0,0,10"/>
-
-            <Label Content="Логин" />
-            <TextBox 
-                 Text="{Binding Login}"
-                 Margin="0,0,0,10"/>
-
-            <Label Content="Пароль" />
+            <Label Content="Пароль"/>
             <PasswordBox x:Name="PasswordBox" 
-                     PasswordChanged="PasswordBox_PasswordChanged"
-                     Margin="0,0,0,10"/>
+                         PasswordChanged="PasswordBox_PasswordChanged"/>
 
-            <Label Content="Повторение пароля" />
+            <Label Content="Повторение пароля"/>
             <PasswordBox x:Name="ConfirmPasswordBox" 
-                     PasswordChanged="ConfirmPasswordBox_PasswordChanged"
-                     Margin="0,0,0,10"/>
+                         PasswordChanged="ConfirmPasswordBox_PasswordChanged"/>
 
-            <Button 
-                Content="Зарегистрировать нового куратора"
-                Height="40"
-                Command="{Binding RegisterCommand}"/>
-
+            <StackPanel Margin="0 10 0 0">
+                <Button Content="Зарегистрировать" 
+                        Background="#275353"
+                        Command="{Binding RegisterCommand}"/>
+                <Button Content="Редактировать" 
+                        Background="#D39000"
+                        Command="{Binding UpdateCommand}"/>
+                <Button Content="Удалить" IsEnabled="{Binding IsCanDelete}"
+                        Background="#D31A1A"
+                        Command="{Binding RemoveCommand}"/>
+            </StackPanel>
         </StackPanel>
 
-        <ListView  Margin="10 0" Grid.Column="1" ItemsSource="{Binding Items}" SelectedItem="{Binding selectedItem}" HorizontalContentAlignment="Stretch"  MouseDoubleClick="FormsList_SelectDoubleClick">
-            <ListView.Resources>
-                <DataTemplate DataType="{x:Type models:Curator}">
-                    <Border x:Name="ProductBorder" 
-                            BorderBrush="Gray" 
-                            BorderThickness="0,0,0,1"
-                            Padding="5,10"
-                            Background="White">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Column="0" Text="ID: "/>
-                            <TextBlock Grid.Column="1" Text="ФИО: "/>
-                            <TextBlock Grid.Column="2" Text="Логин: "/>
-                            
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Id}"/>
-                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Name}"/>
-                            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Login}"/>
-
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.Resources>
+        <ListView Grid.Column="1" 
+                  Margin="10 20 10 20"
+                  ItemsSource="{Binding Curators}"
+                  SelectedItem="{Binding SelectedCurator}"
+                  MouseDoubleClick="ListView_MouseDoubleClick"
+                  HorizontalContentAlignment="Stretch">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
-
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <Button Content="Удалить"
-                    Height="40"
-                    Command="{Binding RemoveCommand}"
-                    Margin="10 10 10 5"/>
-
-            <Button Content="Редактировать"
-                    Height="40"
-                    Command="{Binding UpdateCommand}"
-                    Margin="10 5"/>
-        </StackPanel>
     </Grid>
 </Window>

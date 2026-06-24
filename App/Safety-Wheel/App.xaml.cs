@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Windows;
+using System.IO;
 
 namespace CozyTest
 {
@@ -26,14 +27,12 @@ namespace CozyTest
         {
             try
             {
-                var connectionString = ConfigurationManager
-                    .ConnectionStrings["CozyTestDB"]
-                    .ConnectionString;
+                string connStr = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "connection.settings"));
 
                 var services = new ServiceCollection();
 
                 services.AddDbContextFactory<CozyTestContext>(options =>
-                    options.UseSqlServer(connectionString));
+                    options.UseSqlServer(connStr));
 
                 services.AddTransient<AttemptService>();
                 services.AddTransient<CorrespondenceService>();
